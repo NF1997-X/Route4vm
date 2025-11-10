@@ -1135,7 +1135,7 @@ export function DataTable({
       <div className="overflow-x-auto w-full">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full">
-            <TableHeader className="table-header-glass sticky top-0 z-20 bg-white dark:bg-slate-900 border-b-2 border-yellow-400/30">
+            <TableHeader className="glass-card sticky top-0 z-20 border-b border-glass-border backdrop-blur-3xl">
               <Droppable
                 droppableId="columns"
                 direction="horizontal"
@@ -1254,7 +1254,7 @@ export function DataTable({
                             <TableRow
                               ref={provided.innerRef}
                               {...provided.draggableProps}
-                              className={`table-row-glass group ${
+                              className={`glass-hover group transition-smooth ${
                                 (() => {
                                   // Apply 3-color styling ONLY for shared view or edit mode
                                   if (isSharedView || editMode) {

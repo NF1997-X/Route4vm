@@ -13,7 +13,7 @@ import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
-    <div className="min-h-screen pb-16 text-sm">
+    <div className="min-h-screen pb-16 text-sm bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-black dark:via-gray-900 dark:to-black">
       <Switch>
         <Route path="/">
           {() => <TablePage />}

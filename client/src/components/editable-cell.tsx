@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Check, X } from "lucide-react";
 
 interface EditableCellProps {
   value: any;
@@ -26,6 +28,14 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     }
   }, [isEditing]);
 
+  // Check if should use popup input (for longer text content)
+  const shouldUseTextarea = () => {
+    if (type === 'text' && (dataKey === 'info' || dataKey === 'location' || dataKey === 'delivery' || (typeof value === 'string' && value.length > 30))) {
+      return true;
+    }
+    return false;
+  };
+
   const handleSave = () => {
     let processedValue = editValue;
     
@@ -45,11 +55,28 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     setIsEditing(false);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSave();
-    } else if (e.key === 'Escape') {
+  // Add click outside to close popup
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
       handleCancel();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (shouldUseTextarea()) {
+      // For popup input, save on Enter, cancel on Escape
+      if (e.key === 'Enter') {
+        handleSave();
+      } else if (e.key === 'Escape') {
+        handleCancel();
+      }
+    } else {
+      // For inline input, save on Enter, cancel on Escape
+      if (e.key === 'Enter') {
+        handleSave();
+      } else if (e.key === 'Escape') {
+        handleCancel();
+      }
     }
   };
 
@@ -91,6 +118,58 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             ))}
           </SelectContent>
         </Select>
+      );
+    }
+
+    // For longer text content, show just the editing indicator in the cell
+    // and render the actual popup outside the table structure
+    if (shouldUseTextarea()) {
+      return (
+        <>
+          {/* This stays in the table cell - minimal height */}
+          <div className="text-xs text-gray-500 italic py-1">
+            Editing...
+          </div>
+          
+          {/* Fixed position popup - completely outside table flow */}
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            onClick={handleBackdropClick}
+          >
+            <div className="glass-card p-4 w-80 rounded-lg shadow-2xl border border-white/20 animate-in fade-in-0 zoom-in-95 duration-200">
+              <Input
+                ref={inputRef}
+                value={editValue || ''}
+                onChange={(e) => setEditValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={getPlaceholder()}
+                className="glass-input border-none text-sm mb-3 w-full ring-2 ring-blue-500/20 focus:ring-blue-500/40"
+                data-testid="input-editable-cell-popup"
+              />
+              <div className="flex gap-2 justify-end">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleCancel}
+                  className="btn-glass h-8 px-3 text-xs border-white/20 hover:bg-white/10"
+                  data-testid="button-cancel-edit"
+                >
+                  <X className="w-3 h-3 mr-1" />
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  className="btn-glass h-8 px-3 text-xs bg-blue-600/90 backdrop-blur text-white hover:bg-blue-700/90 border border-blue-500/30 shadow-lg shadow-blue-500/25"
+                  data-testid="button-save-edit"
+                >
+                  <Check className="w-3 h-3 mr-1" />
+                  Save
+                </Button>
+              </div>
+            </div>
+          </div>
+        </>
       );
     }
     

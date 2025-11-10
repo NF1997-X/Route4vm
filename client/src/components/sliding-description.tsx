@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import EditableRichText from "./editable-rich-text";
 import { ChevronDown, ChevronRight } from "lucide-react";
 
 interface SlidingDescriptionProps {
@@ -105,12 +105,19 @@ export function SlidingDescription({ value, onSave, isEditable = true }: Sliding
 
   return (
     <div className="space-y-2">
-      <Input
+      <EditableRichText
         value={editValue}
-        onChange={(e) => handleChange(e.target.value)}
-        style={{fontSize: '10px'}}
+        onSave={(newHtml) => {
+          // store as HTML string (preserve simple formatting)
+          setEditValue(newHtml);
+          onSave(newHtml);
+        }}
+        onCancel={() => {
+          // reset local value to prop
+          setEditValue(value);
+        }}
         placeholder="Enter information..."
-        data-testid="input-sliding-description"
+        className="text-sm"
       />
     </div>
   );
