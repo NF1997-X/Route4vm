@@ -4,14 +4,19 @@
   "installCommand": "npm install",
   "framework": null,
   "outputDirectory": "dist/public",
-  "routes": [
+  "functions": {
+    "api/vercel.js": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/vercel.js"
+      "source": "/api/(.*)",
+      "destination": "/api/vercel"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
