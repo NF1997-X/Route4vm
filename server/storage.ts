@@ -190,7 +190,7 @@ export class MemStorage implements IStorage {
         type: "select",
         sortOrder: 6,
         isEditable: "true",
-        options: ["Skip", "Every Day", "Weekdays", "Mon-Wed-Fri", "Tue-Thu-Sat"] as string[],
+        options: ["None", "Daily", "Weekday", "Alt 1", "Alt 2"] as string[],
       },
       {
         id: randomUUID(),
@@ -491,7 +491,7 @@ export class MemStorage implements IStorage {
     const deliveryColumn = existingColumns.find(col => col.dataKey === 'delivery');
     if (deliveryColumn && deliveryColumn.type !== 'select') {
       deliveryColumn.type = 'select';
-      deliveryColumn.options = ["Skip", "Every Day", "Weekdays", "Mon-Wed-Fri", "Tue-Thu-Sat"];
+      deliveryColumn.options = ["None", "Daily", "Weekday", "Alt 1", "Alt 2"];
       this.tableColumns.set(deliveryColumn.id, deliveryColumn);
     }
   }

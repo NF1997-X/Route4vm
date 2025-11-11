@@ -17,11 +17,11 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     setEditValue(value);
   }, [value]);
 
-  // If editing a delivery cell and the stored value is empty, default to 'Skip'
+  // If editing a delivery cell and the stored value is empty, default to 'None'
   useEffect(() => {
     if (isEditing && (dataKey === 'delivery' || type === 'select')) {
       if (value === null || value === undefined || value === '') {
-        setEditValue('Skip');
+        setEditValue('None');
       }
     }
   }, [isEditing, dataKey, type, value]);
@@ -92,12 +92,12 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   if (isEditing) {
     // Special handling for delivery column with select dropdown
     if (dataKey === 'delivery' || type === 'select') {
-      const deliveryOptions = options || ['Skip', 'Every Day', 'Weekdays', 'Mon-Wed-Fri', 'Tue-Thu-Sat'];
+      const deliveryOptions = options || ['None', 'Daily', 'Weekday', 'Alt 1', 'Alt 2'];
 
       return (
         <select
           ref={inputRef as any}
-          value={editValue ?? 'Skip'}
+          value={editValue ?? 'None'}
           onChange={(e) => {
             setEditValue(e.target.value);
             handleSave();
