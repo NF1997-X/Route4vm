@@ -33,7 +33,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
           inputRef.current.focus();
           inputRef.current.select();
         }
-      }, 50);
+      }, 100); // Increased delay for better reliability
       
       return () => clearTimeout(timeout);
     }
@@ -48,6 +48,22 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
       return () => {
         document.body.style.overflow = originalStyle;
       };
+    }
+  }, [isEditing]);
+
+  // Global escape key handler for better UX
+  useEffect(() => {
+    if (isEditing) {
+      const handleEscapeKey = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          e.stopPropagation();
+          handleCancel();
+        }
+      };
+
+      document.addEventListener('keydown', handleEscapeKey, true);
+      return () => document.removeEventListener('keydown', handleEscapeKey, true);
     }
   }, [isEditing]);
 
@@ -81,9 +97,12 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     setIsEditing(false);
   };
 
-  // Add click outside to close popup
+  // Enhanced click outside to close popup
   const handleBackdropClick = (e: React.MouseEvent) => {
+    // Only close if clicking on the backdrop itself, not on child elements
     if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
       handleCancel();
     }
   };
@@ -151,14 +170,15 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     if (shouldUseTextarea()) {
       return (
         <>
-          {/* This stays in the table cell - minimal height */}
-          <div className="text-xs text-gray-500 italic py-1">
+          {/* This stays in the table cell - shows editing status */}
+          <div className="text-xs text-blue-600 dark:text-blue-400 italic py-1 animate-pulse flex items-center gap-2">
+            <span className="w-2 h-2 bg-blue-500 rounded-full animate-ping"></span>
             Editing...
           </div>
           
-          {/* Fixed position popup - locked to viewport, ignores scroll */}
+          {/* Fixed position popup - professional modal design */}
           <div 
-            className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[9998] bg-black/70 backdrop-blur-md flex items-center justify-center p-4"
             onClick={handleBackdropClick}
             style={{ 
               position: 'fixed',
@@ -166,67 +186,121 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
               left: 0,
               right: 0,
               bottom: 0,
-              zIndex: 9999
+              zIndex: 9998,
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch'
             }}
           >
-            <div className="glass-card p-4 w-80 rounded shadow-2xl border border-white/20 animate-in fade-in-0 zoom-in-95 duration-200"
+            <div className="glass-card p-6 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-white/20 animate-in fade-in-0 zoom-in-95 duration-300 max-h-[80vh] overflow-hidden flex flex-col"
                  style={{ 
-                   position: 'fixed',
-                   top: '50vh',
-                   left: '50vw',
-                   transform: 'translate(-50%, -50%)',
-                   zIndex: 10000,
-                   margin: 0
+                   position: 'relative',
+                   zIndex: 9999,
+                   minWidth: '280px'
                  }}
                  onClick={(e) => e.stopPropagation()}
             >
-              <div className="mb-3">
-                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
-                  Editing {dataKey === 'info' ? 'Description' : dataKey === 'location' ? 'Location' : 'Field'}
+              <div className="mb-4">
+                <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  Editing {dataKey === 'info' ? 'Description' : dataKey === 'location' ? 'Location' : dataKey ? dataKey.charAt(0).toUpperCase() + dataKey.slice(1) : 'Field'}
                 </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Make your changes and press Enter to save
+                </p>
               </div>
               
-              <Input
-                ref={inputRef}
-                value={editValue || ''}
-                onChange={(e) => setEditValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Escape') {
-                    setIsEditing(false);
-                    setEditValue(value);
-                  } else if (e.key === 'Enter') {
-                    handleSave();
-                  }
-                }}
-                placeholder={getPlaceholder()}
-                className="glass-input w-full text-sm mb-4 ring-2 ring-blue-500/30 focus:ring-blue-500/50 border-white/20 rounded-lg"
-                data-testid="input-editable-cell-popup"
-                autoFocus
-              />
-              <div className="flex gap-2 justify-end">
+              
+              {/* Smart input/textarea detection */}
+              {dataKey === 'info' || dataKey === 'location' || (typeof value === 'string' && value.length > 50) ? (
+                <Textarea
+                  ref={textareaRef}
+                  value={editValue || ''}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                    if (e.key === 'Escape') {
+                      handleCancel();
+                    } else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                      e.preventDefault();
+                      handleSave();
+                    }
+                  }}
+                  placeholder={getPlaceholder()}
+                  className="glass-textarea w-full text-sm mb-4 min-h-[120px] resize-none ring-2 ring-blue-500/30 focus:ring-blue-500/50 border-white/20 rounded-xl py-3 px-4 transition-all duration-200"
+                  data-testid="textarea-editable-cell-popup"
+                  autoFocus
+                />
+              ) : (
+                <Input
+                  ref={inputRef}
+                  value={editValue || ''}
+                  onChange={(e) => setEditValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                    if (e.key === 'Escape') {
+                      handleCancel();
+                    } else if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleSave();
+                    }
+                  }}
+                  placeholder={getPlaceholder()}
+                  className="glass-input w-full text-sm mb-4 ring-2 ring-blue-500/30 focus:ring-blue-500/50 border-white/20 rounded-xl py-3 px-4 transition-all duration-200"
+                  data-testid="input-editable-cell-popup"
+                  autoFocus
+                />
+              )}
+              
+              {/* Action buttons */}
+              <div className="flex gap-3 justify-end">
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={handleCancel}
-                  className="btn-glass h-8 px-3 text-xs border-white/20 hover:bg-white/10"
+                  className="glass-button h-9 px-4 text-sm border-red-200/40 hover:bg-red-50/80 dark:border-red-800/40 dark:hover:bg-red-950/80 hover:border-red-300/60 transition-all"
                   data-testid="button-cancel-edit"
                 >
-                  <X className="w-3 h-3 mr-1" />
+                  <X className="w-4 h-4 mr-2" />
                   Cancel
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleSave}
-                  className="btn-glass h-8 px-3 text-xs bg-blue-600/90 backdrop-blur text-white hover:bg-blue-700/90 border border-blue-500/30 shadow-lg shadow-blue-500/25"
+                  className="h-9 px-4 text-sm bg-blue-600 backdrop-blur text-white hover:bg-blue-700 border border-blue-500/40 shadow-lg shadow-blue-500/25 transition-all"
                   data-testid="button-save-edit"
                 >
-                  <Check className="w-3 h-3 mr-1" />
+                  <Check className="w-4 h-4 mr-2" />
                   Save
                 </Button>
               </div>
               
-              <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
-                Press <kbd className="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-xs">Enter</kbd> to save, <kbd className="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-xs">Esc</kbd> to cancel
+              {/* Keyboard shortcuts help */}
+              <div className="mt-4 p-3 bg-blue-50/50 dark:bg-blue-950/20 rounded-lg border border-blue-200/30 dark:border-blue-800/30">
+                <div className="flex items-center justify-center gap-4 text-xs text-blue-600 dark:text-blue-400">
+                  {dataKey === 'info' || dataKey === 'location' || (typeof value === 'string' && value.length > 50) ? (
+                    <>
+                      <div className="flex items-center gap-1">
+                        <kbd className="px-2 py-1 bg-white/80 dark:bg-black/40 rounded text-xs font-mono border border-blue-200 dark:border-blue-800">Ctrl+↵</kbd>
+                        <span>Save</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <kbd className="px-2 py-1 bg-white/80 dark:bg-black/40 rounded text-xs font-mono border border-blue-200 dark:border-blue-800">Esc</kbd>
+                        <span>Cancel</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-1">
+                        <kbd className="px-2 py-1 bg-white/80 dark:bg-black/40 rounded text-xs font-mono border border-blue-200 dark:border-blue-800">↵</kbd>
+                        <span>Save</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <kbd className="px-2 py-1 bg-white/80 dark:bg-black/40 rounded text-xs font-mono border border-blue-200 dark:border-blue-800">Esc</kbd>
+                        <span>Cancel</span>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
