@@ -78,6 +78,32 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   };
 
   if (isEditing) {
+    // Special handling for delivery column with select dropdown
+    if (dataKey === 'delivery' || type === 'select') {
+      const deliveryOptions = options || ['None', 'Daily', 'Weekday', 'Alt 1', 'Alt 2'];
+      
+      return (
+        <select
+          ref={inputRef as any}
+          value={editValue || ''}
+          onChange={(e) => {
+            setEditValue(e.target.value);
+            handleSave();
+          }}
+          onKeyDown={handleKeyDown}
+          className="w-full h-6 px-2 py-1 text-center bg-transparent border border-blue-300 rounded focus:outline-none focus:border-blue-500"
+          style={{ fontSize: '10px' }}
+          autoFocus
+        >
+          {deliveryOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      );
+    }
+
     return (
       <input
         ref={inputRef}
@@ -88,7 +114,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
         onBlur={handleSave}
         onKeyDown={handleKeyDown}
         placeholder={getPlaceholder()}
-        className="w-full h-6 px-2 py-1 text-xs bg-transparent border border-blue-300 rounded focus:outline-none focus:border-blue-500 text-center"
+        className="w-full h-6 px-2 py-1 text-center bg-transparent border border-blue-300 rounded focus:outline-none focus:border-blue-500"
         style={{ fontSize: '10px' }}
       />
     );
