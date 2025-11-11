@@ -73,14 +73,16 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
         if (e.key === 'Escape') {
           e.preventDefault();
           e.stopPropagation();
-          handleCancel();
+          // Inline cancel logic to avoid dependency issues
+          setEditValue(value);
+          setIsEditing(false);
         }
       };
 
       document.addEventListener('keydown', handleEscapeKey, true);
       return () => document.removeEventListener('keydown', handleEscapeKey, true);
     }
-  }, [isEditing, handleCancel]); // Fixed: Added missing dependency
+  }, [isEditing, value]); // Fixed: Use value instead of handleCancel
 
   // Check if should use popup textarea (for longer text content)
   const shouldUseTextarea = () => {
