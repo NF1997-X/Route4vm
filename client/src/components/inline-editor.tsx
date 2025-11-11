@@ -258,24 +258,29 @@ export function InlineEditor({
   const InputComponent = multiline || type === "textarea" ? Textarea : Input;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <InputComponent
         ref={inputRef as any}
         value={editValue}
         onChange={(e) => setEditValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className={cn("glass-input", className)}
-        rows={type === "textarea" ? 4 : undefined}
+        className={cn(
+          type === "textarea" || multiline 
+            ? "glass-textarea min-h-[140px] leading-relaxed"
+            : "glass-input", 
+          className
+        )}
+        rows={type === "textarea" ? 6 : undefined}
       />
       <div className="flex items-center gap-2">
         <Button
           size="sm"
           onClick={handleSave}
           disabled={isLoading}
-          className="glass-button h-7 px-3"
+          className="glass-button h-8 px-4 text-sm font-medium"
         >
-          <Check className="h-3 w-3 mr-1" />
+          <Check className="h-3.5 w-3.5 mr-1.5" />
           {isLoading ? "Saving..." : "Save"}
         </Button>
         <Button
@@ -283,9 +288,9 @@ export function InlineEditor({
           variant="ghost"
           onClick={handleCancel}
           disabled={isLoading}
-          className="h-7 px-3"
+          className="h-8 px-4 text-sm"
         >
-          <X className="h-3 w-3 mr-1" />
+          <X className="h-3.5 w-3.5 mr-1.5" />
           Cancel
         </Button>
       </div>
