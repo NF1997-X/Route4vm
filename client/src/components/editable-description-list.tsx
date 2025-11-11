@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 
 interface DescriptionItem {
   term: string;
@@ -15,6 +15,7 @@ interface EditableDescriptionListProps {
 }
 
 export function EditableDescriptionList({ value, onSave, isEditable = true }: EditableDescriptionListProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const parseItems = (text: string): DescriptionItem[] => {
     if (!text.trim()) return [];
     return text.split('\n')
@@ -111,24 +112,79 @@ export function EditableDescriptionList({ value, onSave, isEditable = true }: Ed
 
   if (!isEditable) {
     const displayItems = parseItems(value);
+    const hasItems = displayItems.length > 0;
+    
     return (
       <div className="space-y-2">
-        {displayItems.length > 0 ? (
-          <dl className="space-y-2" style={{fontSize: '10px'}}>
-            {displayItems.map((item, index) => (
-              <div key={index} className="flex items-start gap-3">
-                <dt className="w-20 flex-shrink-0 font-semibold text-blue-600 dark:text-blue-400">
-                  {item.term}
-                </dt>
-                <dd className="flex-1 text-gray-700 dark:text-gray-300 m-0">
-                  {item.definition}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        ) : (
-          <p className="text-muted-foreground" style={{fontSize: '10px'}}>No information available</p>
-        )}
+        <div className="flex items-start gap-2">
+          {hasItems && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-6 w-6 p-0 flex-shrink-0 mt-0.5"
+              onClick={() => setIsExpanded(!isExpanded)}
+              data-testid="button-toggle-description-list"
+            >
+              {isExpanded ? (
+                <ChevronDown className="w-3 h-3" />
+              ) : (
+                <ChevronRight className="w-3 h-3" />
+              )}
+            </Button>
+          )}
+          
+          <div className="flex-1 min-w-0">
+            {hasItems ? (
+              <>
+                {/* Preview - show first item only when collapsed */}
+                {!isExpanded && (
+                  <div 
+                    className="cursor-pointer transition-all duration-300 ease-in-out opacity-90"
+                    onClick={() => setIsExpanded(true)}
+                  >
+                    <dl className="space-y-2" style={{fontSize: '10px'}}>
+                      <div className="flex items-start gap-3">
+                        <dt className="w-20 flex-shrink-0 font-semibold text-blue-600 dark:text-blue-400">
+                          {displayItems[0].term}
+                        </dt>
+                        <dd className="flex-1 text-gray-700 dark:text-gray-300 m-0">
+                          {displayItems[0].definition}
+                          {displayItems.length > 1 && (
+                            <span className="text-muted-foreground ml-2">
+                              (+{displayItems.length - 1} more)
+                            </span>
+                          )}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+                )}
+                
+                {/* Full list when expanded */}
+                <div 
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <dl className="space-y-2" style={{fontSize: '10px'}}>
+                    {displayItems.map((item, index) => (
+                      <div key={index} className="flex items-start gap-3">
+                        <dt className="w-20 flex-shrink-0 font-semibold text-blue-600 dark:text-blue-400">
+                          {item.term}
+                        </dt>
+                        <dd className="flex-1 text-gray-700 dark:text-gray-300 m-0">
+                          {item.definition}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </>
+            ) : (
+              <p className="text-muted-foreground" style={{fontSize: '10px'}}>No information available</p>
+            )}
+          </div>
+        </div>
       </div>
     );
   }

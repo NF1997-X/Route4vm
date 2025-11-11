@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Info, ListChecks, QrCode, ExternalLink, CheckCircle, Save, X, FileText, Loader2 } from "lucide-react";
+import { Info, ListChecks, QrCode, ExternalLink, CheckCircle, Save, X, FileText, Loader2, Upload, FolderOpen } from "lucide-react";
 import { SiGooglemaps, SiWaze } from "react-icons/si";
 import { MiniMap } from "@/components/mini-map";
 import { SlidingDescription } from "@/components/sliding-description";
@@ -39,6 +39,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
   const [showChecklistConfirm, setShowChecklistConfirm] = useState(false);
   const [showNavigationConfirm, setShowNavigationConfirm] = useState(false);
   const [navigationType, setNavigationType] = useState<'google' | 'waze'>('google');
+  const [showActionsMenu, setShowActionsMenu] = useState(false);
   const [showUrlConfirm, setShowUrlConfirm] = useState(false);
   const [urlToOpen, setUrlToOpen] = useState<string>("");
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
@@ -286,19 +287,19 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           }}
         />
         <DialogHeader 
-          className="pb-6 border-b border-blue-900 dark:border-cyan-400/50 flex-shrink-0"
-          style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}
+          className="pb-4 border-b border-blue-900 dark:border-cyan-400/50 flex-shrink-0"
+          style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}
         >
-          <DialogTitle className="font-semibold text-center text-slate-900 dark:text-slate-400" style={{fontSize: '10px'}}>
+          <DialogTitle className="font-semibold text-center text-slate-900 dark:text-slate-400 truncate" style={{fontSize: '10px'}}>
             {location || 'Location'}
           </DialogTitle>
-          <div className="text-center text-muted-foreground pt-2" style={{fontSize: '10px'}}>
+          <div className="text-center text-muted-foreground pt-1 truncate" style={{fontSize: '10px'}}>
             {code || ''}
           </div>
         </DialogHeader>
         
         <div 
-          className="py-6 space-y-6 overflow-y-auto flex-1"
+          className="py-4 space-y-4 overflow-y-auto flex-1"
           style={{
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
@@ -307,9 +308,8 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           {/* Mini Map Section */}
           {latitude && longitude && !isNaN(parseFloat(latitude)) && !isNaN(parseFloat(longitude)) && (
             <div className="bg-transparent backdrop-blur-sm rounded p-4 space-y-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 dark:bg-green-300 rounded-full animate-pulse"></div>
-                <h4 className="font-semibold text-green-500 dark:text-green-300" style={{fontSize: '10px'}}>🗺️ Location Map</h4>
+              <div className="flex items-center justify-center">
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-center" style={{fontSize: '10px'}}>Location Map</h4>
               </div>
               <MiniMap 
                 locations={(() => {
@@ -380,9 +380,8 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
 
           {/* Description Section */}
           <div className="bg-transparent backdrop-blur-sm rounded-xl p-4 space-y-3 shadow-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-purple-500 dark:bg-purple-400 rounded-full"></div>
-              <h4 className="font-semibold text-purple-600 dark:text-purple-400" style={{fontSize: '10px'}}>📝 Description</h4>
+            <div className="flex items-center justify-center">
+              <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-center" style={{fontSize: '10px'}}>Description</h4>
             </div>
             <EditableDescriptionList
               value={(() => {
@@ -517,9 +516,8 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           {/* Images Section - Show image preview if images exist */}
           {images && images.length > 0 && (
             <div className="bg-transparent backdrop-blur-sm rounded p-4 space-y-3 shadow-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-amber-500 dark:bg-amber-400 rounded-full"></div>
-                <h4 className="font-semibold text-amber-600 dark:text-amber-400" style={{fontSize: '10px'}}>🖼️ Images ({images.filter(m => m.type === 'image').length})</h4>
+              <div className="flex items-center justify-center">
+                <h4 className="font-semibold text-slate-900 dark:text-slate-100 text-center" style={{fontSize: '10px'}}>Images ({images.filter(m => m.type === 'image').length})</h4>
               </div>
               <ImagePreview 
                 images={images} 
@@ -633,37 +631,81 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
 
         </div>
         <DialogFooter 
-          className="pt-6 mt-2 border-t border-blue-900 dark:border-cyan-400/50 bg-blue-50/50 dark:bg-black/30 backdrop-blur-sm rounded-b-2xl -mx-6 -mb-6 px-6"
+          className="pt-6 mt-2 border-t border-blue-500/20 dark:border-blue-400/20 bg-blue-50/30 dark:bg-blue-950/20 backdrop-blur-sm rounded-b-2xl -mx-6 -mb-6 px-6 relative overflow-hidden transition-all duration-500"
           style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
         >
-          <div className="flex flex-col gap-4 w-full">
-            {/* Action Buttons Row */}
-            <div className="flex justify-between items-center w-full">
-              <div className="flex gap-2 flex-wrap">
+          {/* Main Grid Button - iOS Style */}
+          <div className={`flex justify-center items-center w-full transition-all duration-300 ${showActionsMenu ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <Button
+              variant="ghost"
+              className="h-12 w-12 p-0 bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 border-0 hover:scale-110 active:scale-95 transition-all shadow-lg hover:shadow-xl rounded-xl"
+              onClick={() => setShowActionsMenu(!showActionsMenu)}
+              data-testid="button-actions-menu"
+            >
+              <FolderOpen className="w-6 h-6 text-white" />
+            </Button>
+          </div>
+
+          {/* Sliding Actions Menu - iOS Style */}
+          <div 
+            className={`absolute left-0 right-0 bottom-0 bg-transparent backdrop-blur-none border-t-0 transition-all duration-500 ease-out ${
+              showActionsMenu 
+                ? 'translate-x-0 opacity-100' 
+                : 'translate-x-full opacity-0 pointer-events-none'
+            }`}
+            style={{ 
+              paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+              background: 'transparent'
+            }}
+          >
+            {/* Close Button */}
+            <div className="absolute top-3 right-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900"
+                onClick={() => setShowActionsMenu(false)}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {/* Actions Grid - iOS Style with Horizontal Scroll */}
+            <div className="overflow-x-auto overflow-y-hidden px-6 pt-6 pb-2">
+              <div className="flex gap-4 min-w-max">
               {location !== "QL Kitchen" && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleEditClick}
-                  className="bg-transparent border-transparent hover:bg-transparent hover:border-transparent"
-                  data-testid={`button-edit-${rowId}`}
-                >
-                  <ListChecks className="w-4 h-4 text-green-600" />
-                </Button>
+                <div className="flex items-center justify-center animate-in slide-in-from-right-10 duration-300" style={{animationDelay: '50ms'}}>
+                  <Button
+                    variant="ghost"
+                    className="h-11 w-11 p-0 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/40 dark:to-emerald-950/40 border border-green-200 dark:border-green-800 hover:scale-105 active:scale-95 transition-all shadow-md rounded-lg"
+                    onClick={() => {
+                      handleEditClick();
+                      setShowActionsMenu(false);
+                    }}
+                    data-testid={`button-edit-${rowId}`}
+                  >
+                    <ListChecks className="w-5 h-5 text-green-600 dark:text-green-400" />
+                  </Button>
+                </div>
               )}
+              
               {qrCode && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleQrCodeClick}
-                  disabled={isScanning}
-                  className="bg-transparent border-transparent hover:bg-transparent hover:border-transparent"
-                  data-testid={`button-qrcode-${rowId}`}
-                >
-                  <QrCode className="w-4 h-4 text-purple-600" />
-                  {isScanning && <span className="ml-1 text-xs">Scanning...</span>}
-                </Button>
+                <div className="flex items-center justify-center animate-in slide-in-from-right-10 duration-300" style={{animationDelay: '100ms'}}>
+                  <Button
+                    variant="ghost"
+                    className="h-11 w-11 p-0 bg-gradient-to-br from-purple-50 to-fuchsia-50 dark:from-purple-950/40 dark:to-fuchsia-950/40 border border-purple-200 dark:border-purple-800 hover:scale-105 active:scale-95 transition-all shadow-md rounded-lg disabled:opacity-50"
+                    onClick={() => {
+                      handleQrCodeClick();
+                      setShowActionsMenu(false);
+                    }}
+                    disabled={isScanning}
+                    data-testid={`button-qrcode-${rowId}`}
+                  >
+                    <QrCode className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                  </Button>
+                </div>
               )}
+              
               {(() => {
                 const url = (() => {
                   if (!info) return "";
@@ -674,37 +716,51 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
                 })();
                 
                 return url.trim() ? (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleUrlClick(url)}
-                    className="bg-transparent border-transparent hover:bg-transparent hover:border-transparent"
-                    data-testid={`button-open-url-${rowId}`}
-                  >
-                    <ExternalLink className="w-4 h-4 text-cyan-600" />
-                  </Button>
+                  <div className="flex items-center justify-center animate-in slide-in-from-right-10 duration-300" style={{animationDelay: '150ms'}}>
+                    <Button
+                      variant="ghost"
+                      className="h-11 w-11 p-0 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/40 dark:to-blue-950/40 border border-cyan-200 dark:border-cyan-800 hover:scale-105 active:scale-95 transition-all shadow-md rounded-lg"
+                      onClick={() => {
+                        handleUrlClick(url);
+                        setShowActionsMenu(false);
+                      }}
+                      data-testid={`button-open-url-${rowId}`}
+                    >
+                      <ExternalLink className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+                    </Button>
+                  </div>
                 ) : null;
               })()}
+              
               {latitude && longitude && !isNaN(parseFloat(latitude)) && !isNaN(parseFloat(longitude)) && (
                 <>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleDirectionClick}
-                    className="bg-transparent border-transparent hover:bg-transparent hover:border-transparent"
-                    data-testid={`button-direction-${rowId}`}
-                  >
-                    <SiGooglemaps className="w-4 h-4 text-red-500" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleWazeClick}
-                    className="bg-transparent border-transparent hover:bg-transparent hover:border-transparent"
-                    data-testid={`button-waze-${rowId}`}
-                  >
-                    <SiWaze className="w-4 h-4 text-blue-500" />
-                  </Button>
+                  <div className="flex items-center justify-center animate-in slide-in-from-right-10 duration-300" style={{animationDelay: '200ms'}}>
+                    <Button
+                      variant="ghost"
+                      className="h-11 w-11 p-0 bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/40 dark:to-rose-950/40 border border-red-200 dark:border-red-800 hover:scale-105 active:scale-95 transition-all shadow-md rounded-lg"
+                      onClick={() => {
+                        handleDirectionClick();
+                        setShowActionsMenu(false);
+                      }}
+                      data-testid={`button-direction-${rowId}`}
+                    >
+                      <SiGooglemaps className="w-5 h-5 text-red-500" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex items-center justify-center animate-in slide-in-from-right-10 duration-300" style={{animationDelay: '250ms'}}>
+                    <Button
+                      variant="ghost"
+                      className="h-11 w-11 p-0 bg-gradient-to-br from-sky-50 to-blue-50 dark:from-sky-950/40 dark:to-blue-950/40 border border-sky-200 dark:border-sky-800 hover:scale-105 active:scale-95 transition-all shadow-md rounded-lg"
+                      onClick={() => {
+                        handleWazeClick();
+                        setShowActionsMenu(false);
+                      }}
+                      data-testid={`button-waze-${rowId}`}
+                    >
+                      <SiWaze className="w-5 h-5 text-blue-500" />
+                    </Button>
+                  </div>
                 </>
               )}
               </div>

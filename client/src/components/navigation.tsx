@@ -117,8 +117,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         data-testid="menu-edit-page"
       >
         <div className="flex items-center w-full p-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded bg-indigo-500/10 dark:bg-indigo-500/20 group-hover:bg-indigo-500/20 dark:group-hover:bg-indigo-500/30 transition-all duration-300">
-            <Edit2 className="w-5 h-5 text-indigo-500 dark:text-indigo-400 group-hover:rotate-12 transition-all duration-300" />
+          <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+            <Edit2 className="w-5 h-5 text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 group-hover:rotate-12 transition-all duration-500" />
           </div>
           <div className="ml-3 flex-1">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-300">Vm Route</span>
@@ -137,8 +137,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         <div className="flex items-center w-full p-3">
           {theme === 'dark' ? (
             <>
-              <div className="flex items-center justify-center w-10 h-10 rounded bg-yellow-500/10 dark:bg-yellow-500/20 group-hover:bg-yellow-500/20 dark:group-hover:bg-yellow-500/30 transition-all duration-300">
-                <Sun className="w-5 h-5 text-yellow-500 group-hover:rotate-180 transition-all duration-500" />
+              <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                <Sun className="w-5 h-5 text-yellow-500 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 group-hover:rotate-180 transition-all duration-500" />
               </div>
               <div className="ml-3 flex-1">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-yellow-600 dark:group-hover:text-yellow-300 transition-colors duration-300">Light Mode</span>
@@ -148,8 +148,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </>
           ) : (
             <>
-              <div className="flex items-center justify-center w-10 h-10 rounded bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
-                <Moon className="w-5 h-5 text-blue-500 group-hover:rotate-180 transition-all duration-500" />
+              <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                <Moon className="w-5 h-5 text-blue-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:rotate-180 transition-all duration-500" />
               </div>
               <div className="ml-3 flex-1">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Dark Mode</span>
@@ -168,8 +168,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         data-testid="menu-help-guide"
       >
         <div className="flex items-center w-full p-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
-            <BookOpen className="w-5 h-5 text-green-600 dark:text-green-400 group-hover:rotate-12 transition-all duration-300" />
+          <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+            <BookOpen className="w-5 h-5 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 group-hover:rotate-12 transition-all duration-500" />
           </div>
           <div className="ml-3 flex-1">
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors duration-300">User Guide</span>
@@ -190,8 +190,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             data-testid="menu-add-row"
           >
             <div className="flex items-center w-full p-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
-                <Rows className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:rotate-12 transition-all duration-300" />
+              <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                <Rows className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 group-hover:rotate-12 transition-all duration-500" />
               </div>
               <div className="ml-3 flex-1">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Add Row</span>
@@ -211,8 +211,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               data-testid="menu-add-column"
             >
               <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
-                  <Plus className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:rotate-90 transition-all duration-300" />
+                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                  <Plus className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:text-green-600 dark:group-hover:text-green-300 group-hover:rotate-90 transition-all duration-500" />
                 </div>
                 <div className="ml-3 flex-1">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors duration-300">Add Column</span>
@@ -231,8 +231,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             data-testid="menu-exit-edit"
           >
             <div className="flex items-center w-full p-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded bg-red-500/10 dark:bg-red-500/20 group-hover:bg-red-500/20 dark:group-hover:bg-red-500/30 transition-all duration-300">
-                <DoorOpen className="w-5 h-5 text-red-500 dark:text-red-400 group-hover:rotate-12 transition-all duration-300" />
+              <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                <DoorOpen className="w-5 h-5 text-red-500 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300 group-hover:rotate-12 transition-all duration-500" />
               </div>
               <div className="ml-3 flex-1">
                 <span className="text-sm font-medium text-red-600 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300 transition-colors duration-300">Exit Edit Mode</span>
@@ -249,8 +249,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
           data-testid="menu-enter-edit"
         >
           <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded bg-red-500/10 dark:bg-red-500/20 group-hover:bg-red-500/20 dark:group-hover:bg-red-500/30 transition-all duration-300">
-              <Settings className="w-5 h-5 text-red-900 dark:text-red-400 group-hover:rotate-90 transition-all duration-300" />
+            <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+              <Settings className="w-5 h-5 text-red-900 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 group-hover:rotate-90 transition-all duration-500" />
             </div>
             <div className="ml-3 flex-1">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-300 transition-colors duration-300">Edit Mode</span>
@@ -265,7 +265,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
 
   const renderVmRouteSubmenu = () => (
     <div className="h-full">
-      {/* Back to Menu Button */}
+      {/* Back Button */}
       <div className="px-3 py-3 border-b border-white/10 dark:border-white/5 bg-gradient-to-r from-white/5 to-transparent dark:from-white/3 dark:to-transparent">
         <Button
           variant="ghost"
@@ -274,7 +274,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
           onClick={handleBackToMenu}
         >
           <ChevronLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
-          <span className="text-sm font-medium">Back to Menu</span>
+          <span className="text-sm font-medium">Back</span>
         </Button>
       </div>
       
@@ -295,8 +295,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               data-testid="submenu-bulk-color"
             >
               <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded bg-purple-500/10 dark:bg-purple-500/20 group-hover:bg-purple-500/20 dark:group-hover:bg-purple-500/30 transition-all duration-300">
-                  <Palette className="w-5 h-5 text-purple-500 dark:text-purple-400 group-hover:rotate-12 transition-all duration-300" />
+                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                  <Palette className="w-5 h-5 text-purple-500 dark:text-purple-400 group-hover:text-purple-600 dark:group-hover:text-purple-300 group-hover:rotate-12 transition-all duration-500" />
                 </div>
                 <div className="ml-3 flex-1">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300">Bulk Color Marker</span>
@@ -320,8 +320,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               data-testid="submenu-share-example"
             >
               <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
-                  <Link2 className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:rotate-12 transition-all duration-300" />
+                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                  <Receipt className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 group-hover:rotate-12 transition-all duration-500" />
                 </div>
                 <div className="ml-3 flex-1">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Share Link Page</span>
@@ -345,8 +345,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               data-testid="submenu-custom-example"
             >
               <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
-                  <Table2 className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:rotate-12 transition-all duration-300" />
+                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                  <Sparkles className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:text-green-600 dark:group-hover:text-green-300 group-hover:rotate-12 transition-all duration-500" />
                 </div>
                 <div className="ml-3 flex-1">
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors duration-300">Custom Page</span>
@@ -369,8 +369,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
           data-testid="submenu-custom-list"
         >
           <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded bg-purple-500/10 dark:bg-purple-500/20 group-hover:bg-purple-500/20 dark:group-hover:bg-purple-500/30 transition-all duration-300">
-              <ListChecks className="w-5 h-5 text-purple-500 dark:text-purple-400 group-hover:rotate-12 transition-all duration-300" />
+            <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+              <Layout className="w-5 h-5 text-purple-500 dark:text-purple-400 group-hover:text-purple-600 dark:group-hover:text-purple-300 group-hover:rotate-12 transition-all duration-500" />
             </div>
             <div className="ml-3 flex-1">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300">All Custom Tables</span>
@@ -393,8 +393,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
           data-testid="submenu-saved-links"
         >
           <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded bg-amber-500/10 dark:bg-amber-500/20 group-hover:bg-amber-500/20 dark:group-hover:bg-amber-500/30 transition-all duration-300">
-              <Bookmark className="w-5 h-5 text-amber-500 dark:text-amber-400 group-hover:rotate-12 transition-all duration-300" />
+            <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+              <Bookmark className="w-5 h-5 text-amber-500 dark:text-amber-400 group-hover:text-amber-600 dark:group-hover:text-amber-300 group-hover:rotate-12 transition-all duration-500" />
             </div>
             <div className="ml-3 flex-1">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors duration-300">All Saved Links</span>

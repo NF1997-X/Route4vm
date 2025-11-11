@@ -217,7 +217,7 @@ export function DataTable({
   totalRowsCount = 0,
 }: DataTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(16);
+  const [pageSize, setPageSize] = useState(10);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [selectedRowForDelete, setSelectedRowForDelete] = useState<
     string | null
@@ -747,7 +747,7 @@ export function DataTable({
 
   return (
     <div
-      className="glass-table rounded border-none shadow-2xl table-container my-10"
+      className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-2xl table-container my-10 overflow-hidden"
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
@@ -768,7 +768,7 @@ export function DataTable({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
-                  <SelectItem value="16" className="font-semibold">16</SelectItem>
+                  <SelectItem value="10" className="font-semibold">10</SelectItem>
                   <SelectItem value="30" className="font-semibold">30</SelectItem>
                   <SelectItem value="50" className="font-semibold">50</SelectItem>
                   <SelectItem value="100" className="font-semibold">100</SelectItem>
@@ -1312,9 +1312,11 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="p-4 align-middle [&:has([role=checkbox])]:pr-0 px-3 py-3 table-cell-10px text-center text-[12px] bg-transparent text-foreground whitespace-nowrap font-normal table-zoom-in"
+                                  className="p-1 align-middle px-2 table-cell-10px text-center text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal table-zoom-in"
                                   style={{
                                     minWidth: "100px",
+                                    height: "40px",
+                                    maxHeight: "40px",
                                     ...(column.dataKey === "location" && {
                                       minWidth: `${120 + 15}px`,
                                       fontSize: "10px",
@@ -1706,11 +1708,11 @@ export function DataTable({
               )}
             </Droppable>
             <tfoot>
-              <TableRow>
+              <TableRow className="h-12">
                 {visibleColumns.map((column, index) => (
                   <TableCell
                     key={column.id}
-                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-border sticky bottom-0 bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap"
+                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-border sticky bottom-0 bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap h-12"
                     style={{
                       textAlign: "center",
                       fontSize: "10px",
@@ -1747,7 +1749,7 @@ export function DataTable({
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-border sticky bottom-0 bg-white dark:bg-slate-900 shadow-sm text-foreground whitespace-nowrap" style={{ textAlign: "center", fontSize: '10px' }}>
+                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-border sticky bottom-0 bg-white dark:bg-slate-900 shadow-sm text-foreground whitespace-nowrap h-12" style={{ textAlign: "center", fontSize: '10px' }}>
                   <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                 </TableCell>
               </TableRow>

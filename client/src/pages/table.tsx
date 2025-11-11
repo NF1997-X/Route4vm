@@ -13,6 +13,7 @@ import { SavedLinksModal } from "@/components/saved-links-modal";
 import { Tutorial } from "@/components/tutorial";
 import { Footer } from "@/components/footer";
 import { BulkColorModal } from "@/components/bulk-color-modal";
+import { ColorLegendPanel } from "@/components/color-legend-panel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -57,7 +58,7 @@ export default function TablePage() {
   const [editModeLoading, setEditModeLoading] = useState(false);
   const [pageDescription, setPageDescription] = useState("- Interactive table with Drag & Drop , Calculations , and Image Gallery\n\n- This Routes for Driver Vending Mechine , FamilyMart only");
   const [pageTitle, setPageTitle] = useState("Content");
-  const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
+  const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
   const [optimizationModalOpen, setOptimizationModalOpen] = useState(false);
   const [showSaveConfirmation, setShowSaveConfirmation] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
@@ -75,7 +76,6 @@ export default function TablePage() {
   const [showDeletePageConfirmation, setShowDeletePageConfirmation] = useState(false);
   const [pageToDelete, setPageToDelete] = useState<Page | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
   const [bulkColorModalOpen, setBulkColorModalOpen] = useState(false);
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -807,28 +807,6 @@ export default function TablePage() {
     }
   }, []);
 
-  // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Format date/time with day of week
-  const formatDateTime = (date: Date) => {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    };
-    return date.toLocaleString('en-US', options);
-  };
-
   // Initialize carousel to first page (index 0)
   useEffect(() => {
     if (!carouselApi) return;
@@ -1265,13 +1243,6 @@ export default function TablePage() {
                                 );
                               })}
                             </dl>
-                            
-                            {/* Date and Time Display - Below Content */}
-                            <div className="mt-3 pt-2 border-t border-blue-200/30 dark:border-blue-500/10 flex justify-end">
-                              <div className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">
-                                {formatDateTime(currentTime)}
-                              </div>
-                            </div>
                         </div>
                       </div>
                     </CarouselItem>
@@ -1536,6 +1507,11 @@ export default function TablePage() {
         filteredRowsCount={filteredRows.length}
         totalRowsCount={rows.length}
       />
+      </div>
+
+      {/* Color Legend Panel */}
+      <div className="mt-6 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-700 flex justify-center">
+        <ColorLegendPanel />
       </div>
 
       {/* Column Customization Modal */}
