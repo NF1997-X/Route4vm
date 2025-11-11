@@ -26,14 +26,29 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   useEffect(() => {
     if (isEditing) {
       const timeout = setTimeout(() => {
-        if (shouldUseTextarea() && textareaRef.current) {
-          textareaRef.current.focus();
-          textareaRef.current.select();
-        } else if (inputRef.current) {
-          inputRef.current.focus();
-          inputRef.current.select();
+        try {
+          if (shouldUseTextarea() && textareaRef.current) {
+            textareaRef.current.focus();
+            textareaRef.current.select();
+          } else if (inputRef.current) {
+            inputRef.current.focus();
+            inputRef.current.select();
+          }
+        } catch (error) {
+          // Fallback focus attempt
+          console.warn('Focus attempt failed, retrying...', error);
+          setTimeout(() => {
+            try {
+              const element = shouldUseTextarea() ? textareaRef.current : inputRef.current;
+              if (element) {
+                element.focus();
+              }
+            } catch (retryError) {
+              console.warn('Retry focus failed:', retryError);
+            }
+          }, 50);
         }
-      }, 100); // Increased delay for better reliability
+      }, 150); // Increased delay for better reliability
       
       return () => clearTimeout(timeout);
     }
@@ -65,7 +80,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
       document.addEventListener('keydown', handleEscapeKey, true);
       return () => document.removeEventListener('keydown', handleEscapeKey, true);
     }
-  }, [isEditing]);
+  }, [isEditing, handleCancel]); // Fixed: Added missing dependency
 
   // Check if should use popup textarea (for longer text content)
   const shouldUseTextarea = () => {
@@ -79,17 +94,29 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     }
     return false;
   };  const handleSave = () => {
-    let processedValue = editValue;
-    
-    if (type === 'number') {
-      processedValue = parseInt(editValue) || 0;
-    } else if (type === 'currency') {
-      processedValue = parseFloat(editValue.toString().replace(/[^0-9.]/g, '')) || 0;
-      processedValue = processedValue.toFixed(2);
+    try {
+      let processedValue = editValue;
+      
+      // Handle empty values
+      if (editValue === null || editValue === undefined || editValue === '') {
+        if (type === 'number' || type === 'currency') {
+          processedValue = 0;
+        } else {
+          processedValue = '';
+        }
+      } else if (type === 'number') {
+        processedValue = parseInt(editValue) || 0;
+      } else if (type === 'currency') {
+        processedValue = parseFloat(editValue.toString().replace(/[^0-9.]/g, '')) || 0;
+        processedValue = processedValue.toFixed(2);
+      }
+      
+      onSave(processedValue);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Save failed:', error);
+      // Don't close editing mode if save fails
     }
-    
-    onSave(processedValue);
-    setIsEditing(false);
   };
 
   const handleCancel = () => {
@@ -178,7 +205,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
           
           {/* Fixed position popup - professional modal design */}
           <div 
-            className="fixed inset-0 z-[9998] bg-black/70 backdrop-blur-md flex items-center justify-center p-4"
+            className="fixed inset-0 z-[99999] bg-black/70 backdrop-blur-md flex items-center justify-center p-4"
             onClick={handleBackdropClick}
             style={{ 
               position: 'fixed',
@@ -186,7 +213,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
               left: 0,
               right: 0,
               bottom: 0,
-              zIndex: 9998,
+              zIndex: 99999,
               overflowY: 'auto',
               WebkitOverflowScrolling: 'touch'
             }}
@@ -194,7 +221,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             <div className="glass-card p-6 w-full max-w-md mx-auto rounded-xl shadow-2xl border border-white/20 animate-in fade-in-0 zoom-in-95 duration-300 max-h-[80vh] overflow-hidden flex flex-col"
                  style={{ 
                    position: 'relative',
-                   zIndex: 9999,
+                   zIndex: 100000,
                    minWidth: '280px'
                  }}
                  onClick={(e) => e.stopPropagation()}
