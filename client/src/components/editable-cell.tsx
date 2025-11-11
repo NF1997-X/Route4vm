@@ -17,11 +17,11 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     setEditValue(value);
   }, [value]);
 
-  // If editing a delivery cell and the stored value is empty, default to 'None'
+  // If editing a delivery cell and the stored value is empty, default to 'Skip'
   useEffect(() => {
     if (isEditing && (dataKey === 'delivery' || type === 'select')) {
       if (value === null || value === undefined || value === '') {
-        setEditValue('None');
+        setEditValue('Skip');
       }
     }
   }, [isEditing, dataKey, type, value]);
@@ -29,7 +29,10 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   useEffect(() => {
     if (isEditing && inputRef.current) {
       inputRef.current.focus();
-      inputRef.current.select();
+      // Only call select() if it's an input element, not a select dropdown
+      if (inputRef.current.select && typeof inputRef.current.select === 'function') {
+        inputRef.current.select();
+      }
     }
   }, [isEditing]);
 
@@ -89,12 +92,12 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   if (isEditing) {
     // Special handling for delivery column with select dropdown
     if (dataKey === 'delivery' || type === 'select') {
-      const deliveryOptions = options || ['None', 'Daily', 'Weekday', 'Alt 1', 'Alt 2'];
+      const deliveryOptions = options || ['Skip', 'Every Day', 'Weekdays', 'Mon-Wed-Fri', 'Tue-Thu-Sat'];
 
       return (
         <select
           ref={inputRef as any}
-          value={editValue ?? 'None'}
+          value={editValue ?? 'Skip'}
           onChange={(e) => {
             setEditValue(e.target.value);
             handleSave();
