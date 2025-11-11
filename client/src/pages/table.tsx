@@ -12,6 +12,7 @@ import { ShareDialog } from "@/components/share-dialog";
 import { SavedLinksModal } from "@/components/saved-links-modal";
 import { Tutorial } from "@/components/tutorial";
 import { Footer } from "@/components/footer";
+import { BulkColorModal } from "@/components/bulk-color-modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -75,8 +76,7 @@ export default function TablePage() {
   const [pageToDelete, setPageToDelete] = useState<Page | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [bulkColorRoute, setBulkColorRoute] = useState("");
-  const [bulkColor, setBulkColor] = useState("#3b82f6");
+  const [bulkColorModalOpen, setBulkColorModalOpen] = useState(false);
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
@@ -96,50 +96,6 @@ export default function TablePage() {
     createColumn,
     deleteColumn,
   } = useTableData();
-
-  // Bulk update marker color by route mutation
-  const bulkUpdateColorMutation = useMutation({
-    mutationFn: async (data: { route: string; color: string }) => {
-      const response = await apiRequest("PUT", `/api/table-rows/bulk-update-color`, data);
-      if (!response.ok) {
-        throw new Error("Failed to update marker colors");
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
-      setBulkColorRoute("");
-      setBulkColor("#3b82f6");
-      toast({
-        title: "Marker colors updated!",
-        description: "All locations in the selected route have been updated.",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to update marker colors. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Handle bulk color update
-  const handleBulkColorUpdate = () => {
-    if (!bulkColorRoute) {
-      toast({
-        title: "Select a route",
-        description: "Please select a route to update marker colors.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    bulkUpdateColorMutation.mutate({
-      route: bulkColorRoute,
-      color: bulkColor,
-    });
-  };
 
   // Fetch pages
   const { data: pages = [], isLoading: pagesLoading } = useQuery<Page[]>({
@@ -1124,6 +1080,7 @@ export default function TablePage() {
           onSaveLayout={() => {}}
           onSavedLinks={() => setSavedLinksModalOpen(true)}
           onShowTutorial={() => setShowTutorial(true)}
+          onBulkColorModal={() => setBulkColorModalOpen(true)}
           onAddColumn={async (columnData) => {
             try {
               const newColumn = await createColumn.mutateAsync(columnData);
@@ -1537,78 +1494,6 @@ export default function TablePage() {
         })()
       )}
 
-      {/* Bulk Edit Marker Color - Only in Edit Mode */}
-      {editMode && (
-        <div className="animate-in fade-in duration-300 mb-6">
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-2 border-purple-300 dark:border-purple-700 shadow-xl rounded-2xl overflow-hidden">
-            <div className="p-4">
-              <h2 className="text-sm font-bold mb-3 bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent flex items-center gap-2">
-                🎨 Bulk Edit Marker Color by Route
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
-                <div className="md:col-span-6">
-                  <label className="text-xs font-semibold mb-1 block text-gray-800 dark:text-gray-200">Select Route</label>
-                  <select
-                    value={bulkColorRoute}
-                    onChange={(e) => setBulkColorRoute(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white dark:bg-black/40 border-transparent rounded-xl font-medium shadow-sm transition-colors"
-                  >
-                    <option value="">-- Select Route --</option>
-                    {routeOptions.map((route) => (
-                      <option key={route} value={route}>
-                        {route}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="text-xs font-semibold mb-1 block text-gray-800 dark:text-gray-200 flex items-center gap-2">
-                    <span>New Color</span>
-                    {bulkColorRoute && (() => {
-                      const currentRow = rows.find(r => r.route === bulkColorRoute);
-                      const currentColor = currentRow?.markerColor || '#3b82f6';
-                      return (
-                        <span className="flex items-center gap-1 text-[10px] font-normal text-gray-600 dark:text-gray-400">
-                          (Current: 
-                          <span 
-                            className="inline-block w-3 h-3 rounded-sm border border-gray-400 dark:border-gray-500"
-                            style={{ backgroundColor: currentColor }}
-                            title={currentColor}
-                          />)
-                        </span>
-                      );
-                    })()}
-                  </label>
-                  <input
-                    type="color"
-                    value={bulkColor}
-                    onChange={(e) => setBulkColor(e.target.value)}
-                    className="h-[38px] w-full rounded-xl border-2 border-purple-300 dark:border-purple-700 cursor-pointer shadow-sm hover:scale-105 transition-transform"
-                  />
-                </div>
-                <div className="md:col-span-4">
-                  <Button
-                    onClick={handleBulkColorUpdate}
-                    disabled={!bulkColorRoute || bulkUpdateColorMutation.isPending}
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold text-sm h-[38px] px-6 shadow-lg hover:shadow-xl transition-all"
-                  >
-                    {bulkUpdateColorMutation.isPending ? "Updating..." : "🎨 Update Color"}
-                  </Button>
-                </div>
-              </div>
-              <div className="mt-3 px-1 py-2 bg-purple-100/50 dark:bg-purple-900/20 rounded-lg">
-                <p className="text-xs text-gray-700 dark:text-gray-300 font-medium">
-                  {bulkColorRoute 
-                    ? `✓ Will update marker colors for ALL locations in route "${bulkColorRoute}"`
-                    : "💡 Select a route above to bulk update marker colors for all locations in that route"
-                  }
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Main Table */}
       <div ref={tableRef} className="animate-in fade-in slide-in-from-bottom-3 duration-700 delay-500">
         <DataTable
@@ -1904,6 +1789,13 @@ export default function TablePage() {
 
         </div>
       </main>
+
+      {/* Bulk Color Modal */}
+      <BulkColorModal
+        isOpen={bulkColorModalOpen}
+        onClose={() => setBulkColorModalOpen(false)}
+        rows={rows}
+      />
       
       {/* Footer */}
       <Footer editMode={editMode} />

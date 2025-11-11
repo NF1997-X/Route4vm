@@ -133,7 +133,7 @@ function MobileTooltip({ content, children, showBelow = false }: MobileTooltipPr
       </div>
       
       {isVisible && (
-        <div className={`absolute left-1/2 transform -translate-x-1/2 z-50 ${showBelow ? 'top-full mt-1' : 'bottom-full mb-1'}`}>
+        <div className={`absolute left-1/2 transform -translate-x-1/2 z-[1] ${showBelow ? 'top-full mt-1' : 'bottom-full mb-1'}`}>
           <div className="px-2 py-1 text-xs bg-gray-900 text-white rounded shadow-lg whitespace-nowrap">
             {content}
           </div>
@@ -1108,15 +1108,38 @@ export function DataTable({
                 </button>
               </div>
             )}
-            {filterValue.map(route => (
-              <div key={route} className="flex items-center gap-0.5 px-2 py-0.5 bg-transparent border border-transparent rounded-full text-gray-400 text-xs">
-                <Filter className="w-2.5 h-2.5" />
-                <span>{route}</span>
-                <button onClick={() => toggleRouteFilter(route)} className="ml-0.5 p-0.5 hover:text-red-600 flex items-center justify-center rounded-full hover:bg-red-500/10" aria-label={`Remove route filter: ${route}`}>
-                  <X className="w-2.5 h-2.5 text-red-500" />
-                </button>
-              </div>
-            ))}
+            {filterValue.map(route => {
+              // Get icon for the route with improved pattern matching
+              const getRouteIcon = (routeCode: string) => {
+                const upperRoute = routeCode.toUpperCase();
+                
+                // Check for Selangor patterns (SL, SEL, SELANGOR)
+                if (upperRoute.includes('SL') || upperRoute.includes('SEL') || upperRoute.includes('SELANGOR')) {
+                  return '/icon/selangor-flag.png';
+                } 
+                // Check for Kuala Lumpur patterns (KL, KUL, KUALA LUMPUR)
+                else if (upperRoute.includes('KL') || upperRoute.includes('KUL') || upperRoute.includes('KUALA')) {
+                  return '/icon/kl-flag.png';
+                }
+                return null;
+              };
+
+              const iconSrc = getRouteIcon(route);
+
+              return (
+                <div key={route} className="flex items-center gap-0.5 px-2 py-0.5 bg-transparent border border-transparent rounded-full text-gray-400 text-xs">
+                  {iconSrc ? (
+                    <img src={iconSrc} alt={`${route} flag`} className="w-4 h-3 object-cover mr-1" />
+                  ) : (
+                    <Filter className="w-2.5 h-2.5" />
+                  )}
+                  <span>{route}</span>
+                  <button onClick={() => toggleRouteFilter(route)} className="ml-0.5 p-0.5 hover:text-red-600 flex items-center justify-center rounded-full hover:bg-red-500/10" aria-label={`Remove route filter: ${route}`}>
+                    <X className="w-2.5 h-2.5 text-red-500" />
+                  </button>
+                </div>
+              );
+            })}
             {deliveryFilterValue.map(delivery => (
               <div key={delivery} className="flex items-center gap-0.5 px-2 py-0.5 bg-transparent border border-transparent rounded-full text-gray-400 text-xs">
                 <Filter className="w-2.5 h-2.5" />

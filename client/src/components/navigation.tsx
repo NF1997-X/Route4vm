@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Edit2, Table2, Link2, Sparkles, ArrowLeft, ChevronLeft } from "lucide-react";
+import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Edit2, Table2, Link2, Sparkles, ArrowLeft, ChevronLeft, Palette } from "lucide-react";
 import { useLocation } from "wouter";
 import { useTheme } from "./theme-provider";
 import { AddColumnModal } from "./add-column-modal";
@@ -18,10 +18,11 @@ interface NavigationProps {
   onSaveLayout?: () => void;
   onSavedLinks?: () => void;
   onShowTutorial?: () => void;
+  onBulkColorModal?: () => void;
   isAuthenticated?: boolean;
 }
 
-export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, isAuthenticated }: NavigationProps) {
+export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, onBulkColorModal, isAuthenticated }: NavigationProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [, navigate] = useLocation();
   const { theme, toggleTheme } = useTheme();
@@ -112,7 +113,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       {/* Vm Route Menu Item */}
       <div 
         onClick={() => handleSubmenuOpen('vm-route')}
-        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-indigo-200/30 dark:hover:border-indigo-800/30"
+        className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
         data-testid="menu-edit-page"
       >
         <div className="flex items-center w-full p-3">
@@ -130,7 +131,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       {/* Theme Toggle */}
       <div 
         onClick={() => handleNavigationClick(toggleTheme)}
-        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-yellow-200/30 dark:hover:border-blue-800/30"
+        className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
         data-testid="menu-toggle-theme"
       >
         <div className="flex items-center w-full p-3">
@@ -163,7 +164,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       {/* Help Guide */}
       <div 
         onClick={() => handleNavigationClick(() => navigate('/help'))}
-        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
+        className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
         data-testid="menu-help-guide"
       >
         <div className="flex items-center w-full p-3">
@@ -185,7 +186,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         <>
           <div 
             onClick={() => handleNavigationClick(() => onAddRow && onAddRow())}
-            className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-blue-200/30 dark:hover:border-blue-800/30"
+            className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
             data-testid="menu-add-row"
           >
             <div className="flex items-center w-full p-3">
@@ -206,7 +207,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 const addColumnButton = document.querySelector('[data-testid="button-add-column"]') as HTMLButtonElement;
                 if (addColumnButton) addColumnButton.click();
               })}
-              className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
+              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
               data-testid="menu-add-column"
             >
               <div className="flex items-center w-full p-3">
@@ -226,7 +227,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
 
           <div 
             onClick={() => handleNavigationClick(() => onEditModeRequest && onEditModeRequest())}
-            className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 group hover:bg-red-500/5 dark:hover:bg-red-500/10 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-red-200/30 dark:hover:border-red-800/30"
+            className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
             data-testid="menu-exit-edit"
           >
             <div className="flex items-center w-full p-3">
@@ -244,7 +245,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       ) : (
         <div 
           onClick={() => handleNavigationClick(() => onEditModeRequest && onEditModeRequest())}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-red-200/30 dark:hover:border-red-800/30"
+          className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
           data-testid="menu-enter-edit"
         >
           <div className="flex items-center w-full p-3">
@@ -269,7 +270,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         <Button
           variant="ghost"
           size="sm"
-          className="w-full justify-start text-gray-600 dark:text-gray-400 hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 group rounded backdrop-blur"
+          className="w-full justify-start text-gray-600 dark:text-gray-400 hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 group rounded"
           onClick={handleBackToMenu}
         >
           <ChevronLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
@@ -284,13 +285,38 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('Bulk Color Modal clicked');
+                handleSubmenuNavigation(() => {
+                  console.log('Opening bulk color modal');
+                  onBulkColorModal && onBulkColorModal();
+                });
+              }}
+              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+              data-testid="submenu-bulk-color"
+            >
+              <div className="flex items-center w-full p-3">
+                <div className="flex items-center justify-center w-10 h-10 rounded bg-purple-500/10 dark:bg-purple-500/20 group-hover:bg-purple-500/20 dark:group-hover:bg-purple-500/30 transition-all duration-300">
+                  <Palette className="w-5 h-5 text-purple-500 dark:text-purple-400 group-hover:rotate-12 transition-all duration-300" />
+                </div>
+                <div className="ml-3 flex-1">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300">Bulk Color Marker</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Edit marker colors by route</p>
+                </div>
+                <div className="w-3 h-3 rounded-full bg-purple-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
+              </div>
+            </div>
+
+            <div 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 console.log('Share Link clicked');
                 handleSubmenuNavigation(() => {
                   console.log('Navigating to share');
                   navigate('/share/tzqe9a');
                 });
               }}
-              className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-blue-200/30 dark:hover:border-blue-800/30"
+              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
               data-testid="submenu-share-example"
             >
               <div className="flex items-center w-full p-3">
@@ -315,7 +341,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                   navigate('/custom/8m2v27');
                 });
               }}
-              className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
+              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
               data-testid="submenu-custom-example"
             >
               <div className="flex items-center w-full p-3">
@@ -339,7 +365,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             e.stopPropagation();
             handleSubmenuNavigation(() => navigate('/custom-tables'));
           }}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-purple-200/30 dark:hover:border-purple-800/30"
+          className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
           data-testid="submenu-custom-list"
         >
           <div className="flex items-center w-full p-3">
@@ -363,7 +389,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               onSavedLinks && onSavedLinks();
             });
           }}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-amber-200/30 dark:hover:border-amber-800/30"
+          className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
           data-testid="submenu-saved-links"
         >
           <div className="flex items-center w-full p-3">
@@ -422,7 +448,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             
             {/* Custom Dropdown Content */}
             {isMenuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-96 max-h-[80vh] bg-white/95 dark:bg-black/95 backdrop-blur-3xl border border-white/20 dark:border-white/10 shadow-[0_32px_64px_0_rgba(0,0,0,0.35)] rounded-3xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden z-50">
+              <div className="absolute right-0 top-full mt-2 w-80 max-h-[80vh] bg-white/95 dark:bg-black/95 backdrop-blur-3xl border border-white/20 dark:border-white/10 shadow-[0_32px_64px_0_rgba(0,0,0,0.35)] rounded-3xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden z-50">
                 {/* Glass Background Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/2 dark:to-transparent pointer-events-none rounded-3xl"></div>
                 

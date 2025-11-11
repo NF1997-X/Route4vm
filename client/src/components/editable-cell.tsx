@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { Check, X } from "lucide-react";
 
 interface EditableCellProps {
@@ -16,27 +17,52 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
   const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setEditValue(value);
   }, [value]);
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
+    if (isEditing) {
+      const timeout = setTimeout(() => {
+        if (shouldUseTextarea() && textareaRef.current) {
+          textareaRef.current.focus();
+          textareaRef.current.select();
+        } else if (inputRef.current) {
+          inputRef.current.focus();
+          inputRef.current.select();
+        }
+      }, 50);
+      
+      return () => clearTimeout(timeout);
     }
   }, [isEditing]);
 
-  // Check if should use popup input (for longer text content)
+  useEffect(() => {
+    if (isEditing) {
+      // Prevent body scroll when any editing is active
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      
+      return () => {
+        document.body.style.overflow = originalStyle;
+      };
+    }
+  }, [isEditing]);
+
+  // Check if should use popup textarea (for longer text content)
   const shouldUseTextarea = () => {
-    if (type === 'text' && (dataKey === 'info' || dataKey === 'location' || dataKey === 'delivery' || (typeof value === 'string' && value.length > 30))) {
+    if (type === 'text' && (
+      dataKey === 'info' || 
+      dataKey === 'location' || 
+      dataKey === 'delivery' || 
+      (typeof value === 'string' && value.length > 50)
+    )) {
       return true;
     }
     return false;
-  };
-
-  const handleSave = () => {
+  };  const handleSave = () => {
     let processedValue = editValue;
     
     if (type === 'number') {
@@ -121,8 +147,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
       );
     }
 
-    // For longer text content, show just the editing indicator in the cell
-    // and render the actual popup outside the table structure
+    // For longer text content, show popup
     if (shouldUseTextarea()) {
       return (
         <>
@@ -131,20 +156,52 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             Editing...
           </div>
           
-          {/* Fixed position popup - completely outside table flow */}
+          {/* Fixed position popup - locked to viewport, ignores scroll */}
           <div 
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-sm"
             onClick={handleBackdropClick}
+            style={{ 
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 9999
+            }}
           >
-            <div className="glass-card p-4 w-80 rounded shadow-2xl border border-white/20 animate-in fade-in-0 zoom-in-95 duration-200">
+            <div className="glass-card p-4 w-80 rounded shadow-2xl border border-white/20 animate-in fade-in-0 zoom-in-95 duration-200"
+                 style={{ 
+                   position: 'fixed',
+                   top: '50vh',
+                   left: '50vw',
+                   transform: 'translate(-50%, -50%)',
+                   zIndex: 10000,
+                   margin: 0
+                 }}
+                 onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mb-3">
+                <h3 className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+                  Editing {dataKey === 'info' ? 'Description' : dataKey === 'location' ? 'Location' : 'Field'}
+                </h3>
+              </div>
+              
               <Input
                 ref={inputRef}
                 value={editValue || ''}
                 onChange={(e) => setEditValue(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={(e) => {
+                  if (e.key === 'Escape') {
+                    setIsEditing(false);
+                    setEditValue(value);
+                  } else if (e.key === 'Enter') {
+                    handleSave();
+                  }
+                }}
                 placeholder={getPlaceholder()}
-                className="glass-input border-none text-sm mb-3 w-full ring-2 ring-blue-500/20 focus:ring-blue-500/40"
+                className="glass-input w-full text-sm mb-4 ring-2 ring-blue-500/30 focus:ring-blue-500/50 border-white/20 rounded-lg"
                 data-testid="input-editable-cell-popup"
+                autoFocus
               />
               <div className="flex gap-2 justify-end">
                 <Button
@@ -167,13 +224,45 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
                   Save
                 </Button>
               </div>
+              
+              <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 text-center">
+                Press <kbd className="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-xs">Enter</kbd> to save, <kbd className="px-1 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-xs">Esc</kbd> to cancel
+              </div>
             </div>
           </div>
         </>
       );
     }
-    
+
+    // Inline editing for normal text
     return (
+      <div className="flex items-center gap-1 w-full">
+        <Input
+          ref={inputRef}
+          value={editValue || ''}
+          onChange={(e) => setEditValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={getPlaceholder()}
+          className="glass-input flex-1 text-xs h-6 px-2 py-1 border border-blue-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          autoFocus
+        />
+        <Button
+          size="sm"
+          onClick={handleSave}
+          className="h-6 w-6 p-0 bg-green-500 hover:bg-green-600 text-white border-none"
+        >
+          <Check className="w-3 h-3" />
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={handleCancel}
+          className="h-6 w-6 p-0 bg-red-500 hover:bg-red-600 text-white border-none"
+        >
+          <X className="w-3 h-3" />
+        </Button>
+      </div>
+    );    return (
       <Input
         ref={inputRef}
         type={type === 'number' || type === 'currency' ? 'number' : 'text'}
