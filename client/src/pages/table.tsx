@@ -1149,7 +1149,7 @@ export default function TablePage() {
         />
       </div>
       <main className="pt-[72px] animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
-        <div className="container mx-auto px-4 py-8 max-w-3xl" data-testid="table-page">
+        <div className="container mx-auto px-4 py-8" data-testid="table-page">
           {/* Header Section - Carousel with Pages */}
           <div className="mb-8 relative animate-in fade-in slide-in-from-top-2 duration-600 delay-300">
             {sortedPages.length > 0 ? (

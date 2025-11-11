@@ -278,57 +278,61 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       </div>
       
       <div className="p-3 space-y-2 max-h-[60vh] overflow-y-auto">
-        <div 
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Share Link clicked');
-            handleSubmenuNavigation(() => {
-              console.log('Navigating to share');
-              navigate('/share/tzqe9a');
-            });
-          }}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-blue-200/30 dark:hover:border-blue-800/30"
-          data-testid="submenu-share-example"
-        >
-          <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
-              <Link2 className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:rotate-12 transition-all duration-300" />
+        {editMode && (
+          <>
+            <div 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Share Link clicked');
+                handleSubmenuNavigation(() => {
+                  console.log('Navigating to share');
+                  navigate('/share/tzqe9a');
+                });
+              }}
+              className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-blue-200/30 dark:hover:border-blue-800/30"
+              data-testid="submenu-share-example"
+            >
+              <div className="flex items-center w-full p-3">
+                <div className="flex items-center justify-center w-10 h-10 rounded bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
+                  <Link2 className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:rotate-12 transition-all duration-300" />
+                </div>
+                <div className="ml-3 flex-1">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Share Link Page</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Example page</p>
+                </div>
+                <div className="w-3 h-3 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
+              </div>
             </div>
-            <div className="ml-3 flex-1">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Share Link Page</span>
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Example page</p>
+            
+            <div 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Custom Page clicked');
+                handleSubmenuNavigation(() => {
+                  console.log('Navigating to custom');
+                  navigate('/custom/8m2v27');
+                });
+              }}
+              className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
+              data-testid="submenu-custom-example"
+            >
+              <div className="flex items-center w-full p-3">
+                <div className="flex items-center justify-center w-10 h-10 rounded bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
+                  <Table2 className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:rotate-12 transition-all duration-300" />
+                </div>
+                <div className="ml-3 flex-1">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors duration-300">Custom Page</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Example page</p>
+                </div>
+                <div className="w-3 h-3 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
+              </div>
             </div>
-            <div className="w-3 h-3 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
-          </div>
-        </div>
-        
-        <div 
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Custom Page clicked');
-            handleSubmenuNavigation(() => {
-              console.log('Navigating to custom');
-              navigate('/custom/8m2v27');
-            });
-          }}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
-          data-testid="submenu-custom-example"
-        >
-          <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
-              <Table2 className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:rotate-12 transition-all duration-300" />
-            </div>
-            <div className="ml-3 flex-1">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors duration-300">Custom Page</span>
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Example page</p>
-            </div>
-            <div className="w-3 h-3 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
-          </div>
-        </div>
 
-        <div className="my-4 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10"></div>
+            <div className="my-4 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10"></div>
+          </>
+        )}
         
         <div 
           onClick={(e) => {
@@ -378,7 +382,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   );
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 w-full glass border-b border-glass-border shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-gradient-to-r from-blue-500/10 via-blue-600/10 to-blue-700/10 dark:from-blue-500/20 dark:via-blue-600/20 dark:to-blue-700/20 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg shadow-blue-500/20">
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between text-[12px]">
           {/* Logo/Brand */}

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { ColumnHeader } from "./column-header";
 import { EditableCell } from "./editable-cell";
-import { ImagePreview } from "./image-preview";
+import { ImagePreview } from "./image-lightbox";
 import { InfoModal } from "./info-modal";
 import { SlidingDescription } from "./sliding-description";
 import { Button } from "@/components/ui/button";
@@ -1336,17 +1336,25 @@ export function DataTable({
                                 >
                                   <div className="w-[98%] mx-auto text-center">
                                   {column.dataKey === "images" ? (
-                                    <ImagePreview
-                                      images={row.images}
-                                      rowId={row.id}
-                                      onAddImage={() =>
-                                        onSelectRowForImage(row.id)
-                                      }
-                                      editMode={editMode}
-                                      onAccessDenied={() =>
-                                        onSelectRowForImage("access-denied")
-                                      }
-                                    />
+                                    <div className="relative">
+                                      <ImagePreview
+                                        images={row.images || []}
+                                        maxVisible={2}
+                                        onImageClick={(index) => {
+                                          // For now, just log - you can add lightbox handling here if needed
+                                          console.log('Image clicked:', index);
+                                        }}
+                                      />
+                                      {editMode && (
+                                        <button
+                                          onClick={() => onSelectRowForImage(row.id)}
+                                          className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs transition-all duration-200 hover:scale-110 shadow-lg"
+                                          title="Add Image"
+                                        >
+                                          +
+                                        </button>
+                                      )}
+                                    </div>
                                   ) : column.dataKey === "info" ? (
                                     row.info && row.info.trim() ? (
                                       <InfoModal
@@ -1358,6 +1366,7 @@ export function DataTable({
                                         latitude={row.latitude ? String(row.latitude) : undefined}
                                         longitude={row.longitude ? String(row.longitude) : undefined}
                                         qrCode={row.qrCode || undefined}
+                                        images={row.images || []}
                                         no={row.no}
                                         markerColor={row.markerColor || undefined}
                                         onUpdateRow={(updates) =>
@@ -1538,6 +1547,7 @@ export function DataTable({
                                       latitude={row.latitude ? String(row.latitude) : undefined}
                                       longitude={row.longitude ? String(row.longitude) : undefined}
                                       qrCode={row.qrCode || undefined}
+                                      images={row.images || []}
                                       no={row.no}
                                       markerColor={row.markerColor || undefined}
                                       onUpdateRow={(updates) =>

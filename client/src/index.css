@@ -2,6 +2,81 @@
 /* Leaflet Map Styles */
 @import url('https://unpkg.com/leaflet@1.7.1/dist/leaflet.css');
 
+/* Yet Another React Lightbox Styles */
+@import 'yet-another-react-lightbox/styles.css';
+
+/* Custom Lightbox Improvements */
+.lightbox-overlay {
+  backdrop-filter: blur(8px) saturate(180%);
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.lightbox-image {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.lightbox-nav-button {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.lightbox-nav-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.lightbox-toolbar {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+  backdrop-filter: blur(10px);
+}
+
+.lightbox-thumbnail {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.lightbox-thumbnail:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-caption {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+  backdrop-filter: blur(10px);
+}
+
+/* Smooth loading animation */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.lightbox-loading {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar untuk thumbnail strip */
+.lightbox-thumbnails::-webkit-scrollbar {
+  height: 4px;
+}
+
+.lightbox-thumbnails::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.lightbox-thumbnails::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+.lightbox-thumbnails::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
 /* Add black outline to map markers */
 .leaflet-marker-icon {
   filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.6));
@@ -58,46 +133,46 @@ textarea {
 @tailwind utilities;
 
 :root {
-  /* iOS Light Theme - Clean glass with subtle grey tones */
-  --background: hsl(220, 13%, 95%);
-  --foreground: hsl(224, 71%, 4%);
-  --card: rgba(255, 255, 255, 0.7);
-  --card-foreground: hsl(224, 71%, 4%);
-  --popover: rgba(255, 255, 255, 0.85);
-  --popover-foreground: hsl(224, 71%, 4%);
+  /* iOS Light Theme - Softer Silver Palette */
+  --background: hsl(210, 20%, 94%);
+  --foreground: hsl(210, 15%, 12%);
+  --card: rgba(235, 238, 244, 0.75);
+  --card-foreground: hsl(210, 15%, 12%);
+  --popover: rgba(235, 238, 244, 0.9);
+  --popover-foreground: hsl(210, 15%, 12%);
   --primary: hsl(217, 91%, 60%);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: rgba(248, 250, 252, 0.8);
-  --secondary-foreground: hsl(215, 25%, 27%);
-  --muted: rgba(241, 245, 249, 0.7);
-  --muted-foreground: hsl(215, 16%, 47%);
-  --accent: rgba(248, 250, 252, 0.6);
-  --accent-foreground: hsl(224, 71%, 4%);
+  --secondary: rgba(225, 230, 238, 0.8);
+  --secondary-foreground: hsl(210, 15%, 22%);
+  --muted: rgba(215, 220, 230, 0.7);
+  --muted-foreground: hsl(210, 10%, 42%);
+  --accent: rgba(220, 225, 235, 0.6);
+  --accent-foreground: hsl(210, 15%, 12%);
   --destructive: hsl(0, 84%, 60%);
   --destructive-foreground: hsl(0, 0%, 98%);
-  --border: rgba(226, 232, 240, 0.8);
-  --input: rgba(248, 250, 252, 0.7);
+  --border: rgba(195, 205, 218, 0.8);
+  --input: rgba(225, 230, 238, 0.7);
   --ring: hsl(217, 91%, 60%);
   --chart-1: hsl(217, 91%, 60%);
   --chart-2: hsl(142, 76%, 36%);
   --chart-3: hsl(38, 92%, 50%);
   --chart-4: hsl(280, 65%, 60%);
   --chart-5: hsl(340, 82%, 52%);
-  --sidebar: rgba(248, 250, 252, 0.85);
-  --sidebar-foreground: hsl(224, 71%, 4%);
+  --sidebar: rgba(225, 230, 238, 0.85);
+  --sidebar-foreground: hsl(210, 15%, 12%);
   --sidebar-primary: hsl(217, 91%, 60%);
   --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: rgba(241, 245, 249, 0.7);
-  --sidebar-accent-foreground: hsl(224, 71%, 4%);
-  --sidebar-border: rgba(226, 232, 240, 0.6);
+  --sidebar-accent: rgba(215, 220, 230, 0.7);
+  --sidebar-accent-foreground: hsl(210, 15%, 12%);
+  --sidebar-border: rgba(195, 205, 218, 0.6);
   --sidebar-ring: hsl(217, 91%, 60%);
   
-  /* iOS Light Glass Variables */
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-hover: rgba(255, 255, 255, 0.8);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  --glass-hover-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  /* iOS Light Glass Variables - Silver Tones */
+  --glass-bg: rgba(235, 238, 244, 0.65);
+  --glass-border: rgba(215, 220, 230, 0.4);
+  --glass-hover: rgba(230, 233, 240, 0.8);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --glass-hover-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
   
   /* System Fonts */
   --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
@@ -115,41 +190,41 @@ textarea {
 }
 
 .dark {
-  /* iOS Dark Theme - True black with glass effects */
+  /* iOS Dark Theme - Deep Black with minimal grays */
   --background: hsl(0, 0%, 0%);
-  --foreground: hsl(0, 0%, 98%);
-  --card: rgba(28, 28, 30, 0.8);
-  --card-foreground: hsl(0, 0%, 98%);
-  --popover: rgba(28, 28, 30, 0.95);
-  --popover-foreground: hsl(0, 0%, 98%);
+  --foreground: hsl(0, 0%, 96%);
+  --card: rgba(10, 10, 10, 0.9);
+  --card-foreground: hsl(0, 0%, 96%);
+  --popover: rgba(5, 5, 5, 0.98);
+  --popover-foreground: hsl(0, 0%, 96%);
   --primary: hsl(217, 91%, 60%);
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: rgba(44, 44, 46, 0.8);
-  --secondary-foreground: hsl(0, 0%, 92%);
-  --muted: rgba(58, 58, 60, 0.7);
-  --muted-foreground: hsl(0, 0%, 70%);
-  --accent: rgba(44, 44, 46, 0.6);
-  --accent-foreground: hsl(0, 0%, 98%);
+  --secondary: rgba(18, 18, 18, 0.9);
+  --secondary-foreground: hsl(0, 0%, 88%);
+  --muted: rgba(25, 25, 25, 0.8);
+  --muted-foreground: hsl(0, 0%, 65%);
+  --accent: rgba(20, 20, 20, 0.7);
+  --accent-foreground: hsl(0, 0%, 96%);
   --destructive: hsl(0, 86%, 65%);
   --destructive-foreground: hsl(0, 0%, 98%);
-  --border: rgba(84, 84, 88, 0.6);
-  --input: rgba(44, 44, 46, 0.8);
+  --border: rgba(40, 40, 40, 0.7);
+  --input: rgba(18, 18, 18, 0.9);
   --ring: hsl(217, 91%, 60%);
-  --sidebar: rgba(28, 28, 30, 0.95);
-  --sidebar-foreground: hsl(0, 0%, 98%);
+  --sidebar: rgba(5, 5, 5, 0.98);
+  --sidebar-foreground: hsl(0, 0%, 96%);
   --sidebar-primary: hsl(217, 91%, 60%);
   --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: rgba(44, 44, 46, 0.7);
-  --sidebar-accent-foreground: hsl(0, 0%, 92%);
-  --sidebar-border: rgba(84, 84, 88, 0.4);
+  --sidebar-accent: rgba(18, 18, 18, 0.8);
+  --sidebar-accent-foreground: hsl(0, 0%, 88%);
+  --sidebar-border: rgba(35, 35, 35, 0.5);
   --sidebar-ring: hsl(217, 91%, 60%);
   
-  /* iOS Dark Glass Variables */
-  --glass-bg: rgba(28, 28, 30, 0.8);
-  --glass-border: rgba(84, 84, 88, 0.3);
-  --glass-hover: rgba(44, 44, 46, 0.9);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-  --glass-hover-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
+  /* iOS Dark Glass Variables - Deep Black */
+  --glass-bg: rgba(10, 10, 10, 0.85);
+  --glass-border: rgba(40, 40, 40, 0.4);
+  --glass-hover: rgba(20, 20, 20, 0.95);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+  --glass-hover-shadow: 0 16px 48px rgba(0, 0, 0, 0.9);
 }
 
 @layer base {
@@ -1649,4 +1724,25 @@ html.dark tfoot tr th .footer-total-blue {
 .embla__slide {
   transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Lightbox overrides - ensure it's always on top */
+.lightbox-overlay {
+  z-index: 99999 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  pointer-events: auto !important;
+}
+
+.lightbox-thumbnails {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.lightbox-thumbnails::-webkit-scrollbar { 
+  width: 0;
+  height: 0;
 }

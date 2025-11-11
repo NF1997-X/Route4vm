@@ -9,7 +9,9 @@ import { SiGooglemaps, SiWaze } from "react-icons/si";
 import { MiniMap } from "@/components/mini-map";
 import { SlidingDescription } from "@/components/sliding-description";
 import { EditableDescriptionList } from "@/components/editable-description-list";
+import { ImagePreview, ImageLightbox } from "@/components/image-lightbox";
 import QrScanner from "qr-scanner";
+import { MediaWithCaption } from "shared/schema";
 
 interface InfoModalProps {
   info: string;
@@ -20,6 +22,7 @@ interface InfoModalProps {
   latitude?: string;
   longitude?: string;
   qrCode?: string;
+  images?: MediaWithCaption[];
   no?: number;
   markerColor?: string;
   onUpdateRow?: (updates: any) => void;
@@ -28,7 +31,7 @@ interface InfoModalProps {
   iconType?: 'info' | 'filetext';
 }
 
-export function InfoModal({ info, rowId, code, route, location, latitude, longitude, qrCode, no, markerColor, onUpdateRow, editMode = false, allRows = [], iconType = 'info' }: InfoModalProps) {
+export function InfoModal({ info, rowId, code, route, location, latitude, longitude, qrCode, images = [], no, markerColor, onUpdateRow, editMode = false, allRows = [], iconType = 'info' }: InfoModalProps) {
   const [open, setOpen] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [scannedResult, setScannedResult] = useState<string>("");
@@ -41,6 +44,10 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  
+  // Lightbox state
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   
   // State for tracking edits
   const [originalData, setOriginalData] = useState({ info: "", qrCode: "", latitude: "", longitude: "", markerColor: "" });
@@ -239,6 +246,12 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
   const handleCancel = () => {
     // Revert to original data
     setCurrentData(originalData);
+  };
+
+  // Handle image preview click to open lightbox
+  const handleImageClick = (index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
   };
 
   return (
@@ -498,6 +511,21 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
                 />
                 <p className="text-muted-foreground" style={{fontSize: '10px'}}>URL to the QR code image</p>
               </div>
+            </div>
+          )}
+
+          {/* Images Section - Show image preview if images exist */}
+          {images && images.length > 0 && (
+            <div className="bg-transparent backdrop-blur-sm rounded p-4 space-y-3 shadow-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-amber-500 dark:bg-amber-400 rounded-full"></div>
+                <h4 className="font-semibold text-amber-600 dark:text-amber-400" style={{fontSize: '10px'}}>🖼️ Images ({images.filter(m => m.type === 'image').length})</h4>
+              </div>
+              <ImagePreview 
+                images={images} 
+                maxVisible={2}
+                onImageClick={handleImageClick}
+              />
             </div>
           )}
 
@@ -970,6 +998,14 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           </Alert>
         </div>
       )}
+
+      {/* Image Lightbox */}
+      <ImageLightbox
+        images={images}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        initialIndex={lightboxIndex}
+      />
     </Dialog>
   );
 }

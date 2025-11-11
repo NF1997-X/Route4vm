@@ -341,7 +341,7 @@ export default function CustomTableList() {
             <table className="w-full min-w-[600px]">
               <thead className="bg-gradient-to-r from-slate-200 to-slate-300 dark:from-slate-800/50 dark:to-slate-900/50 sticky top-0 z-10">
                 <tr className="border-b-2 border-gray-300 dark:border-white/10">
-                  <th className="px-3 py-2 text-left text-xs font-semibold whitespace-nowrap">
+                  <th className="px-3 py-2 text-center text-xs font-semibold whitespace-nowrap">
                     <Checkbox
                       checked={selectedRows.size === filteredRows.length && filteredRows.length > 0}
                       onCheckedChange={(checked) => {
@@ -353,10 +353,10 @@ export default function CustomTableList() {
                       }}
                     />
                   </th>
-                  <th className="px-2 py-2 text-left text-xs font-semibold whitespace-nowrap">Route</th>
-                  <th className="px-2 py-2 text-left text-xs font-semibold whitespace-nowrap">Code</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold whitespace-nowrap">Location</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold whitespace-nowrap">Delivery</th>
+                  <th className="px-2 py-2 text-center text-xs font-semibold whitespace-nowrap">Route</th>
+                  <th className="px-2 py-2 text-center text-xs font-semibold whitespace-nowrap">Code</th>
+                  <th className="px-4 py-2 text-center text-xs font-semibold whitespace-nowrap">Location</th>
+                  <th className="px-4 py-2 text-center text-xs font-semibold whitespace-nowrap">Delivery</th>
                 </tr>
               </thead>
               <tbody>
@@ -377,23 +377,23 @@ export default function CustomTableList() {
                         }`}
                         onClick={() => toggleRowSelection(row.id)}
                       >
-                        <td className="px-3 py-2">
+                        <td className="px-3 py-2 text-center">
                           <Checkbox
                             checked={isSelected}
                             onCheckedChange={() => toggleRowSelection(row.id)}
                             onClick={(e) => e.stopPropagation()}
                           />
                         </td>
-                        <td className={`px-2 py-2 text-xs whitespace-nowrap ${isSelected ? "font-semibold" : ""}`}>
+                        <td className={`px-2 py-2 text-xs whitespace-nowrap text-center ${isSelected ? "font-semibold" : ""}`}>
                           {row.route}
                         </td>
-                        <td className={`px-2 py-2 text-xs whitespace-nowrap ${isSelected ? "font-semibold" : ""}`}>
+                        <td className={`px-2 py-2 text-xs whitespace-nowrap text-center ${isSelected ? "font-semibold" : ""}`}>
                           {row.code}
                         </td>
-                        <td className={`px-4 py-2 text-xs whitespace-nowrap ${isSelected ? "font-semibold" : ""}`}>
+                        <td className={`px-4 py-2 text-xs whitespace-nowrap text-center ${isSelected ? "font-semibold" : ""}`}>
                           {row.location}
                         </td>
-                        <td className={`px-4 py-2 text-xs whitespace-nowrap ${isSelected ? "font-semibold" : ""}`}>
+                        <td className={`px-4 py-2 text-xs whitespace-nowrap text-center ${isSelected ? "font-semibold" : ""}`}>
                           {row.delivery}
                         </td>
                       </tr>
@@ -414,7 +414,7 @@ export default function CustomTableList() {
 
         {/* Existing Custom Tables */}
         <div className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-300 dark:border-white/10 shadow-xl rounded-3xl p-6">
-          <h6 className="font-semibold mb-4 text-gray-900 dark:text-white" style={{ fontSize: '12px' }}>My Custom Tables</h6>
+          <h6 className="font-semibold mb-4 text-gray-900 dark:text-white text-center" style={{ fontSize: '12px' }}>My Custom Tables</h6>
           {customTables.length === 0 ? (
             <p className="text-center text-gray-600 dark:text-gray-400 py-8">
               No custom tables yet. Create one to get started!
