@@ -26,8 +26,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // UUID validation schema
 const uuidSchema = z.string().uuid();
 
-// Health check
+// Health check endpoints
 app.get('/health', (_req: Request, res: Response) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/api/health', (_req: Request, res: Response) => {
   res.status(200).json({ 
     status: 'ok', 
     timestamp: new Date().toISOString()

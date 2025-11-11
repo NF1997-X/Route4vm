@@ -1299,6 +1299,12 @@ app.get("/health", (_req, res) => {
     timestamp: (/* @__PURE__ */ new Date()).toISOString()
   });
 });
+app.get("/api/health", (_req, res) => {
+  res.status(200).json({
+    status: "ok",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
 app.get("/api/table-rows", async (req, res) => {
   try {
     const rows = await storage.getTableRows();
