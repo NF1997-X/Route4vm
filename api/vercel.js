@@ -2323,15 +2323,21 @@ app.use((req, res, next) => {
     next();
   }
 });
-(async () => {
-  await registerRoutes(app);
-  serveStatic(app);
-  app.use((err, _req, res, _next) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-    res.status(status).json({ message });
-  });
-})();
+var initialized = false;
+var initializeApp = async () => {
+  if (!initialized) {
+    await registerRoutes(app);
+    serveStatic(app);
+    app.use((err, _req, res, _next) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
+      res.status(status).json({ message });
+    });
+    initialized = true;
+  }
+  return app;
+};
+initializeApp();
 var vercel_default = app;
 export {
   vercel_default as default

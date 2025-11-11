@@ -32,17 +32,27 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-// Initialize routes and serve static
-(async () => {
-  await registerRoutes(app);
-  serveStatic(app);
-  
-  // Error handler
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-    res.status(status).json({ message });
-  });
-})();
+// Initialize routes - this must be done before exporting
+let initialized = false;
+
+const initializeApp = async () => {
+  if (!initialized) {
+    await registerRoutes(app);
+    serveStatic(app);
+    
+    // Error handler
+    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
+      res.status(status).json({ message });
+    });
+    
+    initialized = true;
+  }
+  return app;
+};
+
+// Initialize immediately
+initializeApp();
 
 export default app;
