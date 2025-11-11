@@ -5,6 +5,7 @@ var __export = (target, all) => {
 };
 
 // server/index.ts
+import dotenv from "dotenv";
 import express2 from "express";
 
 // server/routes.ts
@@ -2307,6 +2308,7 @@ function serveStatic(app2) {
 }
 
 // server/index.ts
+dotenv.config();
 var app = express2();
 app.use(express2.json({ limit: "50mb" }));
 app.use(express2.urlencoded({ extended: false, limit: "50mb" }));
