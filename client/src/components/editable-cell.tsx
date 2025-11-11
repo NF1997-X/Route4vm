@@ -88,7 +88,8 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
         onBlur={handleSave}
         onKeyDown={handleKeyDown}
         placeholder={getPlaceholder()}
-        className="w-full h-6 px-2 py-1 text-sm bg-white border border-blue-300 rounded focus:outline-none focus:border-blue-500"
+        className="w-full h-6 px-2 py-1 text-xs bg-transparent border border-blue-300 rounded focus:outline-none focus:border-blue-500 text-center"
+        style={{ fontSize: '10px' }}
       />
     );
   }
@@ -96,7 +97,8 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   return (
     <span
       onClick={() => setIsEditing(true)}
-      className="cursor-pointer hover:bg-gray-100 rounded px-1 py-0.5 transition-colors"
+      className="cursor-pointer hover:bg-gray-100 rounded px-1 py-0.5 transition-colors text-center block"
+      style={{ fontSize: '10px' }}
     >
       {value}
     </span>
