@@ -4,13 +4,6 @@ import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, B
 import { useLocation } from "wouter";
 import { useTheme } from "./theme-provider";
 import { AddColumnModal } from "./add-column-modal";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
 
 interface NavigationProps {
   editMode?: boolean;
@@ -44,6 +37,21 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
     return () => clearInterval(timer);
   }, []);
 
+  // Keyboard support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        console.log('ESC pressed - closing menu');
+        setIsMenuOpen(false);
+        setShowSubmenu(false);
+        setSubmenuType(null);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen]);
+
   const formatDateTime = (date: Date) => {
     const options: Intl.DateTimeFormatOptions = {
       weekday: 'short',
@@ -59,17 +67,44 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
 
   const handleSubmenuOpen = (type: 'vm-route') => {
     setSubmenuType(type);
-    setShowSubmenu(true);
+    setTimeout(() => {
+      setShowSubmenu(true);
+    }, 50);
   };
 
   const handleBackToMenu = () => {
     setShowSubmenu(false);
-    setSubmenuType(null);
+    setTimeout(() => {
+      setSubmenuType(null);
+    }, 250);
   };
 
   const handleNavigationClick = (action: () => void) => {
-    // Execute action but keep menu open
-    action();
+    try {
+      action();
+      setTimeout(() => {
+        setIsMenuOpen(false);
+        setShowSubmenu(false);
+        setSubmenuType(null);
+      }, 200);
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
+  };
+
+  const handleSubmenuNavigation = (action: () => void) => {
+    try {
+      // Execute action first
+      action();
+    } catch (error) {
+      console.error('Submenu navigation error:', error);
+    }
+    
+    // Always go back to main menu, don't close dropdown
+    setShowSubmenu(false);
+    setTimeout(() => {
+      setSubmenuType(null);
+    }, 250);
   };
 
   const renderMainMenu = () => (
@@ -77,11 +112,11 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       {/* Vm Route Menu Item */}
       <div 
         onClick={() => handleSubmenuOpen('vm-route')}
-        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-indigo-200/30 dark:hover:border-indigo-800/30"
+        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-indigo-200/30 dark:hover:border-indigo-800/30"
         data-testid="menu-edit-page"
       >
         <div className="flex items-center w-full p-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 group-hover:bg-indigo-500/20 dark:group-hover:bg-indigo-500/30 transition-all duration-300">
+          <div className="flex items-center justify-center w-10 h-10 rounded bg-indigo-500/10 dark:bg-indigo-500/20 group-hover:bg-indigo-500/20 dark:group-hover:bg-indigo-500/30 transition-all duration-300">
             <Edit2 className="w-5 h-5 text-indigo-500 dark:text-indigo-400 group-hover:rotate-12 transition-all duration-300" />
           </div>
           <div className="ml-3 flex-1">
@@ -95,13 +130,13 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       {/* Theme Toggle */}
       <div 
         onClick={() => handleNavigationClick(toggleTheme)}
-        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-yellow-200/30 dark:hover:border-blue-800/30"
+        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-yellow-200/30 dark:hover:border-blue-800/30"
         data-testid="menu-toggle-theme"
       >
         <div className="flex items-center w-full p-3">
           {theme === 'dark' ? (
             <>
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-yellow-500/10 dark:bg-yellow-500/20 group-hover:bg-yellow-500/20 dark:group-hover:bg-yellow-500/30 transition-all duration-300">
+              <div className="flex items-center justify-center w-10 h-10 rounded bg-yellow-500/10 dark:bg-yellow-500/20 group-hover:bg-yellow-500/20 dark:group-hover:bg-yellow-500/30 transition-all duration-300">
                 <Sun className="w-5 h-5 text-yellow-500 group-hover:rotate-180 transition-all duration-500" />
               </div>
               <div className="ml-3 flex-1">
@@ -112,7 +147,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </>
           ) : (
             <>
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
+              <div className="flex items-center justify-center w-10 h-10 rounded bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
                 <Moon className="w-5 h-5 text-blue-500 group-hover:rotate-180 transition-all duration-500" />
               </div>
               <div className="ml-3 flex-1">
@@ -128,11 +163,11 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       {/* Help Guide */}
       <div 
         onClick={() => handleNavigationClick(() => navigate('/help'))}
-        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
+        className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
         data-testid="menu-help-guide"
       >
         <div className="flex items-center w-full p-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
+          <div className="flex items-center justify-center w-10 h-10 rounded bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
             <BookOpen className="w-5 h-5 text-green-600 dark:text-green-400 group-hover:rotate-12 transition-all duration-300" />
           </div>
           <div className="ml-3 flex-1">
@@ -150,11 +185,11 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         <>
           <div 
             onClick={() => handleNavigationClick(() => onAddRow && onAddRow())}
-            className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-blue-200/30 dark:hover:border-blue-800/30"
+            className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-blue-200/30 dark:hover:border-blue-800/30"
             data-testid="menu-add-row"
           >
             <div className="flex items-center w-full p-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
+              <div className="flex items-center justify-center w-10 h-10 rounded bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
                 <Rows className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:rotate-12 transition-all duration-300" />
               </div>
               <div className="ml-3 flex-1">
@@ -171,11 +206,11 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 const addColumnButton = document.querySelector('[data-testid="button-add-column"]') as HTMLButtonElement;
                 if (addColumnButton) addColumnButton.click();
               })}
-              className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
+              className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
               data-testid="menu-add-column"
             >
               <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
+                <div className="flex items-center justify-center w-10 h-10 rounded bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
                   <Plus className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:rotate-90 transition-all duration-300" />
                 </div>
                 <div className="ml-3 flex-1">
@@ -191,11 +226,11 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
 
           <div 
             onClick={() => handleNavigationClick(() => onEditModeRequest && onEditModeRequest())}
-            className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 group hover:bg-red-500/5 dark:hover:bg-red-500/10 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-red-200/30 dark:hover:border-red-800/30"
+            className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 group hover:bg-red-500/5 dark:hover:bg-red-500/10 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-red-200/30 dark:hover:border-red-800/30"
             data-testid="menu-exit-edit"
           >
             <div className="flex items-center w-full p-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-red-500/10 dark:bg-red-500/20 group-hover:bg-red-500/20 dark:group-hover:bg-red-500/30 transition-all duration-300">
+              <div className="flex items-center justify-center w-10 h-10 rounded bg-red-500/10 dark:bg-red-500/20 group-hover:bg-red-500/20 dark:group-hover:bg-red-500/30 transition-all duration-300">
                 <DoorOpen className="w-5 h-5 text-red-500 dark:text-red-400 group-hover:rotate-12 transition-all duration-300" />
               </div>
               <div className="ml-3 flex-1">
@@ -209,11 +244,11 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       ) : (
         <div 
           onClick={() => handleNavigationClick(() => onEditModeRequest && onEditModeRequest())}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-red-200/30 dark:hover:border-red-800/30"
+          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-red-200/30 dark:hover:border-red-800/30"
           data-testid="menu-enter-edit"
         >
           <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-red-500/10 dark:bg-red-500/20 group-hover:bg-red-500/20 dark:group-hover:bg-red-500/30 transition-all duration-300">
+            <div className="flex items-center justify-center w-10 h-10 rounded bg-red-500/10 dark:bg-red-500/20 group-hover:bg-red-500/20 dark:group-hover:bg-red-500/30 transition-all duration-300">
               <Settings className="w-5 h-5 text-red-900 dark:text-red-400 group-hover:rotate-90 transition-all duration-300" />
             </div>
             <div className="ml-3 flex-1">
@@ -234,7 +269,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         <Button
           variant="ghost"
           size="sm"
-          className="w-full justify-start text-gray-600 dark:text-gray-400 hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 group rounded-xl backdrop-blur"
+          className="w-full justify-start text-gray-600 dark:text-gray-400 hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 group rounded backdrop-blur"
           onClick={handleBackToMenu}
         >
           <ChevronLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
@@ -242,14 +277,22 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         </Button>
       </div>
       
-      <div className="p-3 space-y-2 h-full overflow-y-auto">
+      <div className="p-3 space-y-2 max-h-[60vh] overflow-y-auto">
         <div 
-          onClick={() => handleNavigationClick(() => navigate('/share/tzqe9a'))}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-blue-200/30 dark:hover:border-blue-800/30"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Share Link clicked');
+            handleSubmenuNavigation(() => {
+              console.log('Navigating to share');
+              navigate('/share/tzqe9a');
+            });
+          }}
+          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-blue-200/30 dark:hover:border-blue-800/30"
           data-testid="submenu-share-example"
         >
           <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
+            <div className="flex items-center justify-center w-10 h-10 rounded bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
               <Link2 className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:rotate-12 transition-all duration-300" />
             </div>
             <div className="ml-3 flex-1">
@@ -261,12 +304,20 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         </div>
         
         <div 
-          onClick={() => handleNavigationClick(() => navigate('/custom/8m2v27'))}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Custom Page clicked');
+            handleSubmenuNavigation(() => {
+              console.log('Navigating to custom');
+              navigate('/custom/8m2v27');
+            });
+          }}
+          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-green-200/30 dark:hover:border-green-800/30"
           data-testid="submenu-custom-example"
         >
           <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
+            <div className="flex items-center justify-center w-10 h-10 rounded bg-green-500/10 dark:bg-green-500/20 group-hover:bg-green-500/20 dark:group-hover:bg-green-500/30 transition-all duration-300">
               <Table2 className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:rotate-12 transition-all duration-300" />
             </div>
             <div className="ml-3 flex-1">
@@ -280,12 +331,15 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         <div className="my-4 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10"></div>
         
         <div 
-          onClick={() => handleNavigationClick(() => navigate('/custom-tables'))}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-purple-200/30 dark:hover:border-purple-800/30"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleSubmenuNavigation(() => navigate('/custom-tables'));
+          }}
+          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-purple-200/30 dark:hover:border-purple-800/30"
           data-testid="submenu-custom-list"
         >
           <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 group-hover:bg-purple-500/20 dark:group-hover:bg-purple-500/30 transition-all duration-300">
+            <div className="flex items-center justify-center w-10 h-10 rounded bg-purple-500/10 dark:bg-purple-500/20 group-hover:bg-purple-500/20 dark:group-hover:bg-purple-500/30 transition-all duration-300">
               <ListChecks className="w-5 h-5 text-purple-500 dark:text-purple-400 group-hover:rotate-12 transition-all duration-300" />
             </div>
             <div className="ml-3 flex-1">
@@ -297,12 +351,19 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         </div>
         
         <div 
-          onClick={() => handleNavigationClick(() => onSavedLinks && onSavedLinks())}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-amber-200/30 dark:hover:border-amber-800/30"
+          onClick={(e) => {
+            e.stopPropagation();
+            console.log('Saved Links clicked');
+            handleSubmenuNavigation(() => {
+              console.log('Executing onSavedLinks');
+              onSavedLinks && onSavedLinks();
+            });
+          }}
+          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded backdrop-blur border border-transparent hover:border-amber-200/30 dark:hover:border-amber-800/30"
           data-testid="submenu-saved-links"
         >
           <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 group-hover:bg-amber-500/20 dark:group-hover:bg-amber-500/30 transition-all duration-300">
+            <div className="flex items-center justify-center w-10 h-10 rounded bg-amber-500/10 dark:bg-amber-500/20 group-hover:bg-amber-500/20 dark:group-hover:bg-amber-500/30 transition-all duration-300">
               <Bookmark className="w-5 h-5 text-amber-500 dark:text-amber-400 group-hover:rotate-12 transition-all duration-300" />
             </div>
             <div className="ml-3 flex-1">
@@ -323,7 +384,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
           {/* Logo/Brand */}
           <div className="flex items-center space-x-2">
             <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg overflow-hidden">
+              <div className="flex h-9 w-9 items-center justify-center rounded-sm overflow-hidden">
                 <img 
                   src="/assets/Logofm.png" 
                   alt="Logo" 
@@ -341,43 +402,54 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </div>
           </div>
 
-          {/* Navigation - Single Menu Button */}
-          <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="btn-glass w-8 h-8 md:w-auto md:h-9 p-0 md:px-3 pagination-button group transition-all duration-300 ease-out hover:shadow-lg hover:shadow-blue-500/20 data-[state=open]:shadow-lg data-[state=open]:shadow-blue-500/30"
-                data-testid="button-main-menu"
-                title="Menu"
-              >
-                <LayoutGrid className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
-                <span className="hidden md:inline ml-2 text-xs transition-all duration-300">Menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align="end" 
-              className="w-96 max-h-[80vh] bg-white/95 dark:bg-black/95 backdrop-blur-3xl border border-white/20 dark:border-white/10 shadow-[0_32px_64px_0_rgba(0,0,0,0.35)] rounded-3xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden relative"
-              onEscapeKeyDown={() => setIsMenuOpen(false)}
-              onPointerDownOutside={() => setIsMenuOpen(false)}
+          {/* Navigation - Custom Menu Button */}
+          <div className="relative">
+            <Button
+              variant="outline"
+              size="sm"
+              className="btn-glass w-8 h-8 md:w-auto md:h-9 p-0 md:px-3 pagination-button group transition-all duration-300 ease-out hover:shadow-lg hover:shadow-blue-500/20"
+              data-testid="button-main-menu"
+              title="Menu"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {/* Glass Background Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/2 dark:to-transparent pointer-events-none rounded-3xl"></div>
-              
-              {/* Content Container with proper overflow */}
-              <div className="relative z-10 h-full">
-                {/* Main Menu */}
-                <div className={`transition-all duration-500 ease-in-out ${showSubmenu ? 'transform -translate-x-full opacity-0' : 'transform translate-x-0 opacity-100'}`}>
-                  {!showSubmenu && renderMainMenu()}
-                </div>
+              <LayoutGrid className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
+              <span className="hidden md:inline ml-2 text-xs transition-all duration-300">Menu</span>
+            </Button>
+            
+            {/* Custom Dropdown Content */}
+            {isMenuOpen && (
+              <div className="absolute right-0 top-full mt-2 w-96 max-h-[80vh] bg-white/95 dark:bg-black/95 backdrop-blur-3xl border border-white/20 dark:border-white/10 shadow-[0_32px_64px_0_rgba(0,0,0,0.35)] rounded-3xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden z-50">
+                {/* Glass Background Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/2 dark:to-transparent pointer-events-none rounded-3xl"></div>
+                
+                {/* Content Container */}
+                <div className="relative z-10 overflow-hidden">
+                  {/* Main Menu - Always rendered but conditionally visible */}
+                  <div className={`transition-all duration-500 ease-in-out ${showSubmenu ? 'transform -translate-x-full opacity-0' : 'transform translate-x-0 opacity-100'}`}>
+                    {renderMainMenu()}
+                  </div>
 
-                {/* Submenu */}
-                <div className={`absolute inset-0 transition-all duration-500 ease-in-out ${showSubmenu ? 'transform translate-x-0 opacity-100' : 'transform translate-x-full opacity-0'}`}>
-                  {submenuType === 'vm-route' && showSubmenu && renderVmRouteSubmenu()}
+                  {/* Submenu Overlay - Positioned absolutely */}
+                  <div className={`absolute top-0 left-0 w-full h-full transition-all duration-500 ease-in-out ${showSubmenu ? 'transform translate-x-0 opacity-100 pointer-events-auto' : 'transform translate-x-full opacity-0 pointer-events-none'}`}>
+                    {submenuType === 'vm-route' && renderVmRouteSubmenu()}
+                  </div>
                 </div>
               </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            )}
+            
+            {/* Click outside overlay */}
+            {isMenuOpen && (
+              <div 
+                className="fixed inset-0 z-40"
+                onClick={() => {
+                  console.log('Clicked outside - closing menu');
+                  setIsMenuOpen(false);
+                  setShowSubmenu(false);
+                  setSubmenuType(null);
+                }}
+              />
+            )}
+          </div>
 
           {/* Hidden Add Column Modal */}
           {editMode && onAddColumn && (

@@ -452,6 +452,31 @@ textarea {
   font-weight: bold !important;
 }
 
+/* Global Border Radius Standards */
+/* Buttons - 2px radius */
+button,
+.btn,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  border-radius: 2px !important;
+}
+
+/* Cards, Modals, Dialogs - 4px radius */
+.card,
+.glass-card,
+.modal,
+.dialog,
+[data-radix-dialog-content],
+[data-radix-popover-content],
+.popover-content,
+.dropdown-content,
+[role="dialog"],
+[role="modal"] {
+  border-radius: 4px !important;
+}
+
 /* iOS Frosted Glass buttons */
 .btn-glass {
   background: rgba(255, 255, 255, 0.2);

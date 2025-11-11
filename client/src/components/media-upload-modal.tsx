@@ -203,7 +203,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3m max-h-[90vh] flex flex-col bg-white/95 dark:bg-black/95 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-2xl rounded-xl">
+      <DialogContent className="max-w-3m max-h-[90vh] flex flex-col bg-white/95 dark:bg-black/95 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-2xl rounded">
         <DialogHeader className="flex-shrink-0 text-center">
           <DialogTitle className="flex items-center justify-center gap-2 text-center text-sm font-semibold">
             {mode === "single" ? <Upload className="w-5 h-5" /> : <List className="w-5 h-5" />}
@@ -216,7 +216,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
 
         <div className="mt-6 space-y-6 overflow-y-auto flex-1 pr-2 px-2">
           {/* Mode Selection */}
-          <div className="bg-gray-50 dark:bg-black/50 backdrop-blur-sm border border-gray-200 dark:border-white/15 rounded-lg p-4">
+          <div className="bg-gray-50 dark:bg-black/50 backdrop-blur-sm border border-gray-200 dark:border-white/15 rounded p-4">
             <Label className="text-sm font-medium text-foreground/90 mb-3 block">
               📁 Upload Mode
             </Label>
@@ -311,7 +311,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
                         {isProcessing ? "Processing..." : "Choose from Gallery"}
                       </Button>
                       {url && (
-                        <div className="mt-3 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-500/30 rounded-lg">
+                        <div className="mt-3 p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-500/30 rounded">
                           <p className="text-xs text-green-700 dark:text-green-300">
                             ✅ File loaded successfully! Add caption below and click "Add" to save.
                           </p>
@@ -379,7 +379,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
               <TabsContent value="album" className="mt-4">
                 <div className="space-y-4">
                   {/* Upload from Gallery (Album mode) */}
-                  <div className="bg-green-50 dark:bg-black/20 backdrop-blur-sm border border-green-200 dark:border-white/10 rounded-lg p-3">
+                  <div className="bg-green-50 dark:bg-black/20 backdrop-blur-sm border border-green-200 dark:border-white/10 rounded p-3">
                     <Label className="text-sm font-medium text-foreground/90 mb-2 block">📁 Upload from Gallery</Label>
                     <input
                       type="file"
@@ -426,7 +426,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
                   </div>
 
                   {/* Single Item Add */}
-                  <div className="bg-blue-50 dark:bg-black/20 backdrop-blur-sm border border-blue-200 dark:border-white/10 rounded-lg p-3">
+                  <div className="bg-blue-50 dark:bg-black/20 backdrop-blur-sm border border-blue-200 dark:border-white/10 rounded p-3">
                     <Label className="text-sm font-medium text-foreground/90 mb-2 block">Add URL Item to Album</Label>
                     <div className="space-y-2">
                       <Input
@@ -458,7 +458,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
                   </div>
 
                   {/* Bulk Add */}
-                  <div className="bg-purple-50 dark:bg-black/20 backdrop-blur-sm border border-purple-200 dark:border-white/10 rounded-lg p-3">
+                  <div className="bg-purple-50 dark:bg-black/20 backdrop-blur-sm border border-purple-200 dark:border-white/10 rounded p-3">
                     <Label className="text-sm font-medium text-foreground/90 mb-2 block">Bulk Add URLs</Label>
                     <Textarea
                       placeholder="Paste multiple URLs (one per line)..."
@@ -481,7 +481,7 @@ export function MediaUploadModal({ open, onOpenChange, onSave, onSaveMultiple }:
 
                   {/* Album Preview */}
                   {albumItems.length > 0 && (
-                    <div className="bg-purple-50 dark:bg-black/20 backdrop-blur-sm border border-purple-200 dark:border-white/10 rounded-lg p-3">
+                    <div className="bg-purple-50 dark:bg-black/20 backdrop-blur-sm border border-purple-200 dark:border-white/10 rounded p-3">
                       <Label className="text-sm font-medium text-foreground/90 mb-3 block">
                         📚 Album Preview ({albumItems.length} items)
                       </Label>

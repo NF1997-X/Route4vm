@@ -136,7 +136,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
             onClick={handleBackdropClick}
           >
-            <div className="glass-card p-4 w-80 rounded-lg shadow-2xl border border-white/20 animate-in fade-in-0 zoom-in-95 duration-200">
+            <div className="glass-card p-4 w-80 rounded shadow-2xl border border-white/20 animate-in fade-in-0 zoom-in-95 duration-200">
               <Input
                 ref={inputRef}
                 value={editValue || ''}

@@ -70,7 +70,7 @@ export function AddImageSection({ rowId, location, onClose, onAddImage }: AddIma
 
   return (
     <>
-      <Card className="bg-card/90 backdrop-blur-xl border-2 border-border shadow-2xl rounded-xl mb-6" data-testid="add-image-section">
+      <Card className="bg-card/90 backdrop-blur-xl border-2 border-border shadow-2xl rounded mb-6" data-testid="add-image-section">
         <CardContent className="p-6">
           <h3 className="font-semibold mb-6 flex items-center text-foreground text-center justify-center text-sm">
             <ImageIcon className="w-4 h-4 mr-2 text-primary" />
@@ -78,7 +78,7 @@ export function AddImageSection({ rowId, location, onClose, onAddImage }: AddIma
           </h3>
           
           <div className="flex flex-col gap-6 items-center text-center">
-            <div className="bg-muted/50 backdrop-blur-sm border border-border rounded-lg p-6">
+            <div className="bg-muted/50 backdrop-blur-sm border border-border rounded p-6">
               <p className="text-muted-foreground mb-4 text-sm">
                 🎬 Add images or videos to this location
               </p>

@@ -375,7 +375,7 @@ export function Tutorial({ editMode = false, onClose }: TutorialProps) {
     <>
       {/* Enhanced Highlight with glow */}
       <div
-        className="fixed z-[9999] pointer-events-none rounded-lg ring-4 ring-blue-500/60 dark:ring-blue-400/60 animate-pulse"
+        className="fixed z-[9999] pointer-events-none rounded ring-4 ring-blue-500/60 dark:ring-blue-400/60 animate-pulse"
         style={{
           top: rect.top - 6,
           left: rect.left - 6,
@@ -388,7 +388,7 @@ export function Tutorial({ editMode = false, onClose }: TutorialProps) {
       {/* Premium Tooltip */}
       <div
         style={tooltipStyle}
-        className="fixed z-[10000] bg-gradient-to-br from-background/95 via-background/98 to-background dark:from-black/95 dark:via-black/98 dark:to-black border-2 border-blue-500/30 dark:border-blue-400/30 rounded-xl p-4 shadow-2xl w-[320px] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-300"
+        className="fixed z-[10000] bg-gradient-to-br from-background/95 via-background/98 to-background dark:from-black/95 dark:via-black/98 dark:to-black border-2 border-blue-500/30 dark:border-blue-400/30 rounded p-4 shadow-2xl w-[320px] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-300"
       >
         <div className="flex items-start justify-between mb-3">
           <h3 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent pr-2">

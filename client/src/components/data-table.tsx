@@ -747,7 +747,7 @@ export function DataTable({
 
   return (
     <div
-      className="glass-table rounded-xl border-none shadow-2xl table-container my-10"
+      className="glass-table rounded border-none shadow-2xl table-container my-10"
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}

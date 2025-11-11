@@ -293,7 +293,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
         >
           {/* Mini Map Section */}
           {latitude && longitude && !isNaN(parseFloat(latitude)) && !isNaN(parseFloat(longitude)) && (
-            <div className="bg-transparent backdrop-blur-sm rounded-xl p-4 space-y-3 shadow-sm">
+            <div className="bg-transparent backdrop-blur-sm rounded p-4 space-y-3 shadow-sm">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-400 dark:bg-green-300 rounded-full animate-pulse"></div>
                 <h4 className="font-semibold text-green-500 dark:text-green-300" style={{fontSize: '10px'}}>🗺️ Location Map</h4>

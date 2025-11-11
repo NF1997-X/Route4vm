@@ -170,7 +170,7 @@ export function ColumnCustomizationModal({
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          className={`flex items-center justify-between p-3 rounded-lg border bg-muted/30 hover:bg-muted/50 transition-colors ${
+                          className={`flex items-center justify-between p-3 rounded border bg-muted/30 hover:bg-muted/50 transition-colors ${
                             snapshot.isDragging ? 'shadow-lg border-blue-500 dark:border-blue-400' : 'border-border'
                           } ${!column.visible ? 'opacity-60' : ''}`}
                         >
@@ -205,7 +205,7 @@ export function ColumnCustomizationModal({
             </Droppable>
           </DragDropContext>
 
-          <div className="text-sm bg-blue-50/50 dark:bg-blue-950/30 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="text-sm bg-blue-50/50 dark:bg-blue-950/30 p-3 rounded border border-blue-200 dark:border-blue-800">
             <strong className="text-blue-900 dark:text-blue-100">Tip:</strong> At least one column must remain visible. Core columns are recommended to stay visible for the best experience.
           </div>
         </div>
