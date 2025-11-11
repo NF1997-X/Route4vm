@@ -456,6 +456,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Upload image endpoint (proxied to ImgBB using server-side API key)
+  app.post("/api/upload-image", async (req, res) => {
+    try {
+      const { image } = req.body;
+
+      if (!image || typeof image !== 'string') {
+        return res.status(400).json({ message: 'Image (base64 or data URL) is required' });
+      }
+
+      // Extract base64 portion if data URL provided
+      let base64 = image;
+      const match = String(image).match(/^data:([a-zA-Z0-9+/.-]+);base64,(.*)$/);
+      if (match) {
+        base64 = match[2];
+      }
+
+      // Basic size limit check (approximate) - don't accept huge payloads
+      if (base64.length > 6 * 1024 * 1024) {
+        return res.status(413).json({ message: 'Image too large' });
+      }
+
+      const apiKey = process.env.IMGBB_API_KEY;
+      if (!apiKey) {
+        console.error('Missing IMGBB_API_KEY in environment');
+        return res.status(500).json({ message: 'Image upload service not configured' });
+      }
+
+      // Use application/x-www-form-urlencoded payload for ImgBB
+      const params = new URLSearchParams();
+      params.append('image', base64);
+
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString(),
+      });
+
+      if (!response.ok) {
+        const text = await response.text().catch(() => '');
+        console.error('ImgBB upload failed', response.status, text);
+        return res.status(502).json({ message: 'Failed to upload image to hosting provider' });
+      }
+
+      const data = await response.json();
+      if (!data || !data.data || !data.data.url) {
+        console.error('Unexpected ImgBB response', JSON.stringify(data));
+        return res.status(502).json({ message: 'Unexpected response from image host' });
+      }
+
+      res.json({ url: data.data.url });
+    } catch (error) {
+      console.error('Upload image error:', error);
+      res.status(500).json({ message: 'Failed to upload image' });
+    }
+  });
+
   // Calculate toll prices endpoint
   app.post("/api/calculate-tolls", async (req, res) => {
     try {

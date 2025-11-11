@@ -1,5 +1,6 @@
 import fs from 'fs';
 import csv from 'csv-parser';
+import 'dotenv/config';
 import { db } from './server/db';
 import { tableRows } from './shared/schema';
 import { sql } from 'drizzle-orm';
@@ -32,7 +33,7 @@ async function importCSV() {
   
   // Read CSV file
   await new Promise<void>((resolve, reject) => {
-    fs.createReadStream('../table_rows.csv')
+    fs.createReadStream('csv/table_rows.csv')
       .pipe(csv())
       .on('data', (data: CSVRow) => results.push(data))
       .on('end', () => resolve())
@@ -44,11 +45,12 @@ async function importCSV() {
   // Validate and prepare data BEFORE touching database
   console.log('🔍 Validating data...');
   const preparedRows: any[] = [];
+  const skippedRows: string[] = [];
   
   for (const row of results) {
     try {
       // Validate required fields
-      if (!row.no || !row.route) {
+      if (!row.no || !row.route || row.no.trim() === '' || row.route.trim() === '') {
         throw new Error('Missing required fields (no or route)');
       }
       
@@ -68,7 +70,7 @@ async function importCSV() {
       
       // Validate numeric fields
       const no = parseInt(row.no);
-      const sortOrder = parseInt(row.sort_order);
+      const sortOrder = parseInt(row.sort_order || '0');
       if (isNaN(no) || isNaN(sortOrder)) {
         throw new Error('Invalid numeric value in no or sort_order');
       }
@@ -104,38 +106,56 @@ async function importCSV() {
         deliveryAlt: 'normal',
       });
     } catch (error) {
-      console.error(`❌ Validation failed for row ${row.no}:`, error);
-      throw new Error(`Data validation failed. Aborting import to prevent corruption.`);
+      console.warn(`⚠️  Skipping row ${row.no || 'unknown'} - ${row.location || 'no location'}: ${error}`);
+      skippedRows.push(`Row ${row.no || 'unknown'}: ${error}`);
     }
   }
   
-  console.log(`✅ All ${preparedRows.length} rows validated successfully`);
+  console.log(`✅ ${preparedRows.length} rows validated successfully`);
+  if (skippedRows.length > 0) {
+    console.log(`⚠️  Skipped ${skippedRows.length} invalid rows`);
+  }
   
   // Now perform the import within a transaction
-  console.log('📥 Starting transactional import...');
+  console.log('📥 Starting transactional import with upsert...');
   
   try {
     await db.transaction(async (tx) => {
-      // Clear existing data within transaction
-      console.log('🗑️  Clearing existing data...');
-      await tx.delete(tableRows);
-      
-      // Insert all rows
+      // Import/Update rows one by one (upsert logic)
       let imported = 0;
+      let updated = 0;
+      
       for (const rowData of preparedRows) {
-        await tx.insert(tableRows).values(rowData);
-        imported++;
+        // Check if row with same ID or (route + code) exists
+        const existing = await tx
+          .select()
+          .from(tableRows)
+          .where(sql`${tableRows.id} = ${rowData.id}`)
+          .limit(1);
         
-        if (imported % 10 === 0) {
-          console.log(`   ✓ Imported ${imported}/${preparedRows.length} rows...`);
+        if (existing.length > 0) {
+          // Update existing row
+          await tx
+            .update(tableRows)
+            .set(rowData)
+            .where(sql`${tableRows.id} = ${rowData.id}`);
+          updated++;
+        } else {
+          // Insert new row
+          await tx.insert(tableRows).values(rowData);
+          imported++;
+        }
+        
+        if ((imported + updated) % 10 === 0) {
+          console.log(`   ✓ Processed ${imported + updated}/${preparedRows.length} rows (${imported} new, ${updated} updated)...`);
         }
       }
       
-      console.log(`   ✓ Imported ${imported}/${preparedRows.length} rows`);
+      console.log(`   ✓ Processed ${imported + updated}/${preparedRows.length} rows (${imported} new, ${updated} updated)`);
     });
     
-    console.log('\n✅ Import completed successfully!');
-    console.log(`   Total rows imported: ${preparedRows.length}`);
+    console.log('\n✅ Import completed successfully with upsert!');
+    console.log(`   Total rows processed: ${preparedRows.length}`);
   } catch (error) {
     console.error('\n❌ Transaction failed - all changes rolled back:', error);
     throw error;

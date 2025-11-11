@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useTableData } from "@/hooks/use-table-data";
 import { DataTable } from "@/components/data-table";
-import { AddImageSection } from "@/components/add-image-section";
-import { ImageEditSection } from "@/components/image-edit-section";
+import { ImageManagerModal } from "@/components/image-manager-modal";
 import { ColumnCustomizationModal } from "@/components/column-customization-modal";
 import { PasswordPrompt } from "@/components/password-prompt";
 import { Navigation } from "@/components/navigation";
@@ -1093,7 +1092,8 @@ export default function TablePage() {
                 opts={{ loop: sortedPages.length > 1 }}
                 setApi={setCarouselApi}
               >
-                <div className="overflow-hidden rounded-xl border border-blue-200 dark:border-blue-500/30 bg-gradient-to-r from-blue-50/80 to-white/80 dark:from-blue-950/40 dark:to-gray-900/40 backdrop-blur-sm shadow-lg transition-all duration-500">
+                <div className="overflow-hidden rounded-xl border border-white/30 dark:border-white/10 bg-white/80 dark:bg-black/70 backdrop-blur-2xl shadow-2xl shadow-black/10 dark:shadow-black/40 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
                   <CarouselContent>
                   {sortedPages.map((page, index) => {
                     const isCurrentSlide = index === currentSlideIndex;
@@ -1112,7 +1112,7 @@ export default function TablePage() {
                     >
                       {/* Header Bar */}
                       <div 
-                        className="flex items-center justify-between px-6 py-3 cursor-pointer hover:bg-blue-100/50 dark:hover:bg-blue-900/30 transition-colors duration-300 text-sm"
+                        className="flex items-center justify-between px-6 py-3 cursor-pointer hover:bg-white/30 dark:hover:bg-white/5 transition-colors duration-300 text-sm relative z-10"
                         onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
                       >
                         <div className="flex items-center gap-3 flex-1">
@@ -1128,19 +1128,19 @@ export default function TablePage() {
                                 .arrow-left-2 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0.2s; }
                                 .arrow-left-3 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0.4s; }
                               `}</style>
-                              <svg className="w-4 h-4 text-blue-500 dark:text-blue-400 arrow-left-1" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
-                              <svg className="w-4 h-4 text-blue-500 dark:text-blue-400 arrow-left-2" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
-                              <svg className="w-4 h-4 text-blue-500 dark:text-blue-400 arrow-left-3" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
                             </div>
                           )}
                           
-                          <h1 className="font-bold text-gray-500 dark:text-blue-300" style={{fontSize: '12px'}} data-testid={`page-title-${page.id}`}>
+                          <h1 className="font-bold text-slate-700 dark:text-slate-300" style={{fontSize: '12px'}} data-testid={`page-title-${page.id}`}>
                             {page.title || "Untitled"}
                           </h1>
                           
@@ -1156,13 +1156,13 @@ export default function TablePage() {
                                 .arrow-right-2 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0.2s; }
                                 .arrow-right-3 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0.4s; }
                               `}</style>
-                              <svg className="w-4 h-4 text-blue-500 dark:text-blue-400 arrow-right-1" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                               </svg>
-                              <svg className="w-4 h-4 text-blue-500 dark:text-blue-400 arrow-right-2" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                               </svg>
-                              <svg className="w-4 h-4 text-blue-500 dark:text-blue-400 arrow-right-3" fill="currentColor" viewBox="0 0 20 20">
+                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-3" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                               </svg>
                             </div>
@@ -1176,7 +1176,7 @@ export default function TablePage() {
                                 className="h-6 w-6 p-0"
                                 data-testid={`button-edit-page-${page.id}`}
                               >
-                                <Pencil className="h-3 w-3 text-blue-500 dark:text-blue-400" />
+                                <Pencil className="h-3 w-3 text-slate-600 dark:text-slate-400" />
                               </Button>
                               {sortedPages.length > 1 && (
                                 <Button
@@ -1196,13 +1196,13 @@ export default function TablePage() {
                         
                         <div className="flex items-center gap-2">
                           <button 
-                            className="p-2 rounded-full hover:bg-blue-200/50 dark:hover:bg-blue-800/50 transition-all duration-300 group"
+                            className="p-2 rounded-full hover:bg-white/30 dark:hover:bg-white/10 transition-all duration-300 group"
                             data-testid="button-toggle-header"
                           >
                             {isHeaderExpanded ? (
-                              <ChevronUp className="h-4 w-4 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300" />
+                              <ChevronUp className="h-4 w-4 text-slate-600 dark:text-slate-400 group-hover:scale-110 transition-transform duration-300" />
                             ) : (
-                              <ChevronDown className="h-4 w-4 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300" />
+                              <ChevronDown className="h-4 w-4 text-slate-600 dark:text-slate-400 group-hover:scale-110 transition-transform duration-300" />
                             )}
                           </button>
                         </div>
@@ -1214,7 +1214,7 @@ export default function TablePage() {
                           isHeaderExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                         }`}
                       >
-                        <div className="px-4 pb-3 border-t border-blue-200/50 dark:border-blue-500/20 pt-3 bg-gradient-to-b from-blue-50/30 to-transparent dark:from-blue-950/20 dark:to-transparent">
+                        <div className="px-4 pb-3 border-t border-white/20 dark:border-white/10 pt-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/2 dark:to-transparent relative z-10">
                             <dl className="space-y-1" style={{fontSize: '10px', lineHeight: '1.4'}} data-testid={`page-description-${page.id}`}>
                               {(page.description || "").split('\n').map((line, lineIndex) => {
                                 const trimmedLine = line.trim();
@@ -1226,10 +1226,10 @@ export default function TablePage() {
                                   const value = valueParts.join(':').trim();
                                   return (
                                     <div key={lineIndex} className="flex items-start gap-3" style={{lineHeight: '1.4'}}>
-                                      <dt className="w-18 flex-shrink-0 font-semibold text-blue-600 dark:text-blue-400" style={{margin: 0, padding: 0}}>
+                                      <dt className="w-18 flex-shrink-0 font-semibold text-slate-700 dark:text-slate-300" style={{margin: 0, padding: 0}}>
                                         {key.trim()}
                                       </dt>
-                                      <dd className="flex-1 text-gray-700 dark:text-gray-300" style={{margin: 0, padding: 0}}>
+                                      <dd className="flex-1 text-slate-600 dark:text-slate-400" style={{margin: 0, padding: 0}}>
                                         {value}
                                       </dd>
                                     </div>
@@ -1237,7 +1237,7 @@ export default function TablePage() {
                                 }
                                 // If no colon, display as regular paragraph
                                 return (
-                                  <p key={lineIndex} className="text-gray-700 dark:text-gray-300" style={{margin: '2px 0', lineHeight: '1.4'}}>
+                                  <p key={lineIndex} className="text-slate-600 dark:text-slate-400" style={{margin: '2px 0', lineHeight: '1.4'}}>
                                     {trimmedLine}
                                   </p>
                                 );
@@ -1442,24 +1442,19 @@ export default function TablePage() {
           const selectedRow = rows.find(row => row.id === selectedRowForImage);
           if (!selectedRow) return null;
           
-          const hasImages = selectedRow.images && selectedRow.images.length > 0;
-          
-          return hasImages ? (
-            <ImageEditSection
-              rowId={selectedRowForImage}
-              images={selectedRow.images}
-              location={selectedRow.location}
-              onClose={() => setSelectedRowForImage(null)}
-              onAddImage={addImageToRow}
-              onUpdateImage={updateImageInRow}
-              onDeleteImage={deleteImageFromRow}
-            />
-          ) : (
-            <AddImageSection
+          return (
+            <ImageManagerModal
+              open={true}
+              onOpenChange={(open) => !open && setSelectedRowForImage(null)}
               rowId={selectedRowForImage}
               location={selectedRow.location}
-              onClose={() => setSelectedRowForImage(null)}
-              onAddImage={addImageToRow}
+              images={selectedRow.images || []}
+              onSave={async (rowId, images) => {
+                await updateRow.mutateAsync({
+                  id: rowId,
+                  updates: { images }
+                });
+              }}
             />
           );
         })()
