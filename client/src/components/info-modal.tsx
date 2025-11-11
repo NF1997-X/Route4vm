@@ -272,7 +272,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
         </Button>
       </DialogTrigger>
       <DialogContent 
-        className="max-w-lg overflow-hidden flex flex-col bg-white/70 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-3xl transition-smooth data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-90 data-[state=open]:zoom-in-95 duration-300 ease-out"
+        className="max-w-lg overflow-hidden flex flex-col bg-white/80 dark:bg-black/70 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-xl transition-smooth data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-90 data-[state=open]:zoom-in-95 duration-300 ease-out"
         style={{
           maxHeight: 'min(90vh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px))',
           touchAction: 'pan-y',
@@ -280,7 +280,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
       >
         {/* iOS Frosted Glass Layer */}
         <div 
-          className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-white/60 via-white/40 to-white/50 dark:from-black/40 dark:via-black/20 dark:to-black/30 border-0 shadow-inner" 
+          className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent border-0 shadow-inner" 
           style={{
             backdropFilter: 'blur(40px)',
             WebkitBackdropFilter: 'blur(40px)',
@@ -771,7 +771,9 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
       
       {/* QR Confirmation Dialog */}
       <Dialog open={showConfirmDialog} onOpenChange={handleCancelNavigation}>
-        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-gradient-to-br from-background/95 via-background/98 to-background dark:from-black/95 dark:via-black/98 dark:to-black border-2 border-blue-500/20 dark:border-blue-400/20">
+        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-white/80 dark:bg-black/70 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
+          <div className="relative z-10">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
               <CheckCircle className="w-5 h-5" />
@@ -817,12 +819,15 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
               Open Link
             </Button>
           </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 
       {/* Checklist Confirmation Dialog */}
       <Dialog open={showChecklistConfirm} onOpenChange={setShowChecklistConfirm}>
-        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-gradient-to-br from-background/95 via-background/98 to-background dark:from-black/95 dark:via-black/98 dark:to-black border-2 border-blue-500/20 dark:border-blue-400/20">
+        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-white/80 dark:bg-black/70 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
+          <div className="relative z-10">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
               <ListChecks className="w-5 h-5" />
@@ -868,12 +873,15 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
               Open Checklist
             </Button>
           </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 
       {/* Navigation Confirmation Dialog */}
       <Dialog open={showNavigationConfirm} onOpenChange={setShowNavigationConfirm}>
-        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-gradient-to-br from-background/95 via-background/98 to-background dark:from-black/95 dark:via-black/98 dark:to-black border-2 border-blue-500/20 dark:border-blue-400/20">
+        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-white/80 dark:bg-black/70 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
+          <div className="relative z-10">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
               {navigationType === 'google' ? (
@@ -928,12 +936,15 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
               Open {navigationType === 'google' ? 'Google Maps' : 'Waze'}
             </Button>
           </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 
       {/* URL Confirmation Dialog */}
       <Dialog open={showUrlConfirm} onOpenChange={setShowUrlConfirm}>
-        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-gradient-to-br from-background/95 via-background/98 to-background dark:from-black/95 dark:via-black/98 dark:to-black border-2 border-blue-500/20 dark:border-blue-400/20">
+        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-white/80 dark:bg-black/70 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
+          <div className="relative z-10">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
               <ExternalLink className="w-5 h-5" />
@@ -979,12 +990,15 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
               Open Link
             </Button>
           </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 
       {/* Save Confirmation Dialog */}
       <Dialog open={showSaveConfirm} onOpenChange={setShowSaveConfirm}>
-        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-gradient-to-br from-background/95 via-background/98 to-background dark:from-black/95 dark:via-black/98 dark:to-black border-2 border-green-500/20 dark:border-green-400/20">
+        <DialogContent className="max-w-md animate-in zoom-in-95 duration-200 bg-white/80 dark:bg-black/70 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-xl">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
+          <div className="relative z-10">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-green-600 dark:text-green-400">
               <Save className="w-5 h-5" />
@@ -1040,6 +1054,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
               Save Changes
             </Button>
           </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 

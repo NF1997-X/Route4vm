@@ -1129,7 +1129,7 @@ export function DataTable({
               return (
                 <div key={route} className="flex items-center gap-0.5 px-2 py-0.5 bg-transparent border border-transparent rounded-full text-gray-400 text-xs">
                   {iconSrc ? (
-                    <img src={iconSrc} alt={`${route} flag`} className="w-4 h-3 object-cover mr-1" />
+                    <img src={iconSrc} alt={`${route} flag`} className="w-4 h-4 object-contain mr-1" />
                   ) : (
                     <Filter className="w-2.5 h-2.5" />
                   )}

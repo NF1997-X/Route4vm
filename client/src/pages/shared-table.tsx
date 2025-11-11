@@ -387,7 +387,7 @@ export default function SharedTablePage() {
       )}
 
       {/* Simple Header - Same as Custom Table */}
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-gradient-to-r from-blue-500/10 via-blue-600/10 to-blue-700/10 dark:from-blue-500/20 dark:via-blue-600/20 dark:to-blue-700/20 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg shadow-blue-500/20">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
         <div className="container mx-auto px-4">
           <div className="flex h-14 items-center justify-between text-[12px]">
             <div className="flex items-center space-x-2">

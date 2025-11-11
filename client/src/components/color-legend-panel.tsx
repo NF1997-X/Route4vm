@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 interface ColorLegendPanelProps {
   className?: string;
 }
 
 export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  
+  // Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, []);
+  
   // Get current day of week (0 = Sunday, 1 = Monday, etc.)
-  const today = new Date().getDay();
-  const now = new Date();
+  const today = currentTime.getDay();
   
   // Format date and time
-  const formattedDate = now.toLocaleDateString('en-MY', { 
+  const formattedDate = currentTime.toLocaleDateString('en-MY', { 
     weekday: 'long', 
     year: 'numeric', 
     month: 'long', 
     day: 'numeric' 
   });
-  const formattedTime = now.toLocaleTimeString('en-MY', { 
+  const formattedTime = currentTime.toLocaleTimeString('en-MY', { 
     hour: '2-digit', 
     minute: '2-digit',
     second: '2-digit',
@@ -75,7 +85,7 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
   };
 
   return (
-    <div className={`bg-white/70 dark:bg-black/30 backdrop-blur-sm border border-gray-200/60 dark:border-white/10 rounded-lg p-6 shadow-sm ${className}`}>
+    <div className={`bg-white/70 dark:bg-black/30 backdrop-blur-sm border border-gray-200/60 dark:border-white/10 rounded-lg p-6 shadow-sm max-w-4xl w-full ${className}`}>
       <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2 text-center">
         Daily Color Legend
       </h3>
@@ -83,15 +93,15 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
         {formattedDate} | {formattedTime}
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-[5px]">
         {/* Stock In */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 flex-1">
-            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Stock In:</span>
+        <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-col items-center gap-2">
             <div 
               className="w-4 h-4 rounded-full border-2 border-white/50 shadow-sm"
               style={{ backgroundColor: stockInColors[today as keyof typeof stockInColors] }}
             />
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Stock In:</span>
             <span className="text-xs text-slate-600 dark:text-slate-400">
               {colorNames[stockInColors[today as keyof typeof stockInColors] as keyof typeof colorNames]}
             </span>
@@ -99,13 +109,13 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
         </div>
 
         {/* Move Front */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 flex-1">
-            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Move Front:</span>
+        <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-col items-center gap-2">
             <div 
               className="w-4 h-4 rounded-full border-2 border-white/50 shadow-sm"
               style={{ backgroundColor: moveFrontColors[today as keyof typeof moveFrontColors] }}
             />
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Move Front:</span>
             <span className="text-xs text-slate-600 dark:text-slate-400">
               {colorNames[moveFrontColors[today as keyof typeof moveFrontColors] as keyof typeof colorNames]}
             </span>
@@ -113,13 +123,13 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
         </div>
 
         {/* Expired */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 flex-1">
-            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Expired:</span>
+        <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-col items-center gap-2">
             <div 
               className="w-4 h-4 rounded-full border-2 border-white/50 shadow-sm"
               style={{ backgroundColor: expiredColors[today as keyof typeof expiredColors] }}
             />
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Expired:</span>
             <span className="text-xs text-slate-600 dark:text-slate-400">
               {colorNames[expiredColors[today as keyof typeof expiredColors] as keyof typeof colorNames]}
             </span>
@@ -129,7 +139,7 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
 
       {/* Full Week Schedule (Collapsible) */}
       <details className="mt-4">
-        <summary className="text-xs text-slate-600 dark:text-slate-400 cursor-pointer hover:text-slate-800 dark:hover:text-slate-200 transition-colors">
+        <summary className="text-xs text-slate-600 dark:text-slate-400 cursor-pointer hover:text-slate-800 dark:hover:text-slate-200 transition-colors text-center">
           View Full Week Schedule
         </summary>
         <div className="mt-3 space-y-2 text-xs">

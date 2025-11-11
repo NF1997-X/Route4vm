@@ -408,7 +408,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   );
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-gradient-to-r from-blue-500/10 via-blue-600/10 to-blue-700/10 dark:from-blue-500/20 dark:via-blue-600/20 dark:to-blue-700/20 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg shadow-blue-500/20">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between text-[12px]">
           {/* Logo/Brand */}
@@ -448,9 +448,9 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             
             {/* Custom Dropdown Content */}
             {isMenuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-80 max-h-[80vh] bg-white/95 dark:bg-black/95 backdrop-blur-3xl border border-white/20 dark:border-white/10 shadow-[0_32px_64px_0_rgba(0,0,0,0.35)] rounded-3xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden z-50">
+              <div className="absolute right-0 top-full mt-2 w-80 max-h-[80vh] bg-white/80 dark:bg-black/70 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-2xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden z-50">
                 {/* Glass Background Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/2 dark:to-transparent pointer-events-none rounded-3xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-2xl"></div>
                 
                 {/* Content Container */}
                 <div className="relative z-10 overflow-hidden">
@@ -470,7 +470,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             {/* Click outside overlay */}
             {isMenuOpen && (
               <div 
-                className="fixed inset-0 z-40"
+                className="fixed inset-0 z-40 bg-black/20 dark:bg-black/40 backdrop-blur-sm"
                 onClick={() => {
                   console.log('Clicked outside - closing menu');
                   setIsMenuOpen(false);
