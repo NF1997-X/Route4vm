@@ -5,11 +5,7 @@ var __export = (target, all) => {
 };
 
 // server/vercel.ts
-import dotenv from "dotenv";
-import express2 from "express";
-
-// server/routes.ts
-import { createServer } from "http";
+import express from "express";
 
 // shared/schema.ts
 var schema_exports = {};
@@ -901,7 +897,7 @@ var DatabaseStorage = class {
 };
 var storage = new DatabaseStorage();
 
-// server/routes.ts
+// server/vercel.ts
 import { z as z2 } from "zod";
 
 // server/routeOptimizer.ts
@@ -1281,1036 +1277,10 @@ async function calculateRoutesForDestinations(destinations) {
   return { distances, tollPrices };
 }
 
-// server/routes.ts
-var uuidSchema = z2.string().uuid();
-async function registerRoutes(app2) {
-  app2.get("/api/table-rows", async (req, res) => {
-    try {
-      const rows = await storage.getTableRows();
-      res.json(rows);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch table rows" });
-    }
-  });
-  app2.get("/api/table-rows/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid row ID format" });
-      }
-      const row = await storage.getTableRow(req.params.id);
-      if (!row) {
-        return res.status(404).json({ message: "Row not found" });
-      }
-      res.json(row);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch table row" });
-    }
-  });
-  app2.get("/api/ql-kitchen", async (req, res) => {
-    try {
-      const row = await storage.getQlKitchenRow();
-      if (!row) {
-        return res.status(404).json({ message: "QL Kitchen row not found" });
-      }
-      res.json(row);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch QL Kitchen row" });
-    }
-  });
-  app2.post("/api/table-rows", async (req, res) => {
-    try {
-      const validatedData = insertTableRowSchema.parse(req.body);
-      const row = await storage.createTableRow(validatedData);
-      res.status(201).json(row);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        res.status(500).json({ message: "Failed to create table row" });
-      }
-    }
-  });
-  app2.patch("/api/table-rows/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid row ID format" });
-      }
-      const normalizedBody = Object.fromEntries(
-        Object.entries(req.body).map(([key, value]) => {
-          const camelKey = key.replace(/_([a-z])/g, (match, letter) => letter.toUpperCase());
-          return [camelKey, value];
-        })
-      );
-      if (normalizedBody.tngRoute !== void 0) {
-        const currencyValue = String(normalizedBody.tngRoute);
-        if (currencyValue !== "" && isNaN(Number(currencyValue))) {
-          return res.status(400).json({
-            message: "Invalid currency value",
-            details: "Currency value must be a number"
-          });
-        }
-        if (currencyValue !== "" && !isNaN(Number(currencyValue))) {
-          normalizedBody.tngRoute = Number(currencyValue).toFixed(2);
-        }
-      }
-      console.log("Attempting to update row with data:", JSON.stringify(normalizedBody, null, 2));
-      const updates = insertTableRowSchema.partial().parse(normalizedBody);
-      const row = await storage.updateTableRow(req.params.id, updates);
-      if (!row) {
-        return res.status(404).json({ message: "Row not found" });
-      }
-      res.json(row);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        console.error("Zod validation error:", JSON.stringify(error.errors, null, 2));
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error(`Error updating row ${req.params.id}:`, error);
-        res.status(500).json({ message: "Failed to update table row" });
-      }
-    }
-  });
-  app2.delete("/api/table-rows/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid row ID format" });
-      }
-      const success = await storage.deleteTableRow(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: "Row not found" });
-      }
-      res.status(204).send();
-    } catch (error) {
-      res.status(500).json({ message: "Failed to delete table row" });
-    }
-  });
-  app2.post("/api/table-rows/reorder", async (req, res) => {
-    try {
-      const { rowIds } = req.body;
-      if (!Array.isArray(rowIds)) {
-        return res.status(400).json({ message: "rowIds must be an array" });
-      }
-      for (const id of rowIds) {
-        const validationResult = uuidSchema.safeParse(id);
-        if (!validationResult.success) {
-          return res.status(400).json({ message: "All row IDs must be valid UUIDs" });
-        }
-      }
-      const rows = await storage.reorderTableRows(rowIds);
-      res.json(rows);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to reorder table rows" });
-    }
-  });
-  app2.put("/api/table-rows/bulk-update-color", async (req, res) => {
-    try {
-      const { route, color } = req.body;
-      if (!route || typeof route !== "string") {
-        return res.status(400).json({ message: "Route is required and must be a string" });
-      }
-      if (!color || typeof color !== "string" || !color.match(/^#[0-9A-Fa-f]{6}$/)) {
-        return res.status(400).json({ message: "Valid hex color is required (e.g., #3b82f6)" });
-      }
-      const updatedCount = await storage.bulkUpdateMarkerColorByRoute(route, color);
-      res.json({
-        message: `Updated ${updatedCount} location(s) in route "${route}"`,
-        updatedCount,
-        route,
-        color
-      });
-    } catch (error) {
-      console.error("Error in bulk update marker color:", error);
-      res.status(500).json({ message: "Failed to bulk update marker colors" });
-    }
-  });
-  app2.get("/api/table-columns", async (req, res) => {
-    try {
-      const columns = await storage.getTableColumns();
-      res.json(columns);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch table columns" });
-    }
-  });
-  app2.post("/api/table-columns", async (req, res) => {
-    try {
-      const validatedData = insertTableColumnSchema.parse(req.body);
-      const column = await storage.createTableColumn(validatedData);
-      res.status(201).json(column);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        res.status(500).json({ message: "Failed to create table column" });
-      }
-    }
-  });
-  app2.patch("/api/table-columns/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid column ID format" });
-      }
-      const updates = insertTableColumnSchema.partial().parse(req.body);
-      const column = await storage.updateTableColumn(req.params.id, updates);
-      if (!column) {
-        return res.status(404).json({ message: "Column not found" });
-      }
-      res.json(column);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        res.status(500).json({ message: "Failed to update table column" });
-      }
-    }
-  });
-  app2.post("/api/table-columns/reorder", async (req, res) => {
-    try {
-      const { columnIds } = req.body;
-      if (!Array.isArray(columnIds)) {
-        return res.status(400).json({ message: "columnIds must be an array" });
-      }
-      for (const id of columnIds) {
-        const validationResult = uuidSchema.safeParse(id);
-        if (!validationResult.success) {
-          return res.status(400).json({ message: "All column IDs must be valid UUIDs" });
-        }
-      }
-      const columns = await storage.reorderTableColumns(columnIds);
-      res.json(columns);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to reorder table columns" });
-    }
-  });
-  app2.delete("/api/table-columns/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid column ID format" });
-      }
-      const success = await storage.deleteTableColumn(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: "Column not found" });
-      }
-      res.status(204).send();
-    } catch (error) {
-      res.status(500).json({ message: "Failed to delete table column" });
-    }
-  });
-  app2.post("/api/table-rows/:id/images", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid row ID format" });
-      }
-      const { imageUrl, caption } = req.body;
-      if (!imageUrl || typeof imageUrl !== "string") {
-        return res.status(400).json({ message: "imageUrl is required" });
-      }
-      const row = await storage.getTableRow(req.params.id);
-      if (!row) {
-        return res.status(404).json({ message: "Row not found" });
-      }
-      const existingImageUrls = row.images.map((img) => img.url);
-      if (existingImageUrls.includes(imageUrl)) {
-        return res.status(400).json({ message: "Image URL already exists for this row" });
-      }
-      const newImage = {
-        url: imageUrl,
-        caption: caption && typeof caption === "string" ? caption : "",
-        type: "image"
-      };
-      const updatedImages = [...row.images, newImage];
-      const updatedRow = await storage.updateTableRow(req.params.id, { images: updatedImages });
-      res.json(updatedRow);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to add image to row" });
-    }
-  });
-  app2.patch("/api/table-rows/:id/images/:imageIndex", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid row ID format" });
-      }
-      const { imageUrl, caption } = req.body;
-      const imageIndex = parseInt(req.params.imageIndex);
-      if (isNaN(imageIndex) || imageIndex < 0 || !Number.isInteger(imageIndex)) {
-        return res.status(400).json({ message: "Image index must be a non-negative integer" });
-      }
-      const row = await storage.getTableRow(req.params.id);
-      if (!row) {
-        return res.status(404).json({ message: "Row not found" });
-      }
-      if (imageIndex >= row.images.length) {
-        return res.status(400).json({ message: "Invalid image index" });
-      }
-      if (imageUrl !== void 0) {
-        const existingImageUrls = row.images.map((img, idx) => idx !== imageIndex ? img.url : null).filter(Boolean);
-        if (existingImageUrls.includes(imageUrl)) {
-          return res.status(400).json({ message: "Image URL already exists for this row" });
-        }
-      }
-      const updatedImages = [...row.images];
-      updatedImages[imageIndex] = {
-        url: imageUrl !== void 0 ? imageUrl : updatedImages[imageIndex].url,
-        caption: caption !== void 0 ? caption : updatedImages[imageIndex].caption,
-        type: updatedImages[imageIndex].type || "image",
-        thumbnail: updatedImages[imageIndex].thumbnail
-      };
-      const updatedRow = await storage.updateTableRow(req.params.id, { images: updatedImages });
-      res.json(updatedRow);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to update image" });
-    }
-  });
-  app2.delete("/api/table-rows/:id/images/:imageIndex?", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid row ID format" });
-      }
-      const row = await storage.getTableRow(req.params.id);
-      if (!row) {
-        return res.status(404).json({ message: "Row not found" });
-      }
-      let updatedImages;
-      if (req.params.imageIndex === void 0) {
-        updatedImages = [];
-      } else {
-        const imageIndex = parseInt(req.params.imageIndex);
-        if (isNaN(imageIndex) || imageIndex < 0 || !Number.isInteger(imageIndex)) {
-          return res.status(400).json({ message: "Image index must be a non-negative integer" });
-        }
-        if (imageIndex >= row.images.length) {
-          return res.status(400).json({ message: "Invalid image index" });
-        }
-        updatedImages = row.images.filter((_, index) => index !== imageIndex);
-      }
-      const updatedRow = await storage.updateTableRow(req.params.id, { images: updatedImages });
-      res.json(updatedRow);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to delete image(s)" });
-    }
-  });
-  app2.get("/api/proxy-image", async (req, res) => {
-    try {
-      const { url } = req.query;
-      if (!url || typeof url !== "string") {
-        return res.status(400).json({ error: "URL parameter required" });
-      }
-      if (!url.match(/^https?:\/\//)) {
-        return res.status(400).json({ error: "Only HTTP/HTTPS URLs allowed" });
-      }
-      if (url.length > 2e3) {
-        return res.status(400).json({ error: "URL too long" });
-      }
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 5e3);
-      const response = await fetch(url, {
-        signal: controller.signal,
-        headers: {
-          "User-Agent": "QR-Scanner-Bot/1.0"
-        }
-      });
-      clearTimeout(timeout);
-      if (!response.ok) {
-        return res.status(response.status).json({ error: "Failed to fetch image" });
-      }
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.startsWith("image/")) {
-        return res.status(415).json({ error: "Not an image" });
-      }
-      const contentLength = response.headers.get("content-length");
-      if (contentLength && parseInt(contentLength) > 10 * 1024 * 1024) {
-        return res.status(413).json({ error: "Image too large" });
-      }
-      res.set({
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": contentType,
-        "Cache-Control": "public, max-age=300"
-      });
-      const buffer = await response.arrayBuffer();
-      res.send(Buffer.from(buffer));
-    } catch (error) {
-      console.error("Proxy image error:", error);
-      if (error.name === "AbortError") {
-        res.status(408).json({ error: "Request timeout" });
-      } else {
-        res.status(500).json({ error: "Internal server error" });
-      }
-    }
-  });
-  app2.post("/api/upload-image", async (req, res) => {
-    try {
-      const { image } = req.body;
-      if (!image || typeof image !== "string") {
-        return res.status(400).json({ message: "Image (base64 or data URL) is required" });
-      }
-      let base64 = image;
-      const match = String(image).match(/^data:([a-zA-Z0-9+/.-]+);base64,(.*)$/);
-      if (match) {
-        base64 = match[2];
-      }
-      if (base64.length > 6 * 1024 * 1024) {
-        return res.status(413).json({ message: "Image too large" });
-      }
-      const apiKey = process.env.IMGBB_API_KEY;
-      if (!apiKey) {
-        console.error("Missing IMGBB_API_KEY in environment");
-        return res.status(500).json({ message: "Image upload service not configured" });
-      }
-      const params = new URLSearchParams();
-      params.append("image", base64);
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: params.toString()
-      });
-      if (!response.ok) {
-        const text2 = await response.text().catch(() => "");
-        console.error("ImgBB upload failed", response.status, text2);
-        return res.status(502).json({ message: "Failed to upload image to hosting provider" });
-      }
-      const data = await response.json();
-      if (!data || !data.data || !data.data.url) {
-        console.error("Unexpected ImgBB response", JSON.stringify(data));
-        return res.status(502).json({ message: "Unexpected response from image host" });
-      }
-      res.json({ url: data.data.url });
-    } catch (error) {
-      console.error("Upload image error:", error);
-      res.status(500).json({ message: "Failed to upload image" });
-    }
-  });
-  app2.post("/api/calculate-tolls", async (req, res) => {
-    try {
-      const requestSchema = z2.object({
-        rowIds: z2.array(z2.string().uuid()).optional()
-      });
-      const validatedData = requestSchema.parse(req.body);
-      let rows;
-      if (validatedData.rowIds && validatedData.rowIds.length > 0) {
-        const allRows = await storage.getTableRows();
-        rows = allRows.filter((row) => validatedData.rowIds.includes(row.id));
-      } else {
-        rows = await storage.getTableRows();
-        rows = rows.filter((row) => row.sortOrder !== -1);
-      }
-      const routeData = await calculateRoutesForDestinations(rows);
-      for (const row of rows) {
-        const updates = {};
-        if (routeData.distances[row.id] !== void 0) {
-          updates.kilometer = routeData.distances[row.id].toString();
-        }
-        if (routeData.tollPrices[row.id] !== void 0) {
-          updates.tollPrice = routeData.tollPrices[row.id].toFixed(2);
-        }
-        if (Object.keys(updates).length > 0) {
-          await storage.updateTableRow(row.id, updates);
-        }
-      }
-      res.json({
-        success: true,
-        distances: routeData.distances,
-        tollPrices: routeData.tollPrices,
-        message: `Updated distances and toll prices for ${Object.keys(routeData.tollPrices).length} destinations`
-      });
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid request data", errors: error.errors });
-      } else {
-        console.error("Toll calculation error:", error);
-        res.status(500).json({ message: "Failed to calculate toll prices" });
-      }
-    }
-  });
-  app2.post("/api/optimize-route", async (req, res) => {
-    try {
-      const requestSchema = z2.object({
-        rowIds: z2.array(z2.string().uuid()).optional(),
-        startLocation: z2.object({
-          latitude: z2.number(),
-          longitude: z2.number()
-        }).optional(),
-        algorithm: z2.enum(["nearest_neighbor", "genetic", "simulated_annealing"]).optional(),
-        prioritizeTrip: z2.boolean().optional(),
-        maxDistance: z2.number().optional(),
-        vehicleSpecs: z2.object({
-          type: z2.string(),
-          fuelType: z2.string(),
-          tollClass: z2.number()
-        }).optional()
-      });
-      const validatedData = requestSchema.parse(req.body);
-      let rows;
-      if (validatedData.rowIds && validatedData.rowIds.length > 0) {
-        const allRows = await storage.getTableRows();
-        rows = allRows.filter((row) => validatedData.rowIds.includes(row.id));
-      } else {
-        rows = await storage.getTableRows();
-        rows = rows.filter((row) => row.sortOrder !== -1);
-      }
-      const validRows = rows.filter(
-        (row) => row.latitude && row.longitude && !isNaN(parseFloat(row.latitude)) && !isNaN(parseFloat(row.longitude)) && parseFloat(row.latitude) !== 0 && parseFloat(row.longitude) !== 0
-      );
-      if (validRows.length < 2) {
-        return res.status(400).json({
-          message: `At least 2 locations with valid coordinates are required for optimization. Found ${validRows.length}.`
-        });
-      }
-      const result = optimizeRoute(
-        validRows,
-        validatedData.algorithm || "nearest_neighbor",
-        validatedData.startLocation,
-        validatedData.prioritizeDelivery || false
-      );
-      res.json(result);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid request data", errors: error.errors });
-      } else if (error instanceof Error) {
-        res.status(400).json({ message: error.message });
-      } else {
-        console.error("Route optimization error:", error);
-        res.status(500).json({ message: "Failed to optimize route" });
-      }
-    }
-  });
-  app2.post("/api/save-route", async (req, res) => {
-    try {
-      const validatedData = insertRouteOptimizationSchema.parse(req.body);
-      const savedRoute = await storage.saveRoute(validatedData);
-      res.status(201).json(savedRoute);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Save route error:", error);
-        res.status(500).json({ message: "Failed to save route" });
-      }
-    }
-  });
-  app2.get("/api/saved-routes", async (req, res) => {
-    try {
-      const savedRoutes = await storage.getSavedRoutes();
-      res.json(savedRoutes);
-    } catch (error) {
-      console.error("Get saved routes error:", error);
-      res.status(500).json({ message: "Failed to fetch saved routes" });
-    }
-  });
-  app2.get("/api/saved-routes/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid route ID format" });
-      }
-      const savedRoute = await storage.getSavedRoute(req.params.id);
-      if (!savedRoute) {
-        return res.status(404).json({ message: "Saved route not found" });
-      }
-      res.json(savedRoute);
-    } catch (error) {
-      console.error("Get saved route error:", error);
-      res.status(500).json({ message: "Failed to fetch saved route" });
-    }
-  });
-  app2.delete("/api/saved-routes/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid route ID format" });
-      }
-      const success = await storage.deleteSavedRoute(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: "Saved route not found" });
-      }
-      res.status(204).send();
-    } catch (error) {
-      console.error("Delete saved route error:", error);
-      res.status(500).json({ message: "Failed to delete saved route" });
-    }
-  });
-  app2.get("/api/layout", async (req, res) => {
-    try {
-      const userIdSchema = z2.string().min(1, "userId cannot be empty");
-      const validationResult = userIdSchema.safeParse(req.query.userId);
-      if (!validationResult.success) {
-        return res.status(400).json({
-          message: "userId is required",
-          errors: validationResult.error.errors
-        });
-      }
-      const userId = validationResult.data;
-      const layout = await storage.getLayoutPreferences(userId);
-      if (!layout) {
-        return res.status(404).json({ message: "No saved layout found" });
-      }
-      res.json(layout);
-    } catch (error) {
-      console.error("Get layout preferences error:", error);
-      res.status(500).json({ message: "Failed to fetch layout preferences" });
-    }
-  });
-  app2.post("/api/layout", async (req, res) => {
-    try {
-      const userIdSchema = z2.string().min(1, "userId cannot be empty");
-      const userIdValidation = userIdSchema.safeParse(req.body.userId);
-      if (!userIdValidation.success) {
-        return res.status(400).json({
-          message: "userId is required",
-          errors: userIdValidation.error.errors
-        });
-      }
-      const userId = userIdValidation.data;
-      const { userId: _, ...layoutData } = req.body;
-      const validatedData = insertLayoutPreferencesSchema.parse(layoutData);
-      const layout = await storage.saveLayoutPreferences(userId, validatedData);
-      res.status(200).json(layout);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Save layout preferences error:", error);
-        res.status(500).json({ message: "Failed to save layout preferences" });
-      }
-    }
-  });
-  app2.get("/api/pages", async (req, res) => {
-    try {
-      const pages2 = await storage.getPages();
-      res.json(pages2);
-    } catch (error) {
-      console.error("Get pages error:", error);
-      res.status(500).json({ message: "Failed to fetch pages" });
-    }
-  });
-  app2.get("/api/pages/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid page ID format" });
-      }
-      const page = await storage.getPage(req.params.id);
-      if (!page) {
-        return res.status(404).json({ message: "Page not found" });
-      }
-      res.json(page);
-    } catch (error) {
-      console.error("Get page error:", error);
-      res.status(500).json({ message: "Failed to fetch page" });
-    }
-  });
-  app2.post("/api/pages", async (req, res) => {
-    try {
-      const validatedData = insertPageSchema.parse(req.body);
-      const page = await storage.createPage(validatedData);
-      res.status(201).json(page);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Create page error:", error);
-        res.status(500).json({ message: "Failed to create page" });
-      }
-    }
-  });
-  app2.patch("/api/pages/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid page ID format" });
-      }
-      const updates = insertPageSchema.partial().parse(req.body);
-      const page = await storage.updatePage(req.params.id, updates);
-      if (!page) {
-        return res.status(404).json({ message: "Page not found" });
-      }
-      res.json(page);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Update page error:", error);
-        res.status(500).json({ message: "Failed to update page" });
-      }
-    }
-  });
-  app2.delete("/api/pages/:id", async (req, res) => {
-    try {
-      const validationResult = uuidSchema.safeParse(req.params.id);
-      if (!validationResult.success) {
-        return res.status(400).json({ message: "Invalid page ID format" });
-      }
-      const success = await storage.deletePage(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: "Page not found" });
-      }
-      res.status(204).send();
-    } catch (error) {
-      console.error("Delete page error:", error);
-      res.status(500).json({ message: "Failed to delete page" });
-    }
-  });
-  app2.get("/api/global-settings/:key", async (req, res) => {
-    try {
-      const key = req.params.key;
-      const setting = await storage.getGlobalSetting(key);
-      if (!setting) {
-        if (key === "footerCompanyName") {
-          return res.json({ key, value: "Vending Machine" });
-        }
-        return res.status(404).json({ message: "Setting not found" });
-      }
-      res.json(setting);
-    } catch (error) {
-      console.error("Get global setting error:", error);
-      res.status(500).json({ message: "Failed to fetch global setting" });
-    }
-  });
-  app2.post("/api/global-settings", async (req, res) => {
-    try {
-      const schema = z2.object({
-        key: z2.string(),
-        value: z2.string()
-      });
-      const { key, value } = schema.parse(req.body);
-      const setting = await storage.setGlobalSetting(key, value);
-      res.json(setting);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Set global setting error:", error);
-        res.status(500).json({ message: "Failed to save global setting" });
-      }
-    }
-  });
-  app2.post("/api/share-table", async (req, res) => {
-    try {
-      const validatedData = insertSharedTableStateSchema.parse(req.body);
-      const sharedState = await storage.createSharedTableState(validatedData);
-      res.status(201).json(sharedState);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Create shared table state error:", error);
-        res.status(500).json({ message: "Failed to create shared table state" });
-      }
-    }
-  });
-  app2.get("/api/share-table/:shareId", async (req, res) => {
-    try {
-      const shareId = req.params.shareId;
-      const sharedState = await storage.getSharedTableState(shareId);
-      if (!sharedState) {
-        return res.status(404).json({ message: "Shared table state not found" });
-      }
-      res.json(sharedState);
-    } catch (error) {
-      console.error("Get shared table state error:", error);
-      res.status(500).json({ message: "Failed to fetch shared table state" });
-    }
-  });
-  app2.put("/api/share-table/:shareId/remark", async (req, res) => {
-    try {
-      const shareId = req.params.shareId;
-      const schema = z2.object({
-        remark: z2.string()
-      });
-      const { remark } = schema.parse(req.body);
-      const updatedState = await storage.updateSharedTableRemark(shareId, remark);
-      if (!updatedState) {
-        return res.status(404).json({ message: "Shared table state not found" });
-      }
-      res.json(updatedState);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Update shared table remark error:", error);
-        res.status(500).json({ message: "Failed to update remark" });
-      }
-    }
-  });
-  app2.get("/api/saved-share-links", async (req, res) => {
-    try {
-      const links = await storage.getSavedShareLinks();
-      res.json(links);
-    } catch (error) {
-      console.error("Get saved share links error:", error);
-      res.status(500).json({ message: "Failed to fetch saved share links" });
-    }
-  });
-  app2.post("/api/saved-share-links", async (req, res) => {
-    try {
-      const validatedData = insertSavedShareLinkSchema.parse(req.body);
-      const savedLink = await storage.createSavedShareLink(validatedData);
-      res.status(201).json(savedLink);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Create saved share link error:", error);
-        res.status(500).json({ message: "Failed to save share link" });
-      }
-    }
-  });
-  app2.patch("/api/saved-share-links/:id/remark", async (req, res) => {
-    try {
-      const schema = z2.object({
-        remark: z2.string()
-      });
-      const { remark } = schema.parse(req.body);
-      const updated = await storage.updateSavedShareLinkRemark(req.params.id, remark);
-      if (!updated) {
-        return res.status(404).json({ message: "Saved share link not found" });
-      }
-      res.json(updated);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Update saved share link remark error:", error);
-        res.status(500).json({ message: "Failed to update remark" });
-      }
-    }
-  });
-  app2.delete("/api/saved-share-links/:id", async (req, res) => {
-    try {
-      const success = await storage.deleteSavedShareLink(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: "Saved share link not found" });
-      }
-      res.json({ message: "Saved share link deleted successfully" });
-    } catch (error) {
-      console.error("Delete saved share link error:", error);
-      res.status(500).json({ message: "Failed to delete saved share link" });
-    }
-  });
-  app2.get("/api/custom-tables", async (req, res) => {
-    try {
-      const tables = await storage.getCustomTables();
-      res.json(tables);
-    } catch (error) {
-      console.error("Get custom tables error:", error);
-      res.status(500).json({ message: "Failed to fetch custom tables" });
-    }
-  });
-  app2.get("/api/custom-tables/:id", async (req, res) => {
-    try {
-      const table = await storage.getCustomTable(req.params.id);
-      if (!table) {
-        return res.status(404).json({ message: "Custom table not found" });
-      }
-      res.json(table);
-    } catch (error) {
-      console.error("Get custom table error:", error);
-      res.status(500).json({ message: "Failed to fetch custom table" });
-    }
-  });
-  app2.get("/api/custom-tables/:id/rows", async (req, res) => {
-    try {
-      const rows = await storage.getCustomTableRows(req.params.id);
-      res.json(rows);
-    } catch (error) {
-      console.error("Get custom table rows error:", error);
-      res.status(500).json({ message: "Failed to fetch custom table rows" });
-    }
-  });
-  app2.get("/api/custom-tables/share/:shareId", async (req, res) => {
-    try {
-      const table = await storage.getCustomTableByShareId(req.params.shareId);
-      if (!table) {
-        return res.status(404).json({ message: "Custom table not found" });
-      }
-      res.json(table);
-    } catch (error) {
-      console.error("Get custom table by shareId error:", error);
-      res.status(500).json({ message: "Failed to fetch custom table" });
-    }
-  });
-  app2.post("/api/custom-tables", async (req, res) => {
-    try {
-      const { name, description, rowIds } = req.body;
-      if (!name || !rowIds || !Array.isArray(rowIds) || rowIds.length === 0) {
-        return res.status(400).json({ message: "Name and at least one row ID are required" });
-      }
-      const shareId = Math.random().toString(36).substring(2, 8);
-      const tableData = insertCustomTableSchema.parse({
-        name,
-        shareId,
-        description: description || ""
-      });
-      const customTable = await storage.createCustomTable(tableData, rowIds);
-      res.status(201).json(customTable);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Create custom table error:", error);
-        res.status(500).json({ message: "Failed to create custom table" });
-      }
-    }
-  });
-  app2.patch("/api/custom-tables/:id", async (req, res) => {
-    try {
-      const updates = insertCustomTableSchema.partial().parse(req.body);
-      const table = await storage.updateCustomTable(req.params.id, updates);
-      if (!table) {
-        return res.status(404).json({ message: "Custom table not found" });
-      }
-      res.json(table);
-    } catch (error) {
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        console.error("Update custom table error:", error);
-        res.status(500).json({ message: "Failed to update custom table" });
-      }
-    }
-  });
-  app2.put("/api/custom-tables/:id/rows", async (req, res) => {
-    try {
-      const { name, description, rowIds } = req.body;
-      if (!rowIds || !Array.isArray(rowIds) || rowIds.length === 0) {
-        return res.status(400).json({ message: "At least one row ID is required" });
-      }
-      if (name || description !== void 0) {
-        await storage.updateCustomTable(req.params.id, { name, description });
-      }
-      await storage.deleteCustomTableRows(req.params.id);
-      for (const rowId of rowIds) {
-        await storage.createCustomTableRow({
-          customTableId: req.params.id,
-          tableRowId: rowId
-        });
-      }
-      const table = await storage.getCustomTable(req.params.id);
-      res.json(table);
-    } catch (error) {
-      console.error("Update custom table rows error:", error);
-      if (error instanceof z2.ZodError) {
-        res.status(400).json({ message: "Invalid data", errors: error.errors });
-      } else {
-        res.status(500).json({ message: "Failed to update custom table rows" });
-      }
-    }
-  });
-  app2.delete("/api/custom-tables/:id", async (req, res) => {
-    try {
-      const success = await storage.deleteCustomTable(req.params.id);
-      if (!success) {
-        return res.status(404).json({ message: "Custom table not found" });
-      }
-      res.json({ message: "Custom table deleted successfully" });
-    } catch (error) {
-      console.error("Delete custom table error:", error);
-      res.status(500).json({ message: "Failed to delete custom table" });
-    }
-  });
-  const httpServer = createServer(app2);
-  return httpServer;
-}
-
-// server/vite.ts
-import express from "express";
-import fs from "fs";
-import path2 from "path";
-import { createServer as createViteServer, createLogger } from "vite";
-
-// vite.config.ts
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-var vite_config_default = defineConfig({
-  plugins: [
-    react(),
-    runtimeErrorOverlay(),
-    ...process.env.NODE_ENV !== "production" && process.env.REPL_ID !== void 0 ? [
-      await import("@replit/vite-plugin-cartographer").then(
-        (m) => m.cartographer()
-      )
-    ] : []
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets")
-    }
-  },
-  root: path.resolve(import.meta.dirname, "client"),
-  build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
-    emptyOutDir: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          "react-vendor": ["react", "react-dom"],
-          "ui-vendor": ["@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu", "@radix-ui/react-select"],
-          "map-vendor": ["leaflet", "react-leaflet"],
-          "gallery-vendor": ["lightgallery"]
-        }
-      }
-    },
-    chunkSizeWarningLimit: 1e3,
-    minify: "esbuild",
-    sourcemap: false
-  },
-  server: {
-    host: "0.0.0.0",
-    port: 5e3,
-    hmr: {
-      clientPort: 443,
-      protocol: "wss"
-    },
-    fs: {
-      strict: true,
-      deny: ["**/.*"]
-    }
-  },
-  optimizeDeps: {
-    include: ["react", "react-dom", "lucide-react"],
-    exclude: []
-  }
-});
-
-// server/vite.ts
-import { nanoid } from "nanoid";
-var viteLogger = createLogger();
-function serveStatic(app2) {
-  const distPath = path2.resolve(import.meta.dirname, "public");
-  if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`
-    );
-  }
-  app2.use(express.static(distPath));
-  app2.use("*", (_req, res) => {
-    res.sendFile(path2.resolve(distPath, "index.html"));
-  });
-}
-
 // server/vercel.ts
-dotenv.config();
-var app = express2();
-app.use(express2.json({ limit: "50mb" }));
-app.use(express2.urlencoded({ extended: false, limit: "50mb" }));
-app.get("/health", (_req, res) => {
-  res.status(200).json({
-    status: "ok",
-    timestamp: (/* @__PURE__ */ new Date()).toISOString()
-  });
-});
+var app = express();
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
@@ -2318,26 +1288,914 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Cache-Control", "no-cache, no-store, must-revalidate");
   if (req.method === "OPTIONS") {
-    res.sendStatus(200);
-  } else {
-    next();
+    return res.sendStatus(200);
+  }
+  next();
+});
+var uuidSchema = z2.string().uuid();
+app.get("/health", (_req, res) => {
+  res.status(200).json({
+    status: "ok",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  });
+});
+app.get("/api/table-rows", async (req, res) => {
+  try {
+    const rows = await storage.getTableRows();
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch table rows" });
   }
 });
-var initialized = false;
-var initializeApp = async () => {
-  if (!initialized) {
-    await registerRoutes(app);
-    serveStatic(app);
-    app.use((err, _req, res, _next) => {
-      const status = err.status || err.statusCode || 500;
-      const message = err.message || "Internal Server Error";
-      res.status(status).json({ message });
-    });
-    initialized = true;
+app.get("/api/table-rows/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid row ID format" });
+    }
+    const row = await storage.getTableRow(req.params.id);
+    if (!row) {
+      return res.status(404).json({ message: "Row not found" });
+    }
+    res.json(row);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch table row" });
   }
-  return app;
-};
-initializeApp();
+});
+app.get("/api/ql-kitchen", async (req, res) => {
+  try {
+    const row = await storage.getQlKitchenRow();
+    if (!row) {
+      return res.status(404).json({ message: "QL Kitchen row not found" });
+    }
+    res.json(row);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch QL Kitchen row" });
+  }
+});
+app.post("/api/table-rows", async (req, res) => {
+  try {
+    const validatedData = insertTableRowSchema.parse(req.body);
+    const row = await storage.createTableRow(validatedData);
+    res.status(201).json(row);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to create table row" });
+    }
+  }
+});
+app.patch("/api/table-rows/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid row ID format" });
+    }
+    const normalizedBody = Object.fromEntries(
+      Object.entries(req.body).map(([key, value]) => {
+        const camelKey = key.replace(/_([a-z])/g, (match, letter) => letter.toUpperCase());
+        return [camelKey, value];
+      })
+    );
+    if (normalizedBody.tngRoute !== void 0) {
+      const currencyValue = String(normalizedBody.tngRoute);
+      if (currencyValue !== "" && isNaN(Number(currencyValue))) {
+        return res.status(400).json({
+          message: "Invalid currency value",
+          details: "Currency value must be a number"
+        });
+      }
+      if (currencyValue !== "" && !isNaN(Number(currencyValue))) {
+        normalizedBody.tngRoute = Number(currencyValue).toFixed(2);
+      }
+    }
+    const updates = insertTableRowSchema.partial().parse(normalizedBody);
+    const row = await storage.updateTableRow(req.params.id, updates);
+    if (!row) {
+      return res.status(404).json({ message: "Row not found" });
+    }
+    res.json(row);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to update table row" });
+    }
+  }
+});
+app.delete("/api/table-rows/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid row ID format" });
+    }
+    const success = await storage.deleteTableRow(req.params.id);
+    if (!success) {
+      return res.status(404).json({ message: "Row not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete table row" });
+  }
+});
+app.post("/api/table-rows/reorder", async (req, res) => {
+  try {
+    const { rowIds } = req.body;
+    if (!Array.isArray(rowIds)) {
+      return res.status(400).json({ message: "rowIds must be an array" });
+    }
+    for (const id of rowIds) {
+      const validationResult = uuidSchema.safeParse(id);
+      if (!validationResult.success) {
+        return res.status(400).json({ message: "All row IDs must be valid UUIDs" });
+      }
+    }
+    const rows = await storage.reorderTableRows(rowIds);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to reorder table rows" });
+  }
+});
+app.put("/api/table-rows/bulk-update-color", async (req, res) => {
+  try {
+    const { route, color } = req.body;
+    if (!route || typeof route !== "string") {
+      return res.status(400).json({ message: "Route is required and must be a string" });
+    }
+    if (!color || typeof color !== "string" || !color.match(/^#[0-9A-Fa-f]{6}$/)) {
+      return res.status(400).json({ message: "Valid hex color is required (e.g., #3b82f6)" });
+    }
+    const updatedCount = await storage.bulkUpdateMarkerColorByRoute(route, color);
+    res.json({
+      message: `Updated ${updatedCount} location(s) in route "${route}"`,
+      updatedCount,
+      route,
+      color
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to bulk update marker colors" });
+  }
+});
+app.get("/api/table-columns", async (req, res) => {
+  try {
+    const columns = await storage.getTableColumns();
+    res.json(columns);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch table columns" });
+  }
+});
+app.post("/api/table-columns", async (req, res) => {
+  try {
+    const validatedData = insertTableColumnSchema.parse(req.body);
+    const column = await storage.createTableColumn(validatedData);
+    res.status(201).json(column);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to create table column" });
+    }
+  }
+});
+app.patch("/api/table-columns/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid column ID format" });
+    }
+    const updates = insertTableColumnSchema.partial().parse(req.body);
+    const column = await storage.updateTableColumn(req.params.id, updates);
+    if (!column) {
+      return res.status(404).json({ message: "Column not found" });
+    }
+    res.json(column);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to update table column" });
+    }
+  }
+});
+app.post("/api/table-columns/reorder", async (req, res) => {
+  try {
+    const { columnIds } = req.body;
+    if (!Array.isArray(columnIds)) {
+      return res.status(400).json({ message: "columnIds must be an array" });
+    }
+    for (const id of columnIds) {
+      const validationResult = uuidSchema.safeParse(id);
+      if (!validationResult.success) {
+        return res.status(400).json({ message: "All column IDs must be valid UUIDs" });
+      }
+    }
+    const columns = await storage.reorderTableColumns(columnIds);
+    res.json(columns);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to reorder table columns" });
+  }
+});
+app.delete("/api/table-columns/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid column ID format" });
+    }
+    const success = await storage.deleteTableColumn(req.params.id);
+    if (!success) {
+      return res.status(404).json({ message: "Column not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete table column" });
+  }
+});
+app.post("/api/table-rows/:id/images", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid row ID format" });
+    }
+    const { imageUrl, caption } = req.body;
+    if (!imageUrl || typeof imageUrl !== "string") {
+      return res.status(400).json({ message: "imageUrl is required" });
+    }
+    const row = await storage.getTableRow(req.params.id);
+    if (!row) {
+      return res.status(404).json({ message: "Row not found" });
+    }
+    const existingImageUrls = row.images.map((img) => img.url);
+    if (existingImageUrls.includes(imageUrl)) {
+      return res.status(400).json({ message: "Image URL already exists for this row" });
+    }
+    const newImage = {
+      url: imageUrl,
+      caption: caption && typeof caption === "string" ? caption : "",
+      type: "image"
+    };
+    const updatedImages = [...row.images, newImage];
+    const updatedRow = await storage.updateTableRow(req.params.id, { images: updatedImages });
+    res.json(updatedRow);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to add image to row" });
+  }
+});
+app.patch("/api/table-rows/:id/images/:imageIndex", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid row ID format" });
+    }
+    const { imageUrl, caption } = req.body;
+    const imageIndex = parseInt(req.params.imageIndex);
+    if (isNaN(imageIndex) || imageIndex < 0 || !Number.isInteger(imageIndex)) {
+      return res.status(400).json({ message: "Image index must be a non-negative integer" });
+    }
+    const row = await storage.getTableRow(req.params.id);
+    if (!row) {
+      return res.status(404).json({ message: "Row not found" });
+    }
+    if (imageIndex >= row.images.length) {
+      return res.status(400).json({ message: "Invalid image index" });
+    }
+    if (imageUrl !== void 0) {
+      const existingImageUrls = row.images.map((img, idx) => idx !== imageIndex ? img.url : null).filter(Boolean);
+      if (existingImageUrls.includes(imageUrl)) {
+        return res.status(400).json({ message: "Image URL already exists for this row" });
+      }
+    }
+    const updatedImages = [...row.images];
+    updatedImages[imageIndex] = {
+      url: imageUrl !== void 0 ? imageUrl : updatedImages[imageIndex].url,
+      caption: caption !== void 0 ? caption : updatedImages[imageIndex].caption,
+      type: updatedImages[imageIndex].type || "image",
+      thumbnail: updatedImages[imageIndex].thumbnail
+    };
+    const updatedRow = await storage.updateTableRow(req.params.id, { images: updatedImages });
+    res.json(updatedRow);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update image" });
+  }
+});
+app.delete("/api/table-rows/:id/images/:imageIndex?", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid row ID format" });
+    }
+    const row = await storage.getTableRow(req.params.id);
+    if (!row) {
+      return res.status(404).json({ message: "Row not found" });
+    }
+    let updatedImages;
+    if (req.params.imageIndex === void 0) {
+      updatedImages = [];
+    } else {
+      const imageIndex = parseInt(req.params.imageIndex);
+      if (isNaN(imageIndex) || imageIndex < 0 || !Number.isInteger(imageIndex)) {
+        return res.status(400).json({ message: "Image index must be a non-negative integer" });
+      }
+      if (imageIndex >= row.images.length) {
+        return res.status(400).json({ message: "Invalid image index" });
+      }
+      updatedImages = row.images.filter((_, index) => index !== imageIndex);
+    }
+    const updatedRow = await storage.updateTableRow(req.params.id, { images: updatedImages });
+    res.json(updatedRow);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete image(s)" });
+  }
+});
+app.get("/api/proxy-image", async (req, res) => {
+  try {
+    const { url } = req.query;
+    if (!url || typeof url !== "string") {
+      return res.status(400).json({ error: "URL parameter required" });
+    }
+    if (!url.match(/^https?:\/\//)) {
+      return res.status(400).json({ error: "Only HTTP/HTTPS URLs allowed" });
+    }
+    if (url.length > 2e3) {
+      return res.status(400).json({ error: "URL too long" });
+    }
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5e3);
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent": "QR-Scanner-Bot/1.0"
+      }
+    });
+    clearTimeout(timeout);
+    if (!response.ok) {
+      return res.status(response.status).json({ error: "Failed to fetch image" });
+    }
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.startsWith("image/")) {
+      return res.status(415).json({ error: "Not an image" });
+    }
+    const contentLength = response.headers.get("content-length");
+    if (contentLength && parseInt(contentLength) > 10 * 1024 * 1024) {
+      return res.status(413).json({ error: "Image too large" });
+    }
+    res.set({
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=300"
+    });
+    const buffer = await response.arrayBuffer();
+    res.send(Buffer.from(buffer));
+  } catch (error) {
+    if (error.name === "AbortError") {
+      res.status(408).json({ error: "Request timeout" });
+    } else {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
+app.post("/api/upload-image", async (req, res) => {
+  try {
+    const { image } = req.body;
+    if (!image || typeof image !== "string") {
+      return res.status(400).json({ message: "Image (base64 or data URL) is required" });
+    }
+    let base64 = image;
+    const match = String(image).match(/^data:([a-zA-Z0-9+/.-]+);base64,(.*)$/);
+    if (match) {
+      base64 = match[2];
+    }
+    if (base64.length > 6 * 1024 * 1024) {
+      return res.status(413).json({ message: "Image too large" });
+    }
+    const apiKey = process.env.IMGBB_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ message: "Image upload service not configured" });
+    }
+    const params = new URLSearchParams();
+    params.append("image", base64);
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: params.toString()
+    });
+    if (!response.ok) {
+      return res.status(502).json({ message: "Failed to upload image to hosting provider" });
+    }
+    const data = await response.json();
+    if (!data || !data.data || !data.data.url) {
+      return res.status(502).json({ message: "Unexpected response from image host" });
+    }
+    res.json({ url: data.data.url });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to upload image" });
+  }
+});
+app.post("/api/calculate-tolls", async (req, res) => {
+  try {
+    const requestSchema = z2.object({
+      rowIds: z2.array(z2.string().uuid()).optional()
+    });
+    const validatedData = requestSchema.parse(req.body);
+    let rows;
+    if (validatedData.rowIds && validatedData.rowIds.length > 0) {
+      const allRows = await storage.getTableRows();
+      rows = allRows.filter((row) => validatedData.rowIds.includes(row.id));
+    } else {
+      rows = await storage.getTableRows();
+      rows = rows.filter((row) => row.sortOrder !== -1);
+    }
+    const routeData = await calculateRoutesForDestinations(rows);
+    for (const row of rows) {
+      const updates = {};
+      if (routeData.distances[row.id] !== void 0) {
+        updates.kilometer = routeData.distances[row.id].toString();
+      }
+      if (routeData.tollPrices[row.id] !== void 0) {
+        updates.tollPrice = routeData.tollPrices[row.id].toFixed(2);
+      }
+      if (Object.keys(updates).length > 0) {
+        await storage.updateTableRow(row.id, updates);
+      }
+    }
+    res.json({
+      success: true,
+      distances: routeData.distances,
+      tollPrices: routeData.tollPrices,
+      message: `Updated distances and toll prices for ${Object.keys(routeData.tollPrices).length} destinations`
+    });
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid request data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to calculate toll prices" });
+    }
+  }
+});
+app.post("/api/optimize-route", async (req, res) => {
+  try {
+    const requestSchema = z2.object({
+      rowIds: z2.array(z2.string().uuid()).optional(),
+      startLocation: z2.object({
+        latitude: z2.number(),
+        longitude: z2.number()
+      }).optional(),
+      algorithm: z2.enum(["nearest_neighbor", "genetic", "simulated_annealing"]).optional(),
+      prioritizeTrip: z2.boolean().optional(),
+      maxDistance: z2.number().optional(),
+      vehicleSpecs: z2.object({
+        type: z2.string(),
+        fuelType: z2.string(),
+        tollClass: z2.number()
+      }).optional()
+    });
+    const validatedData = requestSchema.parse(req.body);
+    let rows;
+    if (validatedData.rowIds && validatedData.rowIds.length > 0) {
+      const allRows = await storage.getTableRows();
+      rows = allRows.filter((row) => validatedData.rowIds.includes(row.id));
+    } else {
+      rows = await storage.getTableRows();
+      rows = rows.filter((row) => row.sortOrder !== -1);
+    }
+    const validRows = rows.filter(
+      (row) => row.latitude && row.longitude && !isNaN(parseFloat(row.latitude)) && !isNaN(parseFloat(row.longitude)) && parseFloat(row.latitude) !== 0 && parseFloat(row.longitude) !== 0
+    );
+    if (validRows.length < 2) {
+      return res.status(400).json({
+        message: `At least 2 locations with valid coordinates are required for optimization. Found ${validRows.length}.`
+      });
+    }
+    const result = optimizeRoute(
+      validRows,
+      validatedData.algorithm || "nearest_neighbor",
+      validatedData.startLocation,
+      validatedData.prioritizeDelivery || false
+    );
+    res.json(result);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid request data", errors: error.errors });
+    } else if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "Failed to optimize route" });
+    }
+  }
+});
+app.post("/api/save-route", async (req, res) => {
+  try {
+    const validatedData = insertRouteOptimizationSchema.parse(req.body);
+    const savedRoute = await storage.saveRoute(validatedData);
+    res.status(201).json(savedRoute);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to save route" });
+    }
+  }
+});
+app.get("/api/saved-routes", async (req, res) => {
+  try {
+    const savedRoutes = await storage.getSavedRoutes();
+    res.json(savedRoutes);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch saved routes" });
+  }
+});
+app.get("/api/saved-routes/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid route ID format" });
+    }
+    const savedRoute = await storage.getSavedRoute(req.params.id);
+    if (!savedRoute) {
+      return res.status(404).json({ message: "Saved route not found" });
+    }
+    res.json(savedRoute);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch saved route" });
+  }
+});
+app.delete("/api/saved-routes/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid route ID format" });
+    }
+    const success = await storage.deleteSavedRoute(req.params.id);
+    if (!success) {
+      return res.status(404).json({ message: "Saved route not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete saved route" });
+  }
+});
+app.get("/api/layout", async (req, res) => {
+  try {
+    const userIdSchema = z2.string().min(1, "userId cannot be empty");
+    const validationResult = userIdSchema.safeParse(req.query.userId);
+    if (!validationResult.success) {
+      return res.status(400).json({
+        message: "userId is required",
+        errors: validationResult.error.errors
+      });
+    }
+    const userId = validationResult.data;
+    const layout = await storage.getLayoutPreferences(userId);
+    if (!layout) {
+      return res.status(404).json({ message: "No saved layout found" });
+    }
+    res.json(layout);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch layout preferences" });
+  }
+});
+app.post("/api/layout", async (req, res) => {
+  try {
+    const userIdSchema = z2.string().min(1, "userId cannot be empty");
+    const userIdValidation = userIdSchema.safeParse(req.body.userId);
+    if (!userIdValidation.success) {
+      return res.status(400).json({
+        message: "userId is required",
+        errors: userIdValidation.error.errors
+      });
+    }
+    const userId = userIdValidation.data;
+    const { userId: _, ...layoutData } = req.body;
+    const validatedData = insertLayoutPreferencesSchema.parse(layoutData);
+    const layout = await storage.saveLayoutPreferences(userId, validatedData);
+    res.status(200).json(layout);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to save layout preferences" });
+    }
+  }
+});
+app.get("/api/pages", async (req, res) => {
+  try {
+    const pages2 = await storage.getPages();
+    res.json(pages2);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch pages" });
+  }
+});
+app.get("/api/pages/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid page ID format" });
+    }
+    const page = await storage.getPage(req.params.id);
+    if (!page) {
+      return res.status(404).json({ message: "Page not found" });
+    }
+    res.json(page);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch page" });
+  }
+});
+app.post("/api/pages", async (req, res) => {
+  try {
+    const validatedData = insertPageSchema.parse(req.body);
+    const page = await storage.createPage(validatedData);
+    res.status(201).json(page);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to create page" });
+    }
+  }
+});
+app.patch("/api/pages/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid page ID format" });
+    }
+    const updates = insertPageSchema.partial().parse(req.body);
+    const page = await storage.updatePage(req.params.id, updates);
+    if (!page) {
+      return res.status(404).json({ message: "Page not found" });
+    }
+    res.json(page);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to update page" });
+    }
+  }
+});
+app.delete("/api/pages/:id", async (req, res) => {
+  try {
+    const validationResult = uuidSchema.safeParse(req.params.id);
+    if (!validationResult.success) {
+      return res.status(400).json({ message: "Invalid page ID format" });
+    }
+    const success = await storage.deletePage(req.params.id);
+    if (!success) {
+      return res.status(404).json({ message: "Page not found" });
+    }
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete page" });
+  }
+});
+app.get("/api/global-settings/:key", async (req, res) => {
+  try {
+    const key = req.params.key;
+    const setting = await storage.getGlobalSetting(key);
+    if (!setting) {
+      if (key === "footerCompanyName") {
+        return res.json({ key, value: "Vending Machine" });
+      }
+      return res.status(404).json({ message: "Setting not found" });
+    }
+    res.json(setting);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch global setting" });
+  }
+});
+app.post("/api/global-settings", async (req, res) => {
+  try {
+    const schema = z2.object({
+      key: z2.string(),
+      value: z2.string()
+    });
+    const { key, value } = schema.parse(req.body);
+    const setting = await storage.setGlobalSetting(key, value);
+    res.json(setting);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to save global setting" });
+    }
+  }
+});
+app.post("/api/share-table", async (req, res) => {
+  try {
+    const validatedData = insertSharedTableStateSchema.parse(req.body);
+    const sharedState = await storage.createSharedTableState(validatedData);
+    res.status(201).json(sharedState);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to create shared table state" });
+    }
+  }
+});
+app.get("/api/share-table/:shareId", async (req, res) => {
+  try {
+    const shareId = req.params.shareId;
+    const sharedState = await storage.getSharedTableState(shareId);
+    if (!sharedState) {
+      return res.status(404).json({ message: "Shared table state not found" });
+    }
+    res.json(sharedState);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch shared table state" });
+  }
+});
+app.put("/api/share-table/:shareId/remark", async (req, res) => {
+  try {
+    const shareId = req.params.shareId;
+    const schema = z2.object({
+      remark: z2.string()
+    });
+    const { remark } = schema.parse(req.body);
+    const updatedState = await storage.updateSharedTableRemark(shareId, remark);
+    if (!updatedState) {
+      return res.status(404).json({ message: "Shared table state not found" });
+    }
+    res.json(updatedState);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to update remark" });
+    }
+  }
+});
+app.get("/api/saved-share-links", async (req, res) => {
+  try {
+    const links = await storage.getSavedShareLinks();
+    res.json(links);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch saved share links" });
+  }
+});
+app.post("/api/saved-share-links", async (req, res) => {
+  try {
+    const validatedData = insertSavedShareLinkSchema.parse(req.body);
+    const savedLink = await storage.createSavedShareLink(validatedData);
+    res.status(201).json(savedLink);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to save share link" });
+    }
+  }
+});
+app.patch("/api/saved-share-links/:id/remark", async (req, res) => {
+  try {
+    const schema = z2.object({
+      remark: z2.string()
+    });
+    const { remark } = schema.parse(req.body);
+    const updated = await storage.updateSavedShareLinkRemark(req.params.id, remark);
+    if (!updated) {
+      return res.status(404).json({ message: "Saved share link not found" });
+    }
+    res.json(updated);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to update remark" });
+    }
+  }
+});
+app.delete("/api/saved-share-links/:id", async (req, res) => {
+  try {
+    const success = await storage.deleteSavedShareLink(req.params.id);
+    if (!success) {
+      return res.status(404).json({ message: "Saved share link not found" });
+    }
+    res.json({ message: "Saved share link deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete saved share link" });
+  }
+});
+app.get("/api/custom-tables", async (req, res) => {
+  try {
+    const tables = await storage.getCustomTables();
+    res.json(tables);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch custom tables" });
+  }
+});
+app.get("/api/custom-tables/:id", async (req, res) => {
+  try {
+    const table = await storage.getCustomTable(req.params.id);
+    if (!table) {
+      return res.status(404).json({ message: "Custom table not found" });
+    }
+    res.json(table);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch custom table" });
+  }
+});
+app.get("/api/custom-tables/:id/rows", async (req, res) => {
+  try {
+    const rows = await storage.getCustomTableRows(req.params.id);
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch custom table rows" });
+  }
+});
+app.get("/api/custom-tables/share/:shareId", async (req, res) => {
+  try {
+    const table = await storage.getCustomTableByShareId(req.params.shareId);
+    if (!table) {
+      return res.status(404).json({ message: "Custom table not found" });
+    }
+    res.json(table);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch custom table" });
+  }
+});
+app.post("/api/custom-tables", async (req, res) => {
+  try {
+    const { name, description, rowIds } = req.body;
+    if (!name || !rowIds || !Array.isArray(rowIds) || rowIds.length === 0) {
+      return res.status(400).json({ message: "Name and at least one row ID are required" });
+    }
+    const shareId = Math.random().toString(36).substring(2, 8);
+    const tableData = insertCustomTableSchema.parse({
+      name,
+      shareId,
+      description: description || ""
+    });
+    const customTable = await storage.createCustomTable(tableData, rowIds);
+    res.status(201).json(customTable);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to create custom table" });
+    }
+  }
+});
+app.patch("/api/custom-tables/:id", async (req, res) => {
+  try {
+    const updates = insertCustomTableSchema.partial().parse(req.body);
+    const table = await storage.updateCustomTable(req.params.id, updates);
+    if (!table) {
+      return res.status(404).json({ message: "Custom table not found" });
+    }
+    res.json(table);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to update custom table" });
+    }
+  }
+});
+app.put("/api/custom-tables/:id/rows", async (req, res) => {
+  try {
+    const { name, description, rowIds } = req.body;
+    if (!rowIds || !Array.isArray(rowIds) || rowIds.length === 0) {
+      return res.status(400).json({ message: "At least one row ID is required" });
+    }
+    if (name || description !== void 0) {
+      await storage.updateCustomTable(req.params.id, { name, description });
+    }
+    await storage.deleteCustomTableRows(req.params.id);
+    for (const rowId of rowIds) {
+      await storage.createCustomTableRow({
+        customTableId: req.params.id,
+        tableRowId: rowId
+      });
+    }
+    const table = await storage.getCustomTable(req.params.id);
+    res.json(table);
+  } catch (error) {
+    if (error instanceof z2.ZodError) {
+      res.status(400).json({ message: "Invalid data", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "Failed to update custom table rows" });
+    }
+  }
+});
+app.delete("/api/custom-tables/:id", async (req, res) => {
+  try {
+    const success = await storage.deleteCustomTable(req.params.id);
+    if (!success) {
+      return res.status(404).json({ message: "Custom table not found" });
+    }
+    res.json({ message: "Custom table deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete custom table" });
+  }
+});
+app.use((err, _req, res, _next) => {
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  res.status(status).json({ message });
+});
 var vercel_default = app;
 export {
   vercel_default as default
