@@ -5,7 +5,7 @@ import { ImageManagerModal } from "@/components/image-manager-modal";
 import { ColumnCustomizationModal } from "@/components/column-customization-modal";
 import { PasswordPrompt } from "@/components/password-prompt";
 import { Navigation } from "@/components/navigation";
-import { LoadingOverlay } from "@/components/skeleton-loader";
+import { LoadingOverlay, NavigationSpinner } from "@/components/skeleton-loader";
 import { RouteOptimizationModal } from "@/components/route-optimization-modal";
 import { ShareDialog } from "@/components/share-dialog";
 import { SavedLinksModal } from "@/components/saved-links-modal";
@@ -1021,12 +1021,7 @@ export default function TablePage() {
         {isIntroLoading ? (
           <LoadingOverlay message="Loading table data..." type="wave" />
         ) : (
-          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-            <div className="text-center space-y-4">
-              <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent mx-auto"></div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Loading...</p>
-            </div>
-          </div>
+          <NavigationSpinner />
         )}
       </div>
     );

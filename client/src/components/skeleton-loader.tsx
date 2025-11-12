@@ -221,6 +221,36 @@ export function InlineLoading({ size = "sm", type = "spinner" }: { size?: "sm" |
   );
 }
 
+// Simple navigation spinner - for button back/navigation only
+export function NavigationSpinner() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className="text-center space-y-6">
+        {/* Centered logo with glow */}
+        <div className="relative inline-block">
+          <div className="w-20 h-20 flex items-center justify-center">
+            <img 
+              src="/assets/FamilyMart.png" 
+              alt="FamilyMart Logo" 
+              className="w-16 h-16 object-contain animate-pulse"
+              style={{ animationDuration: '1.5s' }}
+            />
+          </div>
+          {/* Rotating ring */}
+          <div className="absolute inset-0 -m-1 rounded-2xl border-3 border-blue-400/30 animate-spin" style={{ animationDuration: '2s' }}></div>
+        </div>
+        
+        {/* Simple dots */}
+        <div className="flex gap-2 justify-center">
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function LoadingDots({ type = "wave" }: { type?: "dots" | "wave" | "triple" }) {
   if (type === "wave") {
     return (

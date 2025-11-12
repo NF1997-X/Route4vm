@@ -3,7 +3,7 @@ import { useRoute } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { DataTable } from "@/components/data-table";
 import { useTableData } from "@/hooks/use-table-data";
-import { LoadingOverlay } from "@/components/skeleton-loader";
+import { LoadingOverlay, NavigationSpinner } from "@/components/skeleton-loader";
 import { Footer } from "@/components/footer";
 import { Database } from "lucide-react";
 import { calculateDistance } from "@/utils/distance";
@@ -285,12 +285,7 @@ export default function CustomTableView() {
         {isIntroLoading ? (
           <LoadingOverlay message="Loading Custom Table..." type="ripple" />
         ) : (
-          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-            <div className="text-center space-y-4">
-              <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent mx-auto"></div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">Loading...</p>
-            </div>
-          </div>
+          <NavigationSpinner />
         )}
       </div>
     );
