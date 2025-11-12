@@ -1158,7 +1158,7 @@ export function DataTable({
       <div className="overflow-x-auto w-full">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full">
-            <TableHeader className="glass-card sticky top-0 z-20 border-b border-glass-border backdrop-blur-3xl">
+            <TableHeader className="glass-card sticky top-0 z-20 border-b border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/40 dark:bg-slate-900/40">
               <Droppable
                 droppableId="columns"
                 direction="horizontal"
@@ -1179,7 +1179,7 @@ export function DataTable({
                           <TableHead
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide border-b border-border sticky top-0 bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap"
+                            className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap"
                             style={{
                               textAlign: "center",
                               textDecoration: "normal",
@@ -1203,7 +1203,7 @@ export function DataTable({
                       </Draggable>
                     ))}
                     <TableHead
-                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-border sticky top-0 bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap"
+                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap"
                       style={{
                         textAlign: "center",
                         textDecoration: "normal",
@@ -1733,7 +1733,7 @@ export function DataTable({
                 {visibleColumns.map((column, index) => (
                   <TableCell
                     key={column.id}
-                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-border sticky bottom-0 bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap h-12"
+                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap h-12"
                     style={{
                       textAlign: "center",
                       fontSize: "10px",
@@ -1770,7 +1770,7 @@ export function DataTable({
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-border sticky bottom-0 bg-white dark:bg-slate-900 shadow-sm text-foreground whitespace-nowrap h-12" style={{ textAlign: "center", fontSize: '10px' }}>
+                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm text-foreground whitespace-nowrap h-12" style={{ textAlign: "center", fontSize: '10px' }}>
                   <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                 </TableCell>
               </TableRow>
