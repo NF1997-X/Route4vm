@@ -747,11 +747,11 @@ export function DataTable({
 
   return (
     <div
-      className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-2xl table-container my-10 overflow-hidden"
+      className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-2xl table-container my-10 overflow-hidden transition-all duration-300 ease-in-out animate-in fade-in slide-in-from-bottom-4"
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
-      <div className="px-6 py-3 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-blue-500/5 dark:via-transparent dark:to-blue-500/5 backdrop-blur-sm text-[10px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+      <div className="px-6 py-3 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-blue-500/5 dark:via-transparent dark:to-blue-500/5 backdrop-blur-sm text-[10px] transition-all duration-300" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
         <div className="flex flex-row gap-3 items-center justify-between">
           
           {/* Left Side: Entries Selector */}
@@ -959,7 +959,7 @@ export function DataTable({
           <div className="w-auto">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-6 px-2 pagination-button text-xs justify-start" data-testid="combined-filter-trigger">
+                <Button variant="outline" className="h-6 px-2 pagination-button text-xs justify-start transition-all duration-200 ease-in-out hover:scale-105 active:scale-95" data-testid="combined-filter-trigger">
                   <span className="hidden sm:inline">
                     {isSharedView ? (
                       deliveryFilterValue.length === 0 
@@ -1158,7 +1158,7 @@ export function DataTable({
       <div className="overflow-x-auto w-full">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full">
-            <TableHeader className="glass-card sticky top-0 z-20 border-b border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/40 dark:bg-slate-900/40">
+            <TableHeader className="glass-card sticky top-0 z-20 border-b border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 transition-all duration-500 ease-in-out hover:backdrop-blur-2xl hover:bg-white/60 dark:hover:bg-slate-900/60 shadow-lg">
               <Droppable
                 droppableId="columns"
                 direction="horizontal"
@@ -1179,7 +1179,7 @@ export function DataTable({
                           <TableHead
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap"
+                            className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-sm whitespace-nowrap transition-all duration-300 ease-in-out hover:bg-white/90 dark:hover:bg-slate-900/90 hover:scale-105 hover:shadow-md"
                             style={{
                               textAlign: "center",
                               textDecoration: "normal",
@@ -1203,7 +1203,7 @@ export function DataTable({
                       </Draggable>
                     ))}
                     <TableHead
-                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap"
+                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-slate-900/80"
                       style={{
                         textAlign: "center",
                         textDecoration: "normal",
@@ -1277,7 +1277,7 @@ export function DataTable({
                             <TableRow
                               ref={provided.innerRef}
                               {...provided.draggableProps}
-                              className={`glass-hover group transition-smooth ${
+                              className={`glass-hover group animate-in fade-in slide-in-from-bottom-2 duration-300 transition-all ease-in-out hover:shadow-lg hover:scale-[1.02] hover:-translate-y-0.5 ${
                                 (() => {
                                   // Apply 3-color styling ONLY for shared view or edit mode
                                   if (isSharedView || editMode) {
@@ -1733,7 +1733,7 @@ export function DataTable({
                 {visibleColumns.map((column, index) => (
                   <TableCell
                     key={column.id}
-                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap h-12"
+                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl shadow-lg whitespace-nowrap h-12 transition-all duration-500 ease-in-out hover:bg-white/90 dark:hover:bg-slate-900/90 hover:scale-105 hover:shadow-xl animate-in fade-in slide-in-from-bottom-4"
                     style={{
                       textAlign: "center",
                       fontSize: "10px",
@@ -1770,7 +1770,7 @@ export function DataTable({
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm text-foreground whitespace-nowrap h-12" style={{ textAlign: "center", fontSize: '10px' }}>
+                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm text-foreground whitespace-nowrap h-12 transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-slate-900/80" style={{ textAlign: "center", fontSize: '10px' }}>
                   <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                 </TableCell>
               </TableRow>

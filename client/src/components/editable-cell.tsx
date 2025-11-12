@@ -135,7 +135,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     return (
       <div 
         ref={containerRef}
-        className="relative inline-flex items-start gap-1 animate-in fade-in zoom-in-95 duration-200"
+        className="relative inline-flex items-start gap-1 animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-300"
       >
         {isSelect ? (
           <select
@@ -143,7 +143,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             value={editValue ?? selectOptions[0]}
             onChange={(e) => setEditValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="h-7 px-2 py-1 text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="h-7 px-2 py-1 text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 hover:border-blue-600 focus:scale-105"
             autoFocus
           >
             {selectOptions.map((option) => (
@@ -160,7 +160,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             onKeyDown={handleKeyDown}
             placeholder={getPlaceholder()}
             rows={7}
-            className="min-w-[200px] max-w-[400px] px-3 py-2 text-[11px] bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-y"
+            className="min-w-[200px] max-w-[400px] px-3 py-2 text-[11px] bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-y transition-all duration-200 hover:border-blue-600 focus:scale-105"
             style={{ whiteSpace: 'pre-wrap' }}
           />
         ) : (
@@ -172,7 +172,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             onChange={(e) => setEditValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={getPlaceholder()}
-            className="h-7 px-2 py-1 w-auto text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="h-7 px-2 py-1 w-auto text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 hover:border-blue-600 focus:scale-105"
             style={{ width: type === 'number' ? '60px' : type === 'currency' ? '80px' : '100px' }}
           />
         )}
@@ -181,17 +181,17 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
         <div className="flex gap-1">
           <button
             onClick={handleSave}
-            className="h-7 w-7 flex items-center justify-center bg-transparent hover:bg-green-100 dark:hover:bg-green-900/30 text-green-600 dark:text-green-400 border-transparent transition-all hover:scale-110 active:scale-95"
+            className="h-7 w-7 flex items-center justify-center bg-transparent hover:bg-green-100 dark:hover:bg-green-900/30 text-green-600 dark:text-green-400 border-transparent transition-all duration-200 ease-in-out hover:scale-125 active:scale-95 hover:rotate-12"
             title={isTextarea ? "Save (Ctrl+Enter)" : "Save (Enter)"}
           >
-            <Check className="w-4 h-4" />
+            <Check className="w-4 h-4 transition-transform duration-200" />
           </button>
           <button
             onClick={handleCancel}
-            className="h-7 w-7 flex items-center justify-center bg-transparent hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 border-transparent transition-all hover:scale-110 active:scale-95"
+            className="h-7 w-7 flex items-center justify-center bg-transparent hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 border-transparent transition-all duration-200 ease-in-out hover:scale-125 active:scale-95 hover:rotate-12"
             title="Cancel (Esc)"
           >
-            <X className="w-4 h-4" />
+            <X className="w-4 h-4 transition-transform duration-200" />
           </button>
         </div>
       </div>
@@ -201,7 +201,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   return (
     <span
       onClick={() => setIsEditing(true)}
-      className="cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 rounded px-2 py-1 transition-all duration-200 text-center block border border-transparent hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-sm"
+      className="cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 rounded px-2 py-1 transition-all duration-300 ease-in-out text-center block border border-transparent hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-sm hover:scale-105 active:scale-95"
       style={{ fontSize: '10px' }}
       title="Click to edit"
     >
