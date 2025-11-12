@@ -1485,8 +1485,13 @@ export default function TablePage() {
         })()
       )}
 
+      {/* Color Legend Panel */}
+      <div className="mt-6 mb-6 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-500 flex justify-center">
+        <ColorLegendPanel />
+      </div>
+
       {/* Main Table */}
-      <div ref={tableRef} className="animate-in fade-in slide-in-from-bottom-3 duration-700 delay-500">
+      <div ref={tableRef} className="animate-in fade-in slide-in-from-bottom-3 duration-700 delay-700">
         <DataTable
         rows={rowsWithDistances}
         columns={displayColumns}
@@ -1528,11 +1533,6 @@ export default function TablePage() {
         filteredRowsCount={filteredRows.length}
         totalRowsCount={rows.length}
       />
-      </div>
-
-      {/* Color Legend Panel */}
-      <div className="mt-6 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-700 flex justify-center">
-        <ColorLegendPanel />
       </div>
 
       {/* Column Customization Modal */}
