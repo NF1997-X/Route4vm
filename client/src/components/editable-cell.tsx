@@ -143,7 +143,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             value={editValue ?? selectOptions[0]}
             onChange={(e) => setEditValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="h-7 px-2 py-1 text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-gray-400 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500/50 transition-all duration-200 hover:border-gray-500 focus:scale-105"
+            className="h-7 px-2 py-1 text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 hover:border-blue-600 focus:scale-105"
             autoFocus
           >
             {selectOptions.map((option) => (
@@ -160,7 +160,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             onKeyDown={handleKeyDown}
             placeholder={getPlaceholder()}
             rows={7}
-            className="min-w-[200px] max-w-[400px] px-3 py-2 text-[11px] bg-white dark:bg-gray-900 border-2 border-gray-400 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500/50 resize-y transition-all duration-200 hover:border-gray-500 focus:scale-105"
+            className="min-w-[200px] max-w-[400px] px-3 py-2 text-[11px] bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-y transition-all duration-200 hover:border-blue-600 focus:scale-105"
             style={{ whiteSpace: 'pre-wrap' }}
           />
         ) : (
@@ -172,7 +172,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             onChange={(e) => setEditValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={getPlaceholder()}
-            className="h-7 px-2 py-1 w-auto text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-gray-400 dark:border-gray-600 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500/50 transition-all duration-200 hover:border-gray-500 focus:scale-105"
+            className="h-7 px-2 py-1 w-auto text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 hover:border-blue-600 focus:scale-105"
             style={{ width: type === 'number' ? '60px' : type === 'currency' ? '80px' : '100px' }}
           />
         )}
@@ -201,7 +201,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   return (
     <span
       onClick={() => setIsEditing(true)}
-      className="cursor-pointer hover:bg-gray-800/30 dark:hover:bg-gray-700/30 hover:text-gray-100 dark:hover:text-gray-200 rounded px-2 py-1 transition-all duration-300 ease-in-out text-center block border border-transparent hover:border-gray-600 dark:hover:border-gray-500 hover:shadow-sm hover:scale-105 active:scale-95"
+      className="cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 rounded px-2 py-1 transition-all duration-300 ease-in-out text-center block border border-transparent hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-sm hover:scale-105 active:scale-95"
       style={{ fontSize: '10px' }}
       title="Click to edit"
     >
