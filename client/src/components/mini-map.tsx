@@ -353,14 +353,15 @@ export const MiniMap = memo(function MiniMap({
               <Button
                 variant="outline"
                 size="sm"
-                className="bg-white/95 hover:bg-white shadow-lg border-2 border-gray-400 backdrop-blur-sm pointer-events-auto"
+                className="bg-white/95 hover:bg-white dark:bg-gray-900/95 dark:hover:bg-gray-900 shadow-xl border-2 border-gray-300 dark:border-gray-700 backdrop-blur-md pointer-events-auto transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:border-blue-500 dark:hover:border-blue-400 group"
                 data-testid="button-fullscreen-map"
+                title="Open fullscreen map"
               >
-                <Maximize2 className="w-4 h-4 text-black" />
+                <Maximize2 className="w-4 h-4 text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300" />
               </Button>
             </DialogTrigger>
             <DialogContent 
-              className="max-w-[95vw] w-full p-6"
+              className="max-w-[95vw] w-full p-6 animate-in fade-in zoom-in-95 duration-300"
               style={{
                 height: 'min(90vh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px))',
                 touchAction: 'pan-y',
@@ -385,8 +386,10 @@ export const MiniMap = memo(function MiniMap({
                         variant="outline"
                         size="sm"
                         data-testid="button-filter-routes"
+                        className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 hover:scale-105 hover:shadow-md group"
+                        title="Filter routes"
                       >
-                        <Filter className="w-4 h-4 mr-2" />
+                        <Filter className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                         Filter Routes ({selectedRoutes.length}/{uniqueRoutes.length})
                       </Button>
                     </PopoverTrigger>
@@ -399,7 +402,7 @@ export const MiniMap = memo(function MiniMap({
                               variant="ghost"
                               size="sm"
                               onClick={selectAllRoutes}
-                              className="h-7 text-xs"
+                              className="h-7 text-xs hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-600 dark:hover:text-green-400 transition-all duration-200 hover:scale-105"
                             >
                               All
                             </Button>
@@ -407,7 +410,7 @@ export const MiniMap = memo(function MiniMap({
                               variant="ghost"
                               size="sm"
                               onClick={clearAllRoutes}
-                              className="h-7 text-xs"
+                              className="h-7 text-xs hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 hover:scale-105"
                             >
                               Clear
                             </Button>
@@ -444,10 +447,11 @@ export const MiniMap = memo(function MiniMap({
                     <Button
                       variant="outline"
                       size="sm"
-                      className="pagination-button text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
+                      className="pagination-button text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-400 dark:hover:border-red-500 transition-all duration-300 hover:scale-110 hover:shadow-lg group"
                       data-testid="button-close-map"
+                      title="Close fullscreen"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
                     </Button>
                   </DialogClose>
                 </div>
