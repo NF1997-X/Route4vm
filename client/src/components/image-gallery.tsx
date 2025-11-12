@@ -189,6 +189,8 @@ export function ImageGallery({
                     <div className="w-0 h-0 border-l-[4px] border-l-white border-y-[3px] border-y-transparent ml-0.5"></div>
                   </div>
                 </div>
+                {/* Hover overlay with gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
               </div>
             ) : (
               <>
