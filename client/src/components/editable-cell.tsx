@@ -172,7 +172,8 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             onChange={(e) => setEditValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={getPlaceholder()}
-            className="h-7 px-2 py-1 min-w-[80px] text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            className="h-7 px-2 py-1 w-auto text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            style={{ width: type === 'number' ? '60px' : type === 'currency' ? '80px' : '100px' }}
           />
         )}
         
@@ -180,17 +181,17 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
         <div className="flex gap-1">
           <button
             onClick={handleSave}
-            className="h-7 w-7 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white rounded-md shadow-lg transition-all hover:scale-110 active:scale-95"
+            className="h-7 w-7 flex items-center justify-center bg-transparent hover:bg-green-100 dark:hover:bg-green-900/30 text-green-600 dark:text-green-400 border-transparent transition-all hover:scale-110 active:scale-95"
             title={isTextarea ? "Save (Ctrl+Enter)" : "Save (Enter)"}
           >
-            <Check className="w-3.5 h-3.5" />
+            <Check className="w-4 h-4" />
           </button>
           <button
             onClick={handleCancel}
-            className="h-7 w-7 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-md shadow-lg transition-all hover:scale-110 active:scale-95"
+            className="h-7 w-7 flex items-center justify-center bg-transparent hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 border-transparent transition-all hover:scale-110 active:scale-95"
             title="Cancel (Esc)"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
       </div>
