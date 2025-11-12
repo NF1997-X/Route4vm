@@ -1469,7 +1469,7 @@ export function DataTable({
                                     column.isEditable === "true" ? (
                                     <EditableCell
                                       value={getCellValue(row, column, index)}
-                                      type={column.type}
+                                      type={column.type === "textarea" ? "textarea" : column.type}
                                       options={column.options || undefined}
                                       dataKey={column.dataKey}
                                       onSave={(value) =>

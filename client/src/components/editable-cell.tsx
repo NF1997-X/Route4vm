@@ -14,6 +14,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   const [editValue, setEditValue] = useState(value);
   const inputRef = useRef<HTMLInputElement>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,6 +39,11 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
         }
       } else if (selectRef.current) {
         selectRef.current.focus();
+      } else if (textareaRef.current) {
+        textareaRef.current.focus();
+        // Move cursor to end
+        const len = textareaRef.current.value.length;
+        textareaRef.current.setSelectionRange(len, len);
       }
     }
   }, [isEditing]);
@@ -86,12 +92,25 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSave();
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      handleCancel();
+    // For textarea, Ctrl+Enter to save, Escape to cancel, Enter adds newline
+    if (type === 'textarea') {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        handleSave();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        handleCancel();
+      }
+      // Allow Enter key to add newlines naturally
+    } else {
+      // For other inputs, Enter to save, Escape to cancel
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSave();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        handleCancel();
+      }
     }
   };
 
@@ -100,6 +119,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     if (dataKey === 'longitude') return "e.g. 101.686855";
     if (type === 'currency') return "0.00";
     if (type === 'number') return "Enter number";
+    if (type === 'textarea') return "Enter text... (Ctrl+Enter to save)";
     return "Enter text";
   };
 
@@ -109,12 +129,13 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
 
   if (isEditing) {
     const isSelect = dataKey === 'delivery' || dataKey === 'route' || type === 'select';
+    const isTextarea = type === 'textarea';
     const selectOptions = options || ['None', 'Daily', 'Weekday', 'Alt 1', 'Alt 2'];
 
     return (
       <div 
         ref={containerRef}
-        className="relative inline-flex items-center gap-1 animate-in fade-in zoom-in-95 duration-200"
+        className="relative inline-flex items-start gap-1 animate-in fade-in zoom-in-95 duration-200"
       >
         {isSelect ? (
           <select
@@ -131,6 +152,17 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
               </option>
             ))}
           </select>
+        ) : isTextarea ? (
+          <textarea
+            ref={textareaRef}
+            value={editValue || ''}
+            onChange={(e) => setEditValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={getPlaceholder()}
+            rows={7}
+            className="min-w-[200px] max-w-[400px] px-3 py-2 text-[11px] bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-y"
+            style={{ whiteSpace: 'pre-wrap' }}
+          />
         ) : (
           <input
             ref={inputRef}
@@ -149,7 +181,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
           <button
             onClick={handleSave}
             className="h-7 w-7 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white rounded-md shadow-lg transition-all hover:scale-110 active:scale-95"
-            title="Save (Enter)"
+            title={isTextarea ? "Save (Ctrl+Enter)" : "Save (Enter)"}
           >
             <Check className="w-3.5 h-3.5" />
           </button>
