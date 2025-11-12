@@ -498,17 +498,70 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
             <div className="bg-transparent backdrop-blur-sm rounded-xl p-4 space-y-3 shadow-sm">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-purple-500 dark:bg-purple-400 rounded-full"></div>
-                <h4 className="font-semibold text-purple-600 dark:text-purple-400" style={{fontSize: '10px'}}><QrCode className="w-4 h-4 inline mr-1" />QR Code URL</h4>
+                <h4 className="font-semibold text-purple-600 dark:text-purple-400" style={{fontSize: '10px'}}><QrCode className="w-4 h-4 inline mr-1" />QR Code Image</h4>
               </div>
               <div className="space-y-2">
-                <Input
-                  value={currentData.qrCode}
-                  onChange={(e) => setCurrentData(prev => ({ ...prev, qrCode: e.target.value }))}
-                  placeholder="Enter QR code image URL..."
-                  style={{fontSize: '10px'}}
-                  data-testid="input-qr-code"
-                />
-                <p className="text-muted-foreground" style={{fontSize: '10px'}}>URL to the QR code image</p>
+                {/* Show current QR preview if exists */}
+                {currentData.qrCode && (
+                  <div className="relative group">
+                    <img 
+                      src={currentData.qrCode} 
+                      alt="QR Code" 
+                      className="w-32 h-32 object-contain border border-purple-200 dark:border-purple-800 rounded-lg mx-auto"
+                    />
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="absolute top-1 right-1 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => setCurrentData(prev => ({ ...prev, qrCode: "" }))}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
+                
+                {/* Upload button */}
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => {
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = 'image/*';
+                      input.onchange = async (e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0];
+                        if (file) {
+                          // Convert to base64
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            const base64 = reader.result as string;
+                            setCurrentData(prev => ({ ...prev, qrCode: base64 }));
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      };
+                      input.click();
+                    }}
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload QR Code
+                  </Button>
+                </div>
+                
+                {/* URL input alternative */}
+                <div className="relative">
+                  <Input
+                    value={currentData.qrCode.startsWith('data:') ? '' : currentData.qrCode}
+                    onChange={(e) => setCurrentData(prev => ({ ...prev, qrCode: e.target.value }))}
+                    placeholder="Or paste image URL..."
+                    style={{fontSize: '10px'}}
+                    data-testid="input-qr-code"
+                  />
+                </div>
+                <p className="text-muted-foreground" style={{fontSize: '10px'}}>Upload QR code image or enter URL</p>
               </div>
             </div>
           )}
