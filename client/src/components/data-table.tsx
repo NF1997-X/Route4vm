@@ -1407,6 +1407,27 @@ export function DataTable({
                                     ) : (
                                       <span className="text-muted-foreground">—</span>
                                     )
+                                  ) : column.dataKey === "route" ? (
+                                    editMode && column.isEditable === "true" ? (
+                                      <EditableCell
+                                        value={getCellValue(row, column, index)}
+                                        type="select"
+                                        options={routeOptions}
+                                        dataKey={column.dataKey}
+                                        onSave={(value) =>
+                                          onUpdateRow.mutate({
+                                            id: row.id,
+                                            updates: {
+                                              [column.dataKey]: value,
+                                            },
+                                          })
+                                        }
+                                      />
+                                    ) : (
+                                      <span className="text-[9px] text-gray-500 dark:text-gray-400 font-medium">
+                                        {getCellValue(row, column, index) || '—'}
+                                      </span>
+                                    )
                                   ) : column.dataKey === "delivery" ? (
                                     editMode && column.isEditable === "true" ? (
                                       <EditableCell
