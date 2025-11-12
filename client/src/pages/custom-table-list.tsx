@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Share2, Trash2, Copy, Check, Home, Edit, ArrowLeft } from "lucide-react";
+import { Plus, Share2, Trash2, Copy, Check, Home, Edit, ArrowLeft, ChevronDown, ChevronUp, Eye } from "lucide-react";
 import type { TableRow, CustomTable } from "@shared/schema";
 import { Footer } from "@/components/footer";
 import { LoadingOverlay } from "@/components/skeleton-loader";
@@ -31,6 +31,7 @@ export default function CustomTableList() {
   const [copiedId, setCopiedId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [deliveryFilter, setDeliveryFilter] = useState<string[]>([]);
+  const [expandedTableId, setExpandedTableId] = useState<string | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { theme, toggleTheme } = useTheme();
@@ -420,64 +421,107 @@ export default function CustomTableList() {
               No custom tables yet. Create one to get started!
             </p>
           ) : (
-            <div className="space-y-4">
-              {customTables.map((table) => (
-                <div
-                  key={table.id}
-                  className="custom-table-card flex items-center justify-between p-4 bg-transparent rounded-xl border border-gray-300 dark:border-gray-800/40 hover:bg-gray-50 dark:hover:bg-white/5"
-                >
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 dark:text-white text-[12px]">{table.name}</h3>
-                    {table.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{table.description}</p>
-                    )}
-                    <p className="text-gray-500 dark:text-gray-500 mt-1" style={{ fontSize: '10px' }}>
-                      Created {new Date(table.createdAt).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={() => copyShareLink(table)}
-                      size="sm"
-                      variant="outline"
-                      className="bg-transparent border-transparent hover:bg-blue-500/10"
-                      title="Copy share link"
-                    >
-                      {copiedId === table.id ? (
-                        <Check className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <Share2 className="h-4 w-4" />
+            <div className="space-y-3">
+              {customTables.map((table) => {
+                const isExpanded = expandedTableId === table.id;
+                return (
+                  <div
+                    key={table.id}
+                    className="custom-table-card bg-white/50 dark:bg-white/5 rounded-xl border border-gray-300 dark:border-gray-800/40 hover:shadow-lg transition-all duration-200 overflow-hidden"
+                  >
+                    {/* Main Content */}
+                    <div className="p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        {/* Title & Toggle */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <h3 className="font-semibold text-gray-900 dark:text-white text-[13px] truncate">
+                              {table.name}
+                            </h3>
+                            {(table.description || table.createdAt) && (
+                              <button
+                                onClick={() => setExpandedTableId(isExpanded ? null : table.id)}
+                                className="p-1 hover:bg-gray-200 dark:hover:bg-white/10 rounded transition-colors"
+                              >
+                                {isExpanded ? (
+                                  <ChevronUp className="w-4 h-4 text-gray-500" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4 text-gray-500" />
+                                )}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Action Buttons - Merged & Compact */}
+                        <div className="flex items-center gap-1">
+                          {/* Share */}
+                          <button
+                            onClick={() => copyShareLink(table)}
+                            className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors group"
+                            title="Copy share link"
+                          >
+                            {copiedId === table.id ? (
+                              <Check className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Share2 className="h-4 w-4 text-blue-500 group-hover:scale-110 transition-transform" />
+                            )}
+                          </button>
+
+                          {/* View */}
+                          <button
+                            onClick={() => window.open(`/custom/${table.shareId}`, "_blank")}
+                            className="p-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors group"
+                            title="View table"
+                          >
+                            <Eye className="h-4 w-4 text-purple-500 group-hover:scale-110 transition-transform" />
+                          </button>
+
+                          {/* Edit */}
+                          <button
+                            onClick={() => handleEditTable(table)}
+                            className="p-2 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors group"
+                            title="Edit locations"
+                          >
+                            <Edit className="h-4 w-4 text-green-600 group-hover:scale-110 transition-transform" />
+                          </button>
+
+                          {/* Delete */}
+                          <button
+                            onClick={() => deleteTableMutation.mutate(table.id)}
+                            className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors group"
+                            title="Delete table"
+                          >
+                            <Trash2 className="h-4 w-4 text-red-500 group-hover:scale-110 transition-transform" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Collapsible Section */}
+                      {isExpanded && (table.description || table.createdAt) && (
+                        <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-800 space-y-2 animate-in slide-in-from-top-2 duration-200">
+                          {table.description && (
+                            <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                              📝 {table.description}
+                            </p>
+                          )}
+                          {table.createdAt && (
+                            <p className="text-[10px] text-gray-500 dark:text-gray-500">
+                              🗓️ Created {new Date(table.createdAt).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </p>
+                          )}
+                        </div>
                       )}
-                    </Button>
-                    <Button
-                      onClick={() => window.open(`/custom/${table.shareId}`, "_blank")}
-                      size="sm"
-                      variant="outline"
-                      className="bg-transparent border-transparent hover:bg-blue-500/10"
-                    >
-                      View
-                    </Button>
-                    <Button
-                      onClick={() => handleEditTable(table)}
-                      size="sm"
-                      variant="outline"
-                      className="bg-transparent border-transparent hover:bg-green-500/10 text-green-600"
-                      title="Edit locations"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      onClick={() => deleteTableMutation.mutate(table.id)}
-                      size="sm"
-                      variant="outline"
-                      className="bg-transparent border-transparent hover:bg-red-500/10 text-red-500"
-                      title="Delete table"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
