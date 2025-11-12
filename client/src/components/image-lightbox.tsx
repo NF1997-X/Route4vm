@@ -21,6 +21,7 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
   const [touchDistance, setTouchDistance] = useState(0);
+  const [isClosing, setIsClosing] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -43,11 +44,18 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
   }, [isOpen, currentIndex]);
 
   useEffect(() => {
-    // Reset transform when image changes
+    // Reset transform when image changes with smooth animation
     setScale(1);
     setRotation(0);
     setPosition({ x: 0, y: 0 });
     setIsLoading(true);
+    
+    // Add slight delay for smooth transition between images
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, [currentIndex]);
 
   if (!isOpen || imageSlides.length === 0) {
@@ -55,11 +63,19 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
   }
 
   const currentImage = imageSlides[currentIndex];
+  
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      onClose();
+    }, 300);
+  };
 
   const handleKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
       case 'Escape':
-        onClose();
+        handleClose();
         break;
       case 'ArrowLeft':
         if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
@@ -249,9 +265,11 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
 
   const lightboxContent = (
     <div 
-      className="lightbox-overlay fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md animate-in fade-in duration-300"
+      className={`lightbox-overlay fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md transition-all duration-500 ease-out ${
+        isClosing ? 'animate-out fade-out zoom-out-95 duration-300' : 'animate-in fade-in zoom-in-95 duration-500'
+      }`}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) handleClose();
       }}
     >
       {/* Loading overlay */}
@@ -335,8 +353,8 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
             <Button
               variant="ghost"
               size="sm"
-              onClick={onClose}
-              className="text-white hover:bg-white/20"
+              onClick={handleClose}
+              className="text-white hover:bg-white/20 transition-all duration-200 hover:scale-110 active:scale-95"
             >
               <X className="w-5 h-5" />
             </Button>
@@ -361,12 +379,13 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
           src={currentImage.url}
           alt={currentImage.caption || `Image ${currentIndex + 1}`}
           onLoad={handleImageLoad}
-          className={`max-w-full max-h-full object-contain transition-all duration-500 ease-out select-none ${
+          className={`max-w-full max-h-full object-contain transition-all duration-700 ease-out select-none ${
             isDragging ? 'cursor-grabbing' : scale > 1 ? 'cursor-grab' : 'cursor-default'
-          } ${isLoading ? 'opacity-0' : 'opacity-100 animate-in fade-in zoom-in-95 duration-300'}`}
+          } ${isLoading ? 'opacity-0 scale-95' : 'opacity-100 animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-500'}`}
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale}) rotate(${rotation}deg)`,
             transformOrigin: 'center center',
+            transition: isDragging ? 'none' : 'transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
           draggable={false}
         />
@@ -379,18 +398,18 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
             variant="ghost"
             size="lg"
             onClick={handlePrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm transition-all duration-200 hover:scale-110"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/30 active:bg-white/40 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 border border-white/10 shadow-lg hover:shadow-white/20"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-7 h-7" />
           </Button>
           
           <Button
             variant="ghost"
             size="lg"
             onClick={handleNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm transition-all duration-200 hover:scale-110"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/30 active:bg-white/40 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 border border-white/10 shadow-lg hover:shadow-white/20"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-7 h-7" />
           </Button>
         </>
       )}
