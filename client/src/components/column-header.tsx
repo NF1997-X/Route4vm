@@ -20,12 +20,12 @@ export function ColumnHeader({ column, dragHandleProps, onDelete, isAuthenticate
       <div {...dragHandleProps} className="text-center">
         <span className="block bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent font-medium" style={{fontSize: '11px'}}>{column.name}</span>
       </div>
-      {!isCoreColumn && (
+      {!isCoreColumn && editMode && (
         <div className="absolute right-0 flex items-center gap-1 opacity-50 group-hover:opacity-100 transition-opacity">
           <Button
             size="sm"
             variant="ghost"
-            className={`h-auto p-0 text-sm ${!isAuthenticated ? 'opacity-50 cursor-not-allowed text-muted-foreground' : 'text-muted-foreground hover:text-destructive'}`}
+            className={`h-auto p-0 text-sm ${!isAuthenticated ? 'opacity-50 cursor-not-allowed text-muted-foreground' : 'text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300'}`}
             onClick={() => isAuthenticated && onDelete()}
             disabled={!isAuthenticated}
             title={!isAuthenticated ? "Authentication required to delete columns" : "Delete column"}

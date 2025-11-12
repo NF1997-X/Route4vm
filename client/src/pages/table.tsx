@@ -28,7 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 import { TableColumn, type Page, type InsertPage } from "@shared/schema";
 import { generateTngValues } from "@/utils/tng-generator";
 import { calculateDistance } from "@/utils/distance";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { getUserId } from "@/lib/utils";
 
@@ -79,6 +79,7 @@ export default function TablePage() {
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   
   const {
     rows,
@@ -643,13 +644,42 @@ export default function TablePage() {
           description: "New row has been added to the end of the table.",
         });
       } else {
-        // For specific position, we'll add at the end and then reorder
-        // This is a simplified approach since the current API doesn't support position insertion
-        await createRow.mutateAsync(newRowData);
-        toast({
-          title: "Row Added",
-          description: `New row has been added at position ${specificPosition}.`,
-        });
+        // Add at the end first and get the new row
+        const newRow = await createRow.mutateAsync(newRowData);
+        
+        // Wait for query to refetch and stabilize
+        await queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Get fresh row data after creation
+        const currentRows = rows || [];
+        const targetIndex = Math.min(Math.max(0, specificPosition - 1), currentRows.length);
+        
+        // Find the newly created row in the current list
+        const actualNewRow = currentRows.find(r => r.id === newRow.id);
+        
+        if (actualNewRow) {
+          // Create new order with the row at the specified position
+          const otherRows = currentRows.filter(r => r.id !== newRow.id);
+          const newOrder = [
+            ...otherRows.slice(0, targetIndex).map(r => r.id),
+            newRow.id,
+            ...otherRows.slice(targetIndex).map(r => r.id)
+          ];
+          
+          // Reorder rows
+          await reorderRows.mutateAsync(newOrder);
+          
+          toast({
+            title: "Row Added",
+            description: `New row has been added at position ${specificPosition}.`,
+          });
+        } else {
+          toast({
+            title: "Row Added",
+            description: "New row has been added to the table.",
+          });
+        }
       }
       
       setShowPositionDialog(false);
