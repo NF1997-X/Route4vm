@@ -1155,7 +1155,13 @@ export function DataTable({
           </div>
         </div>
       )}
-      <div className="overflow-x-auto w-full">
+      <div 
+        className="overflow-x-auto w-full"
+        style={disablePagination ? {
+          maxHeight: 'calc(100vh - 280px)',
+          overflowY: 'auto',
+        } : undefined}
+      >
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full">
             <TableHeader className="glass-card sticky top-0 z-20 border-b border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 transition-all duration-500 ease-in-out hover:backdrop-blur-2xl hover:bg-white/60 dark:hover:bg-slate-900/60 shadow-lg">

@@ -1491,6 +1491,7 @@ export default function TablePage() {
         rows={rowsWithDistances}
         columns={displayColumns}
         editMode={editMode}
+        disablePagination={true}
         onUpdateRow={updateRow}
         onDeleteRow={deleteRow}
         onReorderRows={reorderRows}
