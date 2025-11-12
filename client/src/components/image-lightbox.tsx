@@ -22,6 +22,7 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
   const [touchDistance, setTouchDistance] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -53,6 +54,7 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
     // Add slight delay for smooth transition between images
     const timer = setTimeout(() => {
       setIsLoading(false);
+      setSlideDirection(null);
     }, 100);
     
     return () => clearTimeout(timer);
@@ -89,6 +91,7 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
   };
 
   const handlePrev = () => {
+    setSlideDirection('right');
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     } else if (imageSlides.length > 1) {
@@ -97,6 +100,7 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
   };
 
   const handleNext = () => {
+    setSlideDirection('left');
     if (currentIndex < imageSlides.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else if (imageSlides.length > 1) {
@@ -265,8 +269,10 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
 
   const lightboxContent = (
     <div 
-      className={`lightbox-overlay fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md transition-all duration-500 ease-out ${
-        isClosing ? 'animate-out fade-out zoom-out-95 duration-300' : 'animate-in fade-in zoom-in-95 duration-500'
+      className={`lightbox-overlay fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md transition-all ${
+        isClosing 
+          ? 'animate-out fade-out zoom-out-90 duration-200 ease-in' 
+          : 'animate-in fade-in zoom-in-90 duration-400 ease-out'
       }`}
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
@@ -379,13 +385,21 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
           src={currentImage.url}
           alt={currentImage.caption || `Image ${currentIndex + 1}`}
           onLoad={handleImageLoad}
-          className={`max-w-full max-h-full object-contain transition-all duration-700 ease-out select-none ${
+          className={`max-w-full max-h-full object-contain select-none ${
             isDragging ? 'cursor-grabbing' : scale > 1 ? 'cursor-grab' : 'cursor-default'
-          } ${isLoading ? 'opacity-0 scale-95' : 'opacity-100 animate-in fade-in zoom-in-95 slide-in-from-bottom-4 duration-500'}`}
+          } ${
+            isLoading 
+              ? 'opacity-0 scale-90' 
+              : slideDirection === 'left'
+                ? 'opacity-100 animate-in fade-in slide-in-from-right-12 duration-500 ease-out'
+                : slideDirection === 'right'
+                  ? 'opacity-100 animate-in fade-in slide-in-from-left-12 duration-500 ease-out'
+                  : 'opacity-100 animate-in fade-in zoom-in-90 duration-500 ease-out'
+          }`}
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale}) rotate(${rotation}deg)`,
             transformOrigin: 'center center',
-            transition: isDragging ? 'none' : 'transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
           }}
           draggable={false}
         />
