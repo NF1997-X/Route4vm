@@ -50,25 +50,15 @@ export function ImageManagerModal({
     });
   };
 
-  // Upload image to server which will proxy to the image host (server-side key)
+  // Convert image to base64 and return immediately (fast display)
+  // Backend will handle ImgBB upload in background for download feature
   const uploadViaServer = async (file: File): Promise<string> => {
-    // Convert to base64 data URL
+    // Convert to base64 data URL - this is instant and stored in DB
     const dataUrl = await fileToDataURL(file);
-    // POST to server endpoint which will forward to ImgBB or other provider
-    const res = await fetch('/api/upload-image', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ image: dataUrl }),
-    });
-
-    if (!res.ok) {
-      const errorText = await res.text().catch(() => '');
-      throw new Error(`Upload failed: ${res.status} ${errorText}`);
-    }
-
-    const json = await res.json();
-    if (!json || !json.url) throw new Error('Invalid upload response');
-    return json.url as string;
+    
+    // Return base64 immediately - no need to wait for ImgBB upload
+    // Backend will upload to ImgBB in background and update imgbbUrl field
+    return dataUrl;
   };
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
