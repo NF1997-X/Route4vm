@@ -790,7 +790,7 @@ export function DataTable({
               data-testid="button-show"
               title="Customize columns"
             >
-              <Eye className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+              <Eye className="w-3 h-3 text-gray-300 dark:text-gray-400" />
             </Button>
             <Button
               onClick={onOptimizeRoute}
@@ -800,7 +800,7 @@ export function DataTable({
               data-testid="button-optimize-route"
               title="Optimize delivery route with AI"
             >
-              <Route className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+              <Route className="w-3 h-3 text-gray-300 dark:text-gray-400" />
             </Button>
             {!hideShareButton && (
               <Button
@@ -854,7 +854,7 @@ export function DataTable({
             <PopoverContent className="w-52 p-0" align="start">
               <div className="p-3 btn-glass">
                 <h4 className="font-medium text-sm mb-3 pb-2 border-b border-border/20 flex items-center gap-2">
-                  <ArrowUpDown className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
+                  <ArrowUpDown className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
                   Sort By
                 </h4>
                 <div className="space-y-1.5 text-sm">
@@ -862,7 +862,7 @@ export function DataTable({
                     variant={sortState?.column === 'route' ? 'default' : 'ghost'}
                     size="sm"
                     className={`w-full justify-between text-xs ${
-                      sortState?.column === 'route' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                      sortState?.column === 'route' ? 'bg-gray-700 hover:bg-gray-800 text-white' : ''
                     }`}
                     onClick={() => handleSortToggle('route')}
                     data-testid="button-sort-route"
@@ -877,7 +877,7 @@ export function DataTable({
                     variant={sortState?.column === 'code' ? 'default' : 'ghost'}
                     size="sm"
                     className={`w-full justify-between text-xs ${
-                      sortState?.column === 'code' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                      sortState?.column === 'code' ? 'bg-gray-700 hover:bg-gray-800 text-white' : ''
                     }`}
                     onClick={() => handleSortToggle('code')}
                     data-testid="button-sort-code"
@@ -892,7 +892,7 @@ export function DataTable({
                     variant={sortState?.column === 'location' ? 'default' : 'ghost'}
                     size="sm"
                     className={`w-full justify-between text-xs ${
-                      sortState?.column === 'location' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                      sortState?.column === 'location' ? 'bg-gray-700 hover:bg-gray-800 text-white' : ''
                     }`}
                     onClick={() => handleSortToggle('location')}
                     data-testid="button-sort-location"
@@ -907,7 +907,7 @@ export function DataTable({
                     variant={sortState?.column === 'delivery' ? 'default' : 'ghost'}
                     size="sm"
                     className={`w-full justify-between text-xs ${
-                      sortState?.column === 'delivery' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                      sortState?.column === 'delivery' ? 'bg-gray-700 hover:bg-gray-800 text-white' : ''
                     }`}
                     onClick={() => handleSortToggle('delivery')}
                     data-testid="button-sort-delivery"
@@ -922,7 +922,7 @@ export function DataTable({
                     variant={sortState?.column === 'kilometer' ? 'default' : 'ghost'}
                     size="sm"
                     className={`w-full justify-between text-xs ${
-                      sortState?.column === 'kilometer' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                      sortState?.column === 'kilometer' ? 'bg-gray-700 hover:bg-gray-800 text-white' : ''
                     }`}
                     onClick={() => handleSortToggle('kilometer')}
                     data-testid="button-sort-kilometer"
@@ -938,7 +938,7 @@ export function DataTable({
                       variant={sortState?.column === 'order' ? 'default' : 'ghost'}
                       size="sm"
                       className={`w-full justify-between text-xs ${
-                        sortState?.column === 'order' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                        sortState?.column === 'order' ? 'bg-gray-700 hover:bg-gray-800 text-white' : ''
                       }`}
                       onClick={() => handleSortToggle('order')}
                       data-testid="button-sort-order"
@@ -1232,7 +1232,7 @@ export function DataTable({
                         (_, index) => (
                           <tr
                             key={`skeleton-${index}`}
-                            className={`skeleton-row fade-in-stagger odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 backdrop-blur-sm hover:bg-muted/60 table-cell-unique-transition`}
+                            className={`skeleton-row fade-in-stagger odd:bg-black/20 dark:odd:bg-black/40 even:bg-gray-900/20 dark:even:bg-gray-900/40 backdrop-blur-sm hover:bg-black/30 dark:hover:bg-black/50 table-cell-unique-transition`}
                           >
                             {/* Actions column */}
                             <td className="p-3 w-16">
@@ -1373,7 +1373,7 @@ export function DataTable({
                                       {editMode && (
                                         <button
                                           onClick={() => onSelectRowForImage(row.id)}
-                                          className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs transition-all duration-200 hover:scale-110 shadow-lg"
+                                          className="absolute -top-2 -right-2 w-6 h-6 bg-gray-700 hover:bg-gray-800 text-white rounded-full flex items-center justify-center text-xs transition-all duration-200 hover:scale-110 shadow-lg"
                                           title="Add Image"
                                         >
                                           +
