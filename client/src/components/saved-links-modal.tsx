@@ -157,10 +157,10 @@ export function SavedLinksModal({ open, onOpenChange }: SavedLinksModalProps) {
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[600px] animate-in zoom-in-95 duration-300 data-[state=closed]:animate-out data-[state=closed]:zoom-out-90 bg-white/70 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-3xl">
+        <DialogContent className="sm:max-w-[600px] animate-in zoom-in-95 duration-300 data-[state=closed]:animate-out data-[state=closed]:zoom-out-90 bg-white/70 dark:bg-black/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-2xl">
           {/* Enhanced Premium Frosted Glass Layer */}
           <div 
-            className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-white/70 via-white/50 to-white/60 dark:from-black/50 dark:via-black/30 dark:to-black/40 border-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),inset_0_-1px_1px_rgba(0,0,0,0.1)]" 
+            className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-white/70 via-white/50 to-white/60 dark:from-black/50 dark:via-black/30 dark:to-black/40 border-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),inset_0_-1px_1px_rgba(0,0,0,0.1)]" 
             style={{
               backdropFilter: 'blur(40px) saturate(180%)',
               WebkitBackdropFilter: 'blur(40px) saturate(180%)',
@@ -169,7 +169,7 @@ export function SavedLinksModal({ open, onOpenChange }: SavedLinksModalProps) {
             {/* Subtle top shine effect */}
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 dark:via-white/20 to-transparent" />
             {/* Ambient glow */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-blue-500/5 via-transparent to-purple-500/5 dark:from-blue-400/10 dark:via-transparent dark:to-purple-400/10" />
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-blue-500/5 via-transparent to-purple-500/5 dark:from-blue-400/10 dark:via-transparent dark:to-purple-400/10" />
           </div>
           <DialogHeader>
             <DialogTitle>Saved Share Links</DialogTitle>
@@ -268,7 +268,7 @@ export function SavedLinksModal({ open, onOpenChange }: SavedLinksModalProps) {
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent className="bg-white/70 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-3xl">
+        <AlertDialogContent className="bg-white/70 dark:bg-black/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-2xl">
           {/* Enhanced Premium Frosted Glass Layer */}
           <div 
             className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-white/70 via-white/50 to-white/60 dark:from-black/50 dark:via-black/30 dark:to-black/40 border-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),inset_0_-1px_1px_rgba(0,0,0,0.1)]" 
@@ -303,7 +303,7 @@ export function SavedLinksModal({ open, onOpenChange }: SavedLinksModalProps) {
 
       {/* Edit Remark Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] bg-white/70 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-3xl">
+        <DialogContent className="sm:max-w-[425px] bg-white/70 dark:bg-black/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-2xl">
           {/* Enhanced Premium Frosted Glass Layer */}
           <div 
             className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-white/70 via-white/50 to-white/60 dark:from-black/50 dark:via-black/30 dark:to-black/40 border-0 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),inset_0_-1px_1px_rgba(0,0,0,0.1)]" 

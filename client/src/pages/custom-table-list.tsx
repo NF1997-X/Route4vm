@@ -340,7 +340,7 @@ export default function CustomTableList() {
         </div>
 
         {/* Location Selection Table */}
-        <div className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-300 dark:border-white/10 shadow-xl rounded-3xl overflow-hidden mb-8">
+        <div className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl rounded-2xl overflow-hidden mb-8">
           {/* Header with Search */}
           <div className="p-6 pb-4 border-b border-gray-300 dark:border-white/10">
             <h2 className="text-sm font-semibold mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
@@ -436,7 +436,7 @@ export default function CustomTableList() {
         </div>
 
         {/* Existing Custom Tables */}
-        <div className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-300 dark:border-white/10 shadow-xl rounded-3xl p-6">
+        <div className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl rounded-2xl p-6">
           <h6 className="font-semibold mb-4 text-gray-900 dark:text-white text-center" style={{ fontSize: '12px' }}>My Custom Tables</h6>
           {customTables.length === 0 ? (
             <p className="text-center text-gray-600 dark:text-gray-400 py-8">
@@ -517,14 +517,14 @@ export default function CustomTableList() {
         {/* Create Table Dialog */}
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
         <DialogContent 
-          className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-300 dark:border-white/10 shadow-xl rounded-3xl"
+          className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl rounded-2xl"
           style={{
             maxHeight: 'min(80vh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px))',
             touchAction: 'pan-y',
           }}
         >
           <div 
-            className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-white/60 via-white/40 to-white/50 dark:from-black/40 dark:via-black/20 dark:to-black/30 border-0 shadow-inner" 
+            className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-white/60 via-white/40 to-white/50 dark:from-black/40 dark:via-black/20 dark:to-black/30 border-0 shadow-inner" 
             style={{
               backdropFilter: 'blur(40px)',
               WebkitBackdropFilter: 'blur(40px)',
@@ -595,14 +595,14 @@ export default function CustomTableList() {
         }
       }}>
         <DialogContent 
-          className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-300 dark:border-white/10 shadow-xl rounded-3xl max-h-[80vh] overflow-y-auto"
+          className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl rounded-2xl max-h-[80vh] overflow-y-auto"
           style={{
             maxHeight: 'min(80vh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px))',
             touchAction: 'pan-y',
           }}
         >
           <div 
-            className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-white/60 via-white/40 to-white/50 dark:from-black/40 dark:via-black/20 dark:to-black/30 border-0 shadow-inner" 
+            className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-white/60 via-white/40 to-white/50 dark:from-black/40 dark:via-black/20 dark:to-black/30 border-0 shadow-inner" 
             style={{
               backdropFilter: 'blur(40px)',
               WebkitBackdropFilter: 'blur(40px)',
@@ -683,7 +683,7 @@ export default function CustomTableList() {
 
       {/* Action Dialog */}
       <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
-        <DialogContent className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-300 dark:border-white/10 shadow-xl rounded-2xl max-w-sm">
+        <DialogContent className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl rounded-2xl max-w-sm">
           <div 
             className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-white/60 via-white/40 to-white/50 dark:from-black/40 dark:via-black/20 dark:to-black/30" 
             style={{
