@@ -202,7 +202,10 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
 
   const handleDownload = async () => {
     try {
-      const response = await fetch(currentImage.url);
+      // Use ImgBB URL for download if available (better quality, permanent link)
+      const downloadUrl = currentImage.imgbbUrl || currentImage.url;
+      
+      const response = await fetch(downloadUrl);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -214,15 +217,20 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Download failed:', error);
+      // Fallback: try to open in new tab
+      window.open(currentImage.imgbbUrl || currentImage.url, '_blank');
     }
   };
 
   const handleShare = async () => {
+    // Use ImgBB URL for sharing if available (permanent, shareable link)
+    const shareUrl = currentImage.imgbbUrl || currentImage.url;
+    
     if (navigator.share) {
       try {
         await navigator.share({
           title: currentImage.caption || 'Shared Image',
-          url: currentImage.url
+          url: shareUrl
         });
       } catch (error) {
         console.error('Share failed:', error);
@@ -230,7 +238,9 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
     } else {
       // Fallback: copy to clipboard
       try {
-        await navigator.clipboard.writeText(currentImage.url);
+        await navigator.clipboard.writeText(shareUrl);
+        // Show toast notification
+        alert('Link copied to clipboard!');
       } catch (error) {
         console.error('Copy failed:', error);
       }
@@ -351,9 +361,9 @@ export function ImageLightbox({ images, isOpen, onClose, initialIndex = 0 }: Ima
           src={currentImage.url}
           alt={currentImage.caption || `Image ${currentIndex + 1}`}
           onLoad={handleImageLoad}
-          className={`max-w-full max-h-full object-contain transition-all duration-300 ease-out select-none ${
+          className={`max-w-full max-h-full object-contain transition-all duration-500 ease-out select-none ${
             isDragging ? 'cursor-grabbing' : scale > 1 ? 'cursor-grab' : 'cursor-default'
-          }`}
+          } ${isLoading ? 'opacity-0' : 'opacity-100 animate-in fade-in zoom-in-95 duration-300'}`}
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale}) rotate(${rotation}deg)`,
             transformOrigin: 'center center',

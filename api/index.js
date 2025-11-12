@@ -39,12 +39,17 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 var mediaSchema = z.object({
   url: z.string(),
+  // Base64 data URL for fast display
   caption: z.string().optional().default(""),
   type: z.enum(["image", "video"]).default("image"),
   thumbnail: z.string().optional(),
   // For video thumbnails
-  mimeType: z.string().optional()
+  mimeType: z.string().optional(),
   // MIME type for uploaded files
+  imgbbUrl: z.string().optional(),
+  // ImgBB URL for download feature
+  uploadedAt: z.string().optional()
+  // Timestamp when uploaded
 });
 var imageSchema = mediaSchema;
 var tableRows = pgTable("table_rows", {
@@ -1537,12 +1542,55 @@ app.post("/api/table-rows/:id/images", async (req, res) => {
     }
     const newImage = {
       url: imageUrl,
+      // Save base64 data URL for fast display
       caption: caption && typeof caption === "string" ? caption : "",
-      type: "image"
+      type: "image",
+      uploadedAt: (/* @__PURE__ */ new Date()).toISOString()
     };
     const updatedImages = [...row.images, newImage];
     const updatedRow = await storage.updateTableRow(req.params.id, { images: updatedImages });
     res.json(updatedRow);
+    (async () => {
+      try {
+        let base64 = imageUrl;
+        const match = String(imageUrl).match(/^data:([a-zA-Z0-9+/.-]+);base64,(.*)$/);
+        if (match) {
+          base64 = match[2];
+        }
+        const apiKey = process.env.IMGBB_API_KEY;
+        if (!apiKey) {
+          console.log("IMGBB_API_KEY not set, skipping background upload");
+          return;
+        }
+        const params = new URLSearchParams();
+        params.append("image", base64);
+        const response = await fetch(`https://api.imgbb.com/1/upload?key=${encodeURIComponent(apiKey)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params.toString()
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data?.data?.url) {
+            const currentRow = await storage.getTableRow(req.params.id);
+            if (currentRow) {
+              const imgIndex = currentRow.images.findIndex((img) => img.url === imageUrl);
+              if (imgIndex !== -1) {
+                const updatedImgs = [...currentRow.images];
+                updatedImgs[imgIndex] = {
+                  ...updatedImgs[imgIndex],
+                  imgbbUrl: data.data.url
+                };
+                await storage.updateTableRow(req.params.id, { images: updatedImgs });
+                console.log(`Background ImgBB upload complete for row ${req.params.id}, image ${imgIndex}`);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Background ImgBB upload failed:", error);
+      }
+    })();
   } catch (error) {
     res.status(500).json({ message: "Failed to add image to row" });
   }

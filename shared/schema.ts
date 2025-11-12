@@ -5,11 +5,13 @@ import { z } from "zod";
 
 // Media type with caption and type support (images and videos)
 export const mediaSchema = z.object({
-  url: z.string(),
+  url: z.string(), // Base64 data URL for fast display
   caption: z.string().optional().default(""),
   type: z.enum(["image", "video"]).default("image"),
   thumbnail: z.string().optional(), // For video thumbnails
   mimeType: z.string().optional(), // MIME type for uploaded files
+  imgbbUrl: z.string().optional(), // ImgBB URL for download feature
+  uploadedAt: z.string().optional(), // Timestamp when uploaded
 });
 
 export type MediaWithCaption = z.infer<typeof mediaSchema>;
