@@ -1095,5 +1095,6 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   res.status(status).json({ message });
 });
 
-// Export handler for Vercel serverless
+// Export as Vercel serverless function handler
+// Vercel will call this with (req, res) from Node's http module
 export default app;
