@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Check, X } from "lucide-react";
 
 interface EditableCellProps {
   value: any;
@@ -12,6 +13,8 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
   const inputRef = useRef<HTMLInputElement>(null);
+  const selectRef = useRef<HTMLSelectElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setEditValue(value);
@@ -19,20 +22,37 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
 
   // If editing a delivery cell and the stored value is empty, default to 'None'
   useEffect(() => {
-    if (isEditing && (dataKey === 'delivery' || type === 'select')) {
+    if (isEditing && (dataKey === 'delivery' || dataKey === 'route' || type === 'select')) {
       if (value === null || value === undefined || value === '') {
-        setEditValue('None');
+        setEditValue(options?.[0] || 'None');
       }
     }
-  }, [isEditing, dataKey, type, value]);
+  }, [isEditing, dataKey, type, value, options]);
 
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      // Only call select() if it's an input element, not a select dropdown
-      if (inputRef.current.select && typeof inputRef.current.select === 'function') {
-        inputRef.current.select();
+    if (isEditing) {
+      if (inputRef.current) {
+        inputRef.current.focus();
+        if (inputRef.current.select && typeof inputRef.current.select === 'function') {
+          inputRef.current.select();
+        }
+      } else if (selectRef.current) {
+        selectRef.current.focus();
       }
+    }
+  }, [isEditing]);
+
+  // Click outside to cancel
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        handleCancel();
+      }
+    };
+
+    if (isEditing) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
     }
   }, [isEditing]);
 
@@ -67,78 +87,92 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       handleSave();
     } else if (e.key === 'Escape') {
+      e.preventDefault();
       handleCancel();
     }
   };
 
   const getPlaceholder = () => {
-    if (dataKey === 'latitude') {
-      return "e.g. 3.139003";
-    }
-    if (dataKey === 'longitude') {
-      return "e.g. 101.686855";
-    }
-    if (type === 'currency') {
-      return "0.00";
-    }
-    if (type === 'number') {
-      return "Enter number";
-    }
+    if (dataKey === 'latitude') return "e.g. 3.139003";
+    if (dataKey === 'longitude') return "e.g. 101.686855";
+    if (type === 'currency') return "0.00";
+    if (type === 'number') return "Enter number";
     return "Enter text";
   };
 
-  if (isEditing) {
-    // Special handling for delivery column with select dropdown
-    if (dataKey === 'delivery' || type === 'select') {
-      const deliveryOptions = options || ['None', 'Daily', 'Weekday', 'Alt 1', 'Alt 2'];
+  const displayValue = type === 'currency' && value 
+    ? `RM ${parseFloat(value).toFixed(2)}`
+    : value || '—';
 
-      return (
-        <select
-          ref={inputRef as any}
-          value={editValue ?? 'None'}
-          onChange={(e) => {
-            setEditValue(e.target.value);
-            handleSave();
-          }}
-          onKeyDown={handleKeyDown}
-          className="w-full h-6 px-2 py-1 text-center bg-transparent border border-blue-300 rounded focus:outline-none focus:border-blue-500"
-          style={{ fontSize: '10px' }}
-          autoFocus
-        >
-          {deliveryOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      );
-    }
+  if (isEditing) {
+    const isSelect = dataKey === 'delivery' || dataKey === 'route' || type === 'select';
+    const selectOptions = options || ['None', 'Daily', 'Weekday', 'Alt 1', 'Alt 2'];
 
     return (
-      <input
-        ref={inputRef}
-        type={type === 'number' || type === 'currency' ? 'number' : 'text'}
-        step={type === 'currency' ? '0.01' : undefined}
-        value={type === 'currency' ? editValue.toString().replace(/[^0-9.]/g, '') : editValue}
-        onChange={(e) => setEditValue(e.target.value)}
-        onBlur={handleSave}
-        onKeyDown={handleKeyDown}
-        placeholder={getPlaceholder()}
-        className="w-full h-6 px-2 py-1 text-center bg-transparent border border-blue-300 rounded focus:outline-none focus:border-blue-500"
-        style={{ fontSize: '10px' }}
-      />
+      <div 
+        ref={containerRef}
+        className="relative inline-flex items-center gap-1 animate-in fade-in zoom-in-95 duration-200"
+      >
+        {isSelect ? (
+          <select
+            ref={selectRef}
+            value={editValue ?? selectOptions[0]}
+            onChange={(e) => setEditValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="h-7 px-2 py-1 text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+            autoFocus
+          >
+            {selectOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            ref={inputRef}
+            type={type === 'number' || type === 'currency' ? 'number' : 'text'}
+            step={type === 'currency' ? '0.01' : undefined}
+            value={type === 'currency' ? editValue.toString().replace(/[^0-9.]/g, '') : editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={getPlaceholder()}
+            className="h-7 px-2 py-1 min-w-[80px] text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          />
+        )}
+        
+        {/* Action Buttons - X-editable style */}
+        <div className="flex gap-1">
+          <button
+            onClick={handleSave}
+            className="h-7 w-7 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white rounded-md shadow-lg transition-all hover:scale-110 active:scale-95"
+            title="Save (Enter)"
+          >
+            <Check className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={handleCancel}
+            className="h-7 w-7 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white rounded-md shadow-lg transition-all hover:scale-110 active:scale-95"
+            title="Cancel (Esc)"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
     );
   }
 
   return (
     <span
       onClick={() => setIsEditing(true)}
-      className="cursor-pointer hover:bg-gray-100 rounded px-1 py-0.5 transition-colors text-center block"
+      className="cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 rounded px-2 py-1 transition-all duration-200 text-center block border border-transparent hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-sm"
       style={{ fontSize: '10px' }}
+      title="Click to edit"
     >
-      {value}
+      {displayValue}
     </span>
   );
 }
