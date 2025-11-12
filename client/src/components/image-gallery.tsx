@@ -171,31 +171,41 @@ export function ImageGallery({
             data-sub-html={media.caption}
             data-video={videoData}
             data-poster={isVideo && media.thumbnail ? media.thumbnail : undefined}
-            className="inline-block rounded overflow-hidden hover:scale-105 transition-transform"
+            className="group relative inline-block w-10 h-8 rounded overflow-hidden cursor-pointer"
             data-testid={`media-${rowId}-${index}`}
           >
             {isVideo ? (
-              <div className="w-10 h-8 bg-gray-800 border border-border rounded flex items-center justify-center relative">
+              <div className="w-full h-full bg-gray-800 border border-border rounded flex items-center justify-center relative transition-transform duration-500 ease-out group-hover:scale-110">
                 <Video className="w-4 h-4 text-white" />
                 {media.thumbnail && (
                   <img
                     src={media.thumbnail}
                     alt={media.caption || `Video ${index + 1}`}
-                    className="absolute inset-0 w-full h-full object-cover rounded"
+                    className="absolute inset-0 w-full h-full object-cover rounded transition-transform duration-500 ease-out group-hover:scale-110"
                   />
                 )}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded">
-                  <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded transition-opacity duration-300 group-hover:bg-black/50">
+                  <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-125 group-hover:bg-white/30">
                     <div className="w-0 h-0 border-l-[4px] border-l-white border-y-[3px] border-y-transparent ml-0.5"></div>
                   </div>
                 </div>
               </div>
             ) : (
-              <img
-                src={media.url.startsWith('data:') ? media.url : `${media.url}?w=60&h=40&fit=crop`}
-                alt={media.caption || `Image ${index + 1}`}
-                className="w-10 h-8 object-cover border border-border"
-              />
+              <>
+                <img
+                  src={media.url.startsWith('data:') ? media.url : `${media.url}?w=60&h=40&fit=crop`}
+                  alt={media.caption || `Image ${index + 1}`}
+                  className="w-full h-full object-cover border border-border transition-transform duration-500 ease-out group-hover:scale-110"
+                />
+                {/* Hover overlay with gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none" />
+                {/* Caption on hover - slides up */}
+                {media.caption && (
+                  <div className="absolute inset-x-0 bottom-0 px-1.5 py-1 text-[9px] leading-tight text-white font-medium translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out pointer-events-none">
+                    <span className="line-clamp-2">{media.caption}</span>
+                  </div>
+                )}
+              </>
             )}
           </a>
         );
