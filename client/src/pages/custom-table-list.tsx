@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Share2, Trash2, Copy, Check, Home, Edit, ArrowLeft, ChevronDown, ChevronUp, Eye } from "lucide-react";
+import { Plus, Share2, Trash2, Copy, Check, Home, Edit, ArrowLeft, ChevronDown, ChevronUp, Eye, MoreVertical } from "lucide-react";
 import type { TableRow, CustomTable } from "@shared/schema";
 import { Footer } from "@/components/footer";
 import { LoadingOverlay } from "@/components/skeleton-loader";
@@ -32,6 +32,8 @@ export default function CustomTableList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [deliveryFilter, setDeliveryFilter] = useState<string[]>([]);
   const [expandedTableId, setExpandedTableId] = useState<string | null>(null);
+  const [actionDialogOpen, setActionDialogOpen] = useState(false);
+  const [selectedTable, setSelectedTable] = useState<CustomTable | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { theme, toggleTheme } = useTheme();
@@ -259,6 +261,26 @@ export default function CustomTableList() {
     }
   };
 
+  const handleActionClick = (table: CustomTable) => {
+    setSelectedTable(table);
+    setActionDialogOpen(true);
+  };
+
+  const handleViewTable = () => {
+    if (selectedTable) {
+      window.open(`/custom/${selectedTable.shareId}`, "_blank");
+      setActionDialogOpen(false);
+    }
+  };
+
+  const handleDeleteTable = () => {
+    if (selectedTable) {
+      deleteTableMutation.mutate(selectedTable.id);
+      setActionDialogOpen(false);
+      setSelectedTable(null);
+    }
+  };
+
   return (
     <div className="animate-in fade-in duration-300">
       {/* Simple Header with Home Button */}
@@ -453,48 +475,14 @@ export default function CustomTableList() {
                           </div>
                         </div>
 
-                        {/* Action Buttons - Merged & Compact */}
-                        <div className="flex items-center gap-1">
-                          {/* Share */}
-                          <button
-                            onClick={() => copyShareLink(table)}
-                            className="p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors group"
-                            title="Copy share link"
-                          >
-                            {copiedId === table.id ? (
-                              <Check className="h-4 w-4 text-green-500" />
-                            ) : (
-                              <Share2 className="h-4 w-4 text-blue-500 group-hover:scale-110 transition-transform" />
-                            )}
-                          </button>
-
-                          {/* View */}
-                          <button
-                            onClick={() => window.open(`/custom/${table.shareId}`, "_blank")}
-                            className="p-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-lg transition-colors group"
-                            title="View table"
-                          >
-                            <Eye className="h-4 w-4 text-purple-500 group-hover:scale-110 transition-transform" />
-                          </button>
-
-                          {/* Edit */}
-                          <button
-                            onClick={() => handleEditTable(table)}
-                            className="p-2 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors group"
-                            title="Edit locations"
-                          >
-                            <Edit className="h-4 w-4 text-green-600 group-hover:scale-110 transition-transform" />
-                          </button>
-
-                          {/* Delete */}
-                          <button
-                            onClick={() => deleteTableMutation.mutate(table.id)}
-                            className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors group"
-                            title="Delete table"
-                          >
-                            <Trash2 className="h-4 w-4 text-red-500 group-hover:scale-110 transition-transform" />
-                          </button>
-                        </div>
+                        {/* Single Action Button */}
+                        <button
+                          onClick={() => handleActionClick(table)}
+                          className="p-2.5 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-all hover:scale-110 active:scale-95"
+                          title="Actions"
+                        >
+                          <MoreVertical className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                        </button>
                       </div>
 
                       {/* Collapsible Section */}
@@ -688,6 +676,81 @@ export default function CustomTableList() {
               className="bg-green-600 hover:bg-green-700 text-white"
             >
               {updateTableMutation.isPending ? "Updating..." : "Update Table"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Action Dialog */}
+      <Dialog open={actionDialogOpen} onOpenChange={setActionDialogOpen}>
+        <DialogContent className="bg-white/90 dark:bg-black/30 backdrop-blur-2xl border-2 border-gray-300 dark:border-white/10 shadow-xl rounded-2xl max-w-sm">
+          <div 
+            className="absolute inset-0 -z-10 rounded-2xl bg-gradient-to-br from-white/60 via-white/40 to-white/50 dark:from-black/40 dark:via-black/20 dark:to-black/30" 
+            style={{
+              backdropFilter: 'blur(40px)',
+              WebkitBackdropFilter: 'blur(40px)',
+            }}
+          />
+          <DialogHeader className="relative z-10">
+            <DialogTitle className="text-center text-base">{selectedTable?.name}</DialogTitle>
+            <DialogDescription className="text-center text-xs">
+              Choose an action
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2 py-4 relative z-10">
+            {/* Share */}
+            <button
+              onClick={() => {
+                if (selectedTable) {
+                  copyShareLink(selectedTable);
+                  setActionDialogOpen(false);
+                }
+              }}
+              className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group"
+            >
+              <Share2 className="h-5 w-5 text-blue-500" />
+              <span className="text-sm font-medium">Copy Share Link</span>
+            </button>
+
+            {/* View */}
+            <button
+              onClick={handleViewTable}
+              className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors group"
+            >
+              <Eye className="h-5 w-5 text-purple-500" />
+              <span className="text-sm font-medium">View Table</span>
+            </button>
+
+            {/* Edit */}
+            <button
+              onClick={() => {
+                if (selectedTable) {
+                  handleEditTable(selectedTable);
+                  setActionDialogOpen(false);
+                }
+              }}
+              className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors group"
+            >
+              <Edit className="h-5 w-5 text-green-600" />
+              <span className="text-sm font-medium">Edit Locations</span>
+            </button>
+
+            {/* Delete */}
+            <button
+              onClick={handleDeleteTable}
+              className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors group"
+            >
+              <Trash2 className="h-5 w-5 text-red-500" />
+              <span className="text-sm font-medium text-red-500">Delete Table</span>
+            </button>
+          </div>
+          <DialogFooter className="relative z-10">
+            <Button
+              variant="outline"
+              onClick={() => setActionDialogOpen(false)}
+              className="w-full bg-transparent border-gray-300 dark:border-gray-700"
+            >
+              Cancel
             </Button>
           </DialogFooter>
         </DialogContent>
