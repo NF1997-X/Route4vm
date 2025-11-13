@@ -370,6 +370,15 @@ export default function CustomTableView() {
         </div>
       </main>
 
+      {/* Logo Section */}
+      <div className="flex justify-center items-center py-8 bg-gradient-to-b from-transparent to-gray-50/50 dark:to-gray-900/50">
+        <img 
+          src="/Photoroom_20251112_165002.png" 
+          alt="Company Logo" 
+          className="h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+        />
+      </div>
+
       <Footer editMode={false} />
     </>
   );

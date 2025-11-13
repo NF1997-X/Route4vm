@@ -1164,7 +1164,7 @@ export function DataTable({
       >
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full">
-            <TableHeader className="glass-card sticky top-0 z-30 border-b border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/50 dark:bg-slate-900/50 transition-all duration-500 ease-in-out hover:backdrop-blur-2xl hover:bg-white/60 dark:hover:bg-slate-900/60 shadow-lg">
+            <TableHeader className="glass-card sticky top-0 z-30 border-b border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/90 dark:bg-slate-900/90 transition-all duration-500 ease-in-out shadow-lg">
               <Droppable
                 droppableId="columns"
                 direction="horizontal"
@@ -1209,7 +1209,7 @@ export function DataTable({
                       </Draggable>
                     ))}
                     <TableHead
-                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-slate-900/80"
+                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 right-0 z-40 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-slate-900/80 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
                       style={{
                         textAlign: "center",
                         textDecoration: "normal",
@@ -1511,7 +1511,7 @@ export function DataTable({
                                 </TableCell>
                               ))}
                               <TableCell
-                                className="px-4 py-2 text-sm text-center text-foreground"
+                                className="px-4 py-2 text-sm text-center sticky right-0 z-10 bg-white dark:bg-gray-900 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
                                 style={{ textAlign: "center" }}
                               >
                                 <div className="flex flex-col items-center gap-1">
@@ -1776,7 +1776,7 @@ export function DataTable({
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 z-20 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm text-foreground whitespace-nowrap h-12 transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-slate-900/80" style={{ textAlign: "center", fontSize: '10px' }}>
+                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 right-0 z-30 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm text-foreground whitespace-nowrap h-12 transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-slate-900/80 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]" style={{ textAlign: "center", fontSize: '10px' }}>
                   <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                 </TableCell>
               </TableRow>
