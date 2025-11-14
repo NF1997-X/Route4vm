@@ -1241,8 +1241,8 @@ export function DataTable({
                             className={`skeleton-row fade-in-stagger odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 backdrop-blur-sm hover:bg-muted/60 table-cell-unique-transition`}
                           >
                             {/* Actions column */}
-                            <td className="p-3 w-16">
-                              <div className="flex gap-3 justify-center">
+                            <td className="p-3 w-12">
+                              <div className="flex gap-2 justify-center">
                                 <div className="skeleton w-8 h-8 rounded-md bg-gradient-to-r from-gray-500/20 to-slate-500/20 animate-pulse" />
                                 <div className="skeleton w-8 h-8 rounded-md bg-gradient-to-r from-blue-500/20 to-purple-500/20 animate-pulse" style={{animationDelay: "0.1s"}} />
                                 <div className="skeleton w-8 h-8 rounded-md bg-gradient-to-r from-green-500/20 to-blue-500/20 animate-pulse" style={{animationDelay: "0.2s"}} />
@@ -1511,11 +1511,11 @@ export function DataTable({
                                 </TableCell>
                               ))}
                               <TableCell
-                                className="px-4 py-2 text-sm text-center sticky right-0 z-10 bg-white dark:bg-gray-900 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
+                                className="px-2 py-2 text-sm text-center sticky right-0 z-10 bg-white dark:bg-gray-900 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
                                 style={{ textAlign: "center" }}
                               >
                                 <div className="flex flex-col items-center gap-1">
-                                  <div className="flex items-center gap-3">
+                                  <div className="flex items-center gap-2">
                                     <div
                                       {...provided.dragHandleProps}
                                       className={`p-2 rounded ${

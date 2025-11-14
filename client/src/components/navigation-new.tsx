@@ -88,18 +88,18 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             e.stopPropagation();
             handleSubmenuOpen('vm-route');
           }}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-indigo-200/30 dark:hover:border-indigo-800/30 p-0"
+          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-200 ease-out hover:scale-[1.01] active:scale-[0.99] transform rounded-xl backdrop-blur border border-transparent hover:border-indigo-200/30 dark:hover:border-indigo-800/30 p-0 touch-manipulation"
           data-testid="menu-edit-page"
         >
-          <div className="flex items-center w-full p-2">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-indigo-500/10 dark:bg-indigo-500/20 group-hover:bg-indigo-500/20 dark:group-hover:bg-indigo-500/30 transition-all duration-300">
-              <Edit2 className="w-4 h-4 text-indigo-500 dark:text-indigo-400 group-hover:rotate-12 transition-all duration-300" />
+          <div className="flex items-center w-full p-3">
+            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 group-hover:bg-indigo-500/20 dark:group-hover:bg-indigo-500/30 transition-all duration-200 group-active:scale-95">
+              <Edit2 className="w-5 h-5 text-indigo-500 dark:text-indigo-400 group-hover:rotate-12 transition-all duration-200" />
             </div>
             <div className="ml-3 flex-1">
-              <span style={{fontSize: '11px'}} className="font-medium text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-300">Vm Route</span>
-              <p style={{fontSize: '9px'}} className="text-gray-500 dark:text-gray-500 mt-0.5">Manage routes & tables</p>
+              <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-200">Vm Route</span>
+              <p className="text-[10px] text-gray-500 dark:text-gray-500 mt-1">Manage routes & tables</p>
             </div>
-            <Sparkles className="w-3 h-3 opacity-0 group-hover:opacity-100 text-purple-500 transition-all duration-300 ml-2" />
+            <Sparkles className="w-4 h-4 opacity-0 group-hover:opacity-100 text-purple-500 transition-all duration-200 ml-2 group-hover:rotate-12" />
           </div>
         </div>
 
@@ -110,25 +110,25 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             e.stopPropagation();
             toggleTheme();
           }}
-          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 ease-out hover:scale-[1.02] transform rounded-xl backdrop-blur border border-transparent hover:border-yellow-200/30 dark:hover:border-blue-800/30 p-0"
+          className="cursor-pointer group hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-200 ease-out hover:scale-[1.01] active:scale-[0.99] transform rounded-xl backdrop-blur border border-transparent hover:border-yellow-200/30 dark:hover:border-blue-800/30 p-0 touch-manipulation"
           data-testid="menu-toggle-theme"
         >
-          <div className="flex items-center w-full p-2">
+          <div className="flex items-center w-full p-3">
             {theme === 'dark' ? (
               <>
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-yellow-500/10 dark:bg-yellow-500/20 group-hover:bg-yellow-500/20 dark:group-hover:bg-yellow-500/30 transition-all duration-300">
-                  <Sun className="w-4 h-4 text-yellow-500 group-hover:rotate-180 transition-all duration-500" />
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-yellow-500/10 dark:bg-yellow-500/20 group-hover:bg-yellow-500/20 dark:group-hover:bg-yellow-500/30 transition-all duration-200 group-active:scale-95">
+                  <Sun className="w-5 h-5 text-yellow-500 group-hover:rotate-180 transition-all duration-500" />
                 </div>
                 <div className="ml-3 flex-1">
-                  <span style={{fontSize: '11px'}} className="font-medium text-gray-700 dark:text-gray-300 group-hover:text-yellow-600 dark:group-hover:text-yellow-300 transition-colors duration-300">Light Mode</span>
-                  <p style={{fontSize: '9px'}} className="text-gray-500 dark:text-gray-500 mt-0.5">Switch to light theme</p>
+                  <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-yellow-600 dark:group-hover:text-yellow-300 transition-colors duration-200">Light Mode</span>
+                  <p className="text-[10px] text-gray-500 dark:text-gray-500 mt-1">Switch to light theme</p>
                 </div>
-                <div className="w-2 h-2 rounded-full bg-yellow-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-0 group-hover:opacity-100 transition-all duration-200 ml-2 group-hover:scale-110"></div>
               </>
             ) : (
               <>
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-300">
-                  <Moon className="w-4 h-4 text-blue-500 group-hover:rotate-180 transition-all duration-500" />
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-all duration-200 group-active:scale-95">
+                  <Moon className="w-5 h-5 text-blue-500 group-hover:rotate-180 transition-all duration-500" />
                 </div>
                 <div className="ml-3 flex-1">
                   <span style={{fontSize: '11px'}} className="font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Dark Mode</span>
@@ -265,15 +265,15 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   const renderVmRouteSubmenu = () => (
     <>
       {/* Back to Menu Button */}
-      <div className="px-3 py-3 border-b border-white/10 dark:border-white/5 bg-gradient-to-r from-white/5 to-transparent dark:from-white/3 dark:to-transparent">
+            <div className="px-3 py-3 border-b border-white/10 dark:border-white/5 bg-gradient-to-r from-indigo-500/5 to-transparent dark:from-indigo-500/10 dark:to-transparent">
         <Button
           variant="ghost"
           size="sm"
-          className="w-full justify-start text-gray-600 dark:text-gray-400 hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-300 group rounded-xl backdrop-blur"
+          className="w-full justify-start text-gray-700 dark:text-gray-300 hover:bg-white/10 dark:hover:bg-white/5 transition-all duration-200 group rounded-xl backdrop-blur font-semibold active:scale-95 touch-manipulation h-10"
           onClick={handleBackToMenu}
         >
-          <ChevronLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
-          <span style={{fontSize: '11px'}} className="font-medium">Back to Menu</span>
+          <ChevronLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+          <span className="text-xs">Back to Menu</span>
         </Button>
       </div>
       

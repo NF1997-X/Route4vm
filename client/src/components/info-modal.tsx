@@ -691,11 +691,11 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           <div className={`flex justify-center items-center w-full transition-all duration-300 ${showActionsMenu ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <Button
               variant="ghost"
-              className="h-12 w-12 p-0 bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 border-0 hover:scale-110 active:scale-95 transition-all shadow-lg hover:shadow-xl rounded-xl"
+              className="h-12 w-12 p-0 bg-transparent border-transparent hover:bg-transparent hover:border-transparent hover:scale-110 active:scale-95 transition-all rounded-xl"
               onClick={() => setShowActionsMenu(!showActionsMenu)}
               data-testid="button-actions-menu"
             >
-              <FolderOpen className="w-6 h-6 text-white" />
+              <FolderOpen className="w-6 h-6 text-blue-500 dark:text-blue-400" />
             </Button>
           </div>
 
@@ -712,12 +712,16 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
             }}
           >
             {/* Close Button */}
-            <div className="absolute top-3 right-3">
+            <div className="absolute top-3 right-3 z-50">
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900"
-                onClick={() => setShowActionsMenu(false)}
+                className="h-8 w-8 p-0 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900 touch-auto pointer-events-auto active:scale-90 transition-transform"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowActionsMenu(false);
+                }}
+                data-testid="button-close-actions-menu"
               >
                 <X className="w-4 h-4" />
               </Button>

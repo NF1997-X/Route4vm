@@ -89,92 +89,131 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
       <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-2 text-center">
         Daily Color Legend
       </h3>
-      <div className="text-xs text-slate-600 dark:text-slate-400 mb-6 text-center">
+      <div className="text-xs text-slate-600 dark:text-slate-400 mb-4 text-center">
         {formattedDate} | {formattedTime}
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-[5px]">
-        {/* Stock In */}
-        <div className="flex items-center justify-center gap-3">
-          <div className="flex flex-col items-center gap-2">
-            <div 
-              className="w-4 h-4 rounded-full border-2 border-white/50 shadow-sm"
-              style={{ backgroundColor: stockInColors[today as keyof typeof stockInColors] }}
-            />
-            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Stock In:</span>
-            <span className="text-xs text-slate-600 dark:text-slate-400">
-              {colorNames[stockInColors[today as keyof typeof stockInColors] as keyof typeof colorNames]}
-            </span>
-          </div>
-        </div>
-
-        {/* Move Front */}
-        <div className="flex items-center justify-center gap-3">
-          <div className="flex flex-col items-center gap-2">
-            <div 
-              className="w-4 h-4 rounded-full border-2 border-white/50 shadow-sm"
-              style={{ backgroundColor: moveFrontColors[today as keyof typeof moveFrontColors] }}
-            />
-            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Move Front:</span>
-            <span className="text-xs text-slate-600 dark:text-slate-400">
-              {colorNames[moveFrontColors[today as keyof typeof moveFrontColors] as keyof typeof colorNames]}
-            </span>
-          </div>
-        </div>
-
-        {/* Expired */}
-        <div className="flex items-center justify-center gap-3">
-          <div className="flex flex-col items-center gap-2">
-            <div 
-              className="w-4 h-4 rounded-full border-2 border-white/50 shadow-sm"
-              style={{ backgroundColor: expiredColors[today as keyof typeof expiredColors] }}
-            />
-            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Expired:</span>
-            <span className="text-xs text-slate-600 dark:text-slate-400">
-              {colorNames[expiredColors[today as keyof typeof expiredColors] as keyof typeof colorNames]}
-            </span>
-          </div>
-        </div>
+      {/* Table for Today's Colors */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs border-collapse">
+          <thead>
+            <tr className="border-b border-gray-300 dark:border-gray-600">
+              <th className="py-2 px-4 text-left font-semibold text-slate-700 dark:text-slate-300">Category</th>
+              <th className="py-2 px-4 text-center font-semibold text-slate-700 dark:text-slate-300">Color</th>
+              <th className="py-2 px-4 text-center font-semibold text-slate-700 dark:text-slate-300">Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b border-gray-200 dark:border-gray-700 hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors">
+              <td className="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">Stock In</td>
+              <td className="py-3 px-4 text-center">
+                <div 
+                  className="w-6 h-6 rounded-full border-2 border-white/50 shadow-sm mx-auto"
+                  style={{ backgroundColor: stockInColors[today as keyof typeof stockInColors] }}
+                />
+              </td>
+              <td className="py-3 px-4 text-center text-slate-600 dark:text-slate-400">
+                {colorNames[stockInColors[today as keyof typeof stockInColors] as keyof typeof colorNames]}
+              </td>
+            </tr>
+            <tr className="border-b border-gray-200 dark:border-gray-700 hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors">
+              <td className="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">Move Front</td>
+              <td className="py-3 px-4 text-center">
+                <div 
+                  className="w-6 h-6 rounded-full border-2 border-white/50 shadow-sm mx-auto"
+                  style={{ backgroundColor: moveFrontColors[today as keyof typeof moveFrontColors] }}
+                />
+              </td>
+              <td className="py-3 px-4 text-center text-slate-600 dark:text-slate-400">
+                {colorNames[moveFrontColors[today as keyof typeof moveFrontColors] as keyof typeof colorNames]}
+              </td>
+            </tr>
+            <tr className="hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors">
+              <td className="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">Expired</td>
+              <td className="py-3 px-4 text-center">
+                <div 
+                  className="w-6 h-6 rounded-full border-2 border-white/50 shadow-sm mx-auto"
+                  style={{ backgroundColor: expiredColors[today as keyof typeof expiredColors] }}
+                />
+              </td>
+              <td className="py-3 px-4 text-center text-slate-600 dark:text-slate-400">
+                {colorNames[expiredColors[today as keyof typeof expiredColors] as keyof typeof colorNames]}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       {/* Full Week Schedule (Collapsible) */}
-      <details className="mt-4">
-        <summary className="text-xs text-slate-600 dark:text-slate-400 cursor-pointer hover:text-slate-800 dark:hover:text-slate-200 transition-colors text-center">
+      <details className="mt-[5px]">
+        <summary className="text-xs text-slate-600 dark:text-slate-400 cursor-pointer hover:text-slate-800 dark:hover:text-slate-200 transition-colors text-left mt-[5px]">
           View Full Week Schedule
         </summary>
-        <div className="mt-3 space-y-2 text-xs">
-          {Object.keys(dayNames).map((dayKey) => {
-            const day = parseInt(dayKey);
-            const isToday = day === today;
-            return (
-              <div key={day} className={`grid grid-cols-3 gap-4 p-2 rounded ${isToday ? 'bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200/50 dark:border-blue-800/50' : ''}`}>
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-slate-700 dark:text-slate-300 min-w-[50px]">
-                    {dayNames[day as keyof typeof dayNames]}:
-                  </span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <div 
-                      className="w-3 h-3 rounded-full border border-white/50"
-                      style={{ backgroundColor: stockInColors[day as keyof typeof stockInColors] }}
-                    />
-                    <div 
-                      className="w-3 h-3 rounded-full border border-white/50"
-                      style={{ backgroundColor: moveFrontColors[day as keyof typeof moveFrontColors] }}
-                    />
-                    <div 
-                      className="w-3 h-3 rounded-full border border-white/50"
-                      style={{ backgroundColor: expiredColors[day as keyof typeof expiredColors] }}
-                    />
-                  </div>
-                </div>
-                <div className="text-slate-500 dark:text-slate-400">
-                  {isToday && <span className="text-blue-600 dark:text-blue-400 font-medium">(Today)</span>}
-                </div>
-              </div>
-            );
-          })}
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-xs border-collapse">
+            <thead>
+              <tr className="border-b border-gray-300 dark:border-gray-600">
+                <th className="py-2 px-4 text-left font-semibold text-slate-700 dark:text-slate-300">Day</th>
+                <th className="py-2 px-4 text-center font-semibold text-slate-700 dark:text-slate-300">Stock In</th>
+                <th className="py-2 px-4 text-center font-semibold text-slate-700 dark:text-slate-300">Move Front</th>
+                <th className="py-2 px-4 text-center font-semibold text-slate-700 dark:text-slate-300">Expired</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(dayNames).map((dayKey) => {
+                const day = parseInt(dayKey);
+                const isToday = day === today;
+                return (
+                  <tr 
+                    key={day} 
+                    className={`border-b border-gray-200 dark:border-gray-700 transition-colors ${
+                      isToday 
+                        ? 'bg-blue-100/50 dark:bg-blue-900/30 font-medium' 
+                        : 'hover:bg-blue-50/30 dark:hover:bg-blue-950/20'
+                    }`}
+                  >
+                    <td className="py-3 px-4 text-slate-700 dark:text-slate-300">
+                      {dayNames[day as keyof typeof dayNames]}
+                      {isToday && <span className="ml-2 text-blue-600 dark:text-blue-400 text-[10px]">(Today)</span>}
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <div 
+                          className="w-4 h-4 rounded-full border border-white/50 shadow-sm"
+                          style={{ backgroundColor: stockInColors[day as keyof typeof stockInColors] }}
+                        />
+                        <span className="text-slate-600 dark:text-slate-400">
+                          {colorNames[stockInColors[day as keyof typeof stockInColors] as keyof typeof colorNames]}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <div 
+                          className="w-4 h-4 rounded-full border border-white/50 shadow-sm"
+                          style={{ backgroundColor: moveFrontColors[day as keyof typeof moveFrontColors] }}
+                        />
+                        <span className="text-slate-600 dark:text-slate-400">
+                          {colorNames[moveFrontColors[day as keyof typeof moveFrontColors] as keyof typeof colorNames]}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <div 
+                          className="w-4 h-4 rounded-full border border-white/50 shadow-sm"
+                          style={{ backgroundColor: expiredColors[day as keyof typeof expiredColors] }}
+                        />
+                        <span className="text-slate-600 dark:text-slate-400">
+                          {colorNames[expiredColors[day as keyof typeof expiredColors] as keyof typeof colorNames]}
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </details>
     </div>
