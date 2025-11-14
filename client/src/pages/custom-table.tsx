@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useRoute } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { DataTable } from "@/components/data-table";
+import { ColorLegendPanel } from "@/components/color-legend-panel";
 import { useTableData } from "@/hooks/use-table-data";
 import { LoadingOverlay, NavigationSpinner } from "@/components/skeleton-loader";
 import { Footer } from "@/components/footer";
@@ -339,34 +340,41 @@ export default function CustomTableView() {
       <main className="pt-[56px]">
         <div className="container mx-auto px-4 py-8">
           {/* Data Table with all interactive features enabled */}
-          <DataTable
-            rows={rowsWithDistances}
-            columns={displayColumns}
-            editMode={false}
-            isSharedView={true}
-            hideShareButton={true}
-            disablePagination={true}
-            onUpdateRow={readOnlyUpdateMutation as any}
-            onDeleteRow={readOnlyDeleteMutation as any}
-            onReorderRows={readOnlyReorderRowsMutation as any}
-            onReorderColumns={readOnlyReorderColumnsMutation as any}
-            onDeleteColumn={readOnlyDeleteColumnMutation as any}
-            onSelectRowForImage={setSelectedRowForImage}
-            onShowCustomization={() => {}}
-            onOptimizeRoute={() => {}}
-            isAuthenticated={false}
-            searchTerm={searchTerm}
-            onSearchTermChange={setSearchTerm}
-            filterValue={[]}
-            onFilterValueChange={() => {}}
-            deliveryFilterValue={deliveryFilters}
-            onDeliveryFilterValueChange={setDeliveryFilters}
-            routeOptions={[]}
-            deliveryOptions={deliveryOptions}
-            onClearAllFilters={handleClearAllFilters}
-            filteredRowsCount={rowsWithDistances.length}
-            totalRowsCount={rows.length}
-          />
+          <div className="mb-6">
+            <DataTable
+              rows={rowsWithDistances}
+              columns={displayColumns}
+              editMode={false}
+              isSharedView={true}
+              hideShareButton={true}
+              disablePagination={true}
+              onUpdateRow={readOnlyUpdateMutation as any}
+              onDeleteRow={readOnlyDeleteMutation as any}
+              onReorderRows={readOnlyReorderRowsMutation as any}
+              onReorderColumns={readOnlyReorderColumnsMutation as any}
+              onDeleteColumn={readOnlyDeleteColumnMutation as any}
+              onSelectRowForImage={setSelectedRowForImage}
+              onShowCustomization={() => {}}
+              onOptimizeRoute={() => {}}
+              isAuthenticated={false}
+              searchTerm={searchTerm}
+              onSearchTermChange={setSearchTerm}
+              filterValue={[]}
+              onFilterValueChange={() => {}}
+              deliveryFilterValue={deliveryFilters}
+              onDeliveryFilterValueChange={setDeliveryFilters}
+              routeOptions={[]}
+              deliveryOptions={deliveryOptions}
+              onClearAllFilters={handleClearAllFilters}
+              filteredRowsCount={rowsWithDistances.length}
+              totalRowsCount={rows.length}
+            />
+          </div>
+
+          {/* Color Legend Panel */}
+          <div className="mb-6 flex justify-center">
+            <ColorLegendPanel />
+          </div>
         </div>
       </main>
 
