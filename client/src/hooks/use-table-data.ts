@@ -32,13 +32,34 @@ export function useTableData() {
     },
   });
 
-  // Update row mutation
+  // Update row mutation with optimistic update
   const updateRow = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<InsertTableRow> }) => {
       const response = await apiRequest("PATCH", `/api/table-rows/${id}`, updates);
       return response.json();
     },
-    onSuccess: () => {
+    onMutate: async ({ id, updates }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["/api/table-rows"] });
+      
+      // Snapshot the previous value
+      const previousRows = queryClient.getQueryData(["/api/table-rows"]);
+      
+      // Optimistically update
+      queryClient.setQueryData(["/api/table-rows"], (old: TableRow[] | undefined) => {
+        if (!old) return old;
+        return old.map(row => row.id === id ? { ...row, ...updates } : row);
+      });
+      
+      return { previousRows };
+    },
+    onError: (err, variables, context) => {
+      // Rollback on error
+      if (context?.previousRows) {
+        queryClient.setQueryData(["/api/table-rows"], context.previousRows);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
     },
   });

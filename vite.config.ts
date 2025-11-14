@@ -30,8 +30,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select'],
+          'react-vendor': ['react', 'react-dom', 'react/jsx-runtime'],
+          'router': ['wouter'],
+          'query': ['@tanstack/react-query'],
+          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select', '@radix-ui/react-popover', '@radix-ui/react-tabs'],
+          'icons': ['lucide-react'],
           'map-vendor': ['leaflet', 'react-leaflet'],
           'gallery-vendor': ['lightgallery'],
         },
@@ -39,7 +42,10 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 1000,
     minify: 'esbuild',
+    target: 'esnext',
     sourcemap: false,
+    cssCodeSplit: true,
+    reportCompressedSize: false,
   },
   server: {
     host: "0.0.0.0",
@@ -54,7 +60,17 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'lucide-react'],
+    include: [
+      'react', 
+      'react-dom', 
+      'react/jsx-runtime',
+      'lucide-react',
+      'wouter',
+      '@tanstack/react-query',
+      'clsx',
+      'tailwind-merge'
+    ],
     exclude: [],
+    force: false,
   },
 });
