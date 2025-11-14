@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -76,6 +77,8 @@ export default function TablePage() {
   const [pageToDelete, setPageToDelete] = useState<Page | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
   const [bulkColorModalOpen, setBulkColorModalOpen] = useState(false);
+  const [showClearDataDialog, setShowClearDataDialog] = useState(false);
+  const [isClearingData, setIsClearingData] = useState(false);
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
@@ -957,6 +960,52 @@ export default function TablePage() {
     }
   };
 
+  const handleClearAllData = async () => {
+    if (!editMode) {
+      toast({
+        title: "Edit Mode Required",
+        description: "Please enable Edit mode to clear data.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setShowClearDataDialog(true);
+  };
+
+  const handleConfirmClearData = async () => {
+    setIsClearingData(true);
+    try {
+      const response = await fetch('/api/table-rows', {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to clear data');
+      }
+
+      const result = await response.json();
+      
+      // Invalidate queries to refresh the data
+      queryClient.invalidateQueries({ queryKey: ['/api/table-rows'] });
+      
+      toast({
+        title: "Success",
+        description: `Deleted ${result.deletedCount} rows successfully. Table is now clean.`,
+      });
+      
+      setShowClearDataDialog(false);
+    } catch (error) {
+      console.error('Error clearing data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to clear data. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsClearingData(false);
+    }
+  };
+
   const handleCalculateTolls = async () => {
     if (!editMode) {
       toast({
@@ -1083,6 +1132,7 @@ export default function TablePage() {
           onSavedLinks={() => setSavedLinksModalOpen(true)}
           onShowTutorial={() => setShowTutorial(true)}
           onBulkColorModal={() => setBulkColorModalOpen(true)}
+          onClearAllData={handleClearAllData}
           onAddColumn={async (columnData) => {
             try {
               const newColumn = await createColumn.mutateAsync(columnData);
@@ -1588,6 +1638,53 @@ export default function TablePage() {
       )}
 
 
+      {/* Clear All Data Confirmation Dialog */}
+      <AlertDialog open={showClearDataDialog} onOpenChange={setShowClearDataDialog}>
+        <AlertDialogContent className="sm:max-w-md animate-in zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 duration-300 bg-gradient-to-br from-red-50 to-white dark:from-red-950/40 dark:to-gray-900 border-red-200 dark:border-red-500/30 shadow-2xl">
+          <AlertDialogHeader className="space-y-3">
+            <div className="mx-auto w-12 h-12 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center animate-in zoom-in-50 duration-500 delay-100">
+              <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </div>
+            <AlertDialogTitle className="text-center text-red-900 dark:text-red-100" style={{fontSize: '14px'}}>Clear All Data</AlertDialogTitle>
+            <AlertDialogDescription className="text-center text-gray-600 dark:text-gray-400" style={{fontSize: '11px'}}>
+              This will permanently delete all rows from the table. This action cannot be undone. Are you sure you want to continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          
+          <AlertDialogFooter className="flex-row justify-center gap-3 sm:justify-center mt-4">
+            <AlertDialogCancel 
+              className="min-w-[100px] border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+              style={{fontSize: '11px'}}
+              disabled={isClearingData}
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={(e) => {
+                e.preventDefault();
+                handleConfirmClearData();
+              }}
+              className="min-w-[100px] bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white shadow-lg"
+              style={{fontSize: '11px'}}
+              disabled={isClearingData}
+            >
+              {isClearingData ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Clearing...
+                </>
+              ) : 'Clear All Data'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+
       {/* Password Prompt */}
       <PasswordPrompt
         open={showPasswordPrompt && !exitingEditMode}
@@ -1602,6 +1699,52 @@ export default function TablePage() {
         title="Authentication Required"
         description="Please enter the password to access edit mode."
       />
+
+      {/* Clear All Data Confirmation Dialog */}
+      <AlertDialog open={showClearDataDialog} onOpenChange={setShowClearDataDialog}>
+        <AlertDialogContent className="sm:max-w-md animate-in zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 duration-300 bg-gradient-to-br from-red-50 to-white dark:from-red-950/40 dark:to-gray-900 border-red-200 dark:border-red-500/30 shadow-2xl">
+          <AlertDialogHeader className="space-y-3">
+            <div className="mx-auto w-12 h-12 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center animate-in zoom-in-50 duration-500 delay-100">
+              <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </div>
+            <AlertDialogTitle className="text-center text-red-900 dark:text-red-100" style={{fontSize: '14px'}}>Clear All Data</AlertDialogTitle>
+            <AlertDialogDescription className="text-center text-gray-600 dark:text-gray-400" style={{fontSize: '11px'}}>
+              This will permanently delete all rows from the table. This action cannot be undone. Are you sure you want to continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          
+          <AlertDialogFooter className="flex-row justify-center gap-3 sm:justify-center mt-4">
+            <AlertDialogCancel 
+              className="min-w-[100px] border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+              style={{fontSize: '11px'}}
+              disabled={isClearingData}
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={(e) => {
+                e.preventDefault();
+                handleConfirmClearData();
+              }}
+              className="min-w-[100px] bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white shadow-lg"
+              style={{fontSize: '11px'}}
+              disabled={isClearingData}
+            >
+              {isClearingData ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Clearing...
+                </>
+              ) : 'Clear All Data'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Exit Confirmation Dialog */}
       <Dialog open={showExitConfirmation && !exitingEditMode} onOpenChange={setShowExitConfirmation}>

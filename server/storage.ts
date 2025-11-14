@@ -46,6 +46,7 @@ export interface IStorage {
     updates: Partial<InsertTableRow>,
   ): Promise<TableRow | undefined>;
   deleteTableRow(id: string): Promise<boolean>;
+  deleteAllTableRows(): Promise<number>;
   reorderTableRows(rowIds: string[]): Promise<TableRow[]>;
   bulkUpdateMarkerColorByRoute(route: string, color: string): Promise<number>;
 
@@ -565,6 +566,12 @@ export class MemStorage implements IStorage {
 
   async deleteTableRow(id: string): Promise<boolean> {
     return this.tableRows.delete(id);
+  }
+
+  async deleteAllTableRows(): Promise<number> {
+    const count = this.tableRows.size;
+    this.tableRows.clear();
+    return count;
   }
 
   async reorderTableRows(rowIds: string[]): Promise<TableRow[]> {
@@ -1400,6 +1407,11 @@ export class DatabaseStorage implements IStorage {
   async deleteTableRow(id: string): Promise<boolean> {
     const result = await db.delete(tableRows).where(eq(tableRows.id, id));
     return result.rowCount ? result.rowCount > 0 : false;
+  }
+
+  async deleteAllTableRows(): Promise<number> {
+    const result = await db.delete(tableRows);
+    return result.rowCount || 0;
   }
 
   async reorderTableRows(rowIds: string[]): Promise<TableRow[]> {

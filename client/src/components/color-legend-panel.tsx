@@ -93,6 +93,9 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
         {formattedDate} | {formattedTime}
       </div>
       
+      {/* Divider below date/time */}
+      <div className="border-t border-gray-300 dark:border-gray-600 my-5" />
+      
       {/* Table for Today's Colors */}
       <div className="overflow-x-auto">
         <table className="w-full text-xs border-collapse">

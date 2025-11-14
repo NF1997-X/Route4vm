@@ -19,10 +19,11 @@ interface NavigationProps {
   onSavedLinks?: () => void;
   onShowTutorial?: () => void;
   onBulkColorModal?: () => void;
+  onClearAllData?: () => void;
   isAuthenticated?: boolean;
 }
 
-export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, onBulkColorModal, isAuthenticated }: NavigationProps) {
+export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, onBulkColorModal, onClearAllData, isAuthenticated }: NavigationProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [, navigate] = useLocation();
   const { theme, toggleTheme } = useTheme();
@@ -303,6 +304,31 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Edit marker colors by route</p>
                 </div>
                 <div className="w-3 h-3 rounded-full bg-purple-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
+              </div>
+            </div>
+
+            <div 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Clear All Data clicked');
+                handleSubmenuNavigation(() => {
+                  console.log('Opening clear data confirmation');
+                  onClearAllData && onClearAllData();
+                });
+              }}
+              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+              data-testid="submenu-clear-data"
+            >
+              <div className="flex items-center w-full p-3">
+                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
+                  <Database className="w-5 h-5 text-red-500 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300 group-hover:rotate-12 transition-all duration-500" />
+                </div>
+                <div className="ml-3 flex-1">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-300 transition-colors duration-300">Clear All Data</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Delete all rows for fresh start</p>
+                </div>
+                <div className="w-3 h-3 rounded-full bg-red-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
               </div>
             </div>
 

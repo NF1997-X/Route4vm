@@ -757,14 +757,14 @@ export function DataTable({
           {/* Left Side: Entries Selector */}
           {!disablePagination && (
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-sm text-muted-foreground pagination-10px">
+              <span className="text-xs text-muted-foreground font-medium">
                 Show
               </span>
               <Select
                 value={pageSize.toString()}
                 onValueChange={handlePageSizeChange}
               >
-                <SelectTrigger className="h-6 px-2 pagination-button text-xs font-semibold [&>svg]:hidden w-auto min-w-[3rem]">
+                <SelectTrigger className="h-7 px-2.5 pagination-button text-xs font-semibold [&>svg]:hidden w-auto min-w-[3rem]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
@@ -774,7 +774,7 @@ export function DataTable({
                   <SelectItem value="100" className="font-semibold">100</SelectItem>
                 </SelectContent>
               </Select>
-              <span className="text-sm text-muted-foreground pagination-10px">
+              <span className="text-xs text-muted-foreground font-medium">
                 of {totalRows} entries
               </span>
             </div>
@@ -1238,10 +1238,10 @@ export function DataTable({
                         (_, index) => (
                           <tr
                             key={`skeleton-${index}`}
-                            className={`skeleton-row fade-in-stagger odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 backdrop-blur-sm hover:bg-muted/60 table-cell-unique-transition`}
+                            className={`skeleton-row fade-in-stagger odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 backdrop-blur-sm hover:bg-blue-50/30 dark:hover:bg-blue-950/20 table-cell-unique-transition border-b border-gray-200 dark:border-gray-700`}
                           >
                             {/* Actions column */}
-                            <td className="p-3 w-12">
+                            <td className="py-3 px-4 w-12">
                               <div className="flex gap-2 justify-center">
                                 <div className="skeleton w-8 h-8 rounded-md bg-gradient-to-r from-gray-500/20 to-slate-500/20 animate-pulse" />
                                 <div className="skeleton w-8 h-8 rounded-md bg-gradient-to-r from-blue-500/20 to-purple-500/20 animate-pulse" style={{animationDelay: "0.1s"}} />
@@ -1256,7 +1256,7 @@ export function DataTable({
                             {visibleColumns.map((column) => (
                               <td
                                 key={column.id}
-                                className="p-3"
+                                className="py-3 px-4"
                                 colSpan={column.dataKey === "location" ? 3 : 1}
                               >
                                 {column.dataKey === "images" ? (
@@ -1289,28 +1289,28 @@ export function DataTable({
                                   if (isSharedView || editMode) {
                                     const status = getScheduleStatus(row);
                                     if (status === 'inactive') {
-                                      return "bg-gray-100/60 dark:bg-gray-800/40 opacity-50";
+                                      return "bg-gray-100/60 dark:bg-gray-800/40 opacity-50 border-b border-gray-200 dark:border-gray-700";
                                     } else if (status === 'off-schedule') {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60 opacity-60" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 opacity-60";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60 opacity-60 border-b border-gray-200 dark:border-gray-700" 
+                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 opacity-60 border-b border-gray-200 dark:border-gray-700";
                                     } else {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60 border-b border-gray-200 dark:border-gray-700" 
+                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700";
                                     }
                                   } else {
                                     // Regular view mode: standard styling
                                     if (row.active === false) {
-                                      return "bg-gray-100/60 dark:bg-gray-800/40 opacity-50";
+                                      return "bg-gray-100/60 dark:bg-gray-800/40 opacity-50 border-b border-gray-200 dark:border-gray-700";
                                     } else {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60 border-b border-gray-200 dark:border-gray-700" 
+                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700";
                                     }
                                   }
                                 })()
-                              } hover:bg-blue-100/60 dark:hover:bg-blue-800/30 table-cell-unique-transition ${
+                              } hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors ${
                                 snapshot.isDragging ? "drag-elevate" : ""
                               }`}
                               data-testid={`table-row-${row.id}`}
@@ -1318,7 +1318,7 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="p-1 align-middle px-2 table-cell-10px text-center text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal table-zoom-in"
+                                  className="py-3 px-4 align-middle table-cell-10px text-center text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal table-zoom-in"
                                   style={{
                                     minWidth: "100px",
                                     height: "40px",
@@ -1880,7 +1880,7 @@ export function DataTable({
                 )}
               </div>
 
-              <div className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">
+              <div className="text-xs font-medium text-muted-foreground whitespace-nowrap">
                 {currentPage} of {totalPages}
               </div>
             </div>

@@ -131,6 +131,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete ALL table rows (clean slate)
+  app.delete("/api/table-rows", async (req, res) => {
+    try {
+      const deletedCount = await storage.deleteAllTableRows();
+      res.json({ 
+        message: `Successfully deleted ${deletedCount} row(s)`,
+        deletedCount
+      });
+    } catch (error) {
+      console.error('Error deleting all table rows:', error);
+      res.status(500).json({ message: "Failed to delete all table rows" });
+    }
+  });
+
   app.post("/api/table-rows/reorder", async (req, res) => {
     try {
       const { rowIds } = req.body;

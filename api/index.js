@@ -640,6 +640,10 @@ var DatabaseStorage = class {
     const result = await db.delete(tableRows).where(eq(tableRows.id, id));
     return result.rowCount ? result.rowCount > 0 : false;
   }
+  async deleteAllTableRows() {
+    const result = await db.delete(tableRows);
+    return result.rowCount || 0;
+  }
   async reorderTableRows(rowIds) {
     const qlKitchenRow = await this.getQlKitchenRow();
     const filteredRowIds = qlKitchenRow ? rowIds.filter((id) => id !== qlKitchenRow.id) : rowIds;
