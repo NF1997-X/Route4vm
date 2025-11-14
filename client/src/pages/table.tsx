@@ -58,7 +58,7 @@ export default function TablePage() {
   const [editModeLoading, setEditModeLoading] = useState(false);
   const [pageDescription, setPageDescription] = useState("- Interactive table with Drag & Drop , Calculations , and Image Gallery\n\n- This Routes for Driver Vending Mechine , FamilyMart only");
   const [pageTitle, setPageTitle] = useState("Content");
-  const [isHeaderExpanded, setIsHeaderExpanded] = useState(false);
+  const [isHeaderExpanded, setIsHeaderExpanded] = useState(true);
   const [optimizationModalOpen, setOptimizationModalOpen] = useState(false);
   const [showSaveConfirmation, setShowSaveConfirmation] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
@@ -380,9 +380,9 @@ export default function TablePage() {
     setPageToDelete(null);
   };
 
-  // Sort pages by sortOrder and ensure currentPageIndex is valid
+  // Sort pages by sortOrder (oldest first - reverse order) and ensure currentPageIndex is valid
   const sortedPages = useMemo(() => {
-    return [...pages].sort((a, b) => a.sortOrder - b.sortOrder);
+    return [...pages].sort((a, b) => b.sortOrder - a.sortOrder);
   }, [pages]);
 
   // Clamp currentPageIndex to valid range
@@ -1266,7 +1266,7 @@ export default function TablePage() {
                             </div>
                           )}
                           
-                          <h1 className="font-bold text-slate-700 dark:text-slate-300" style={{fontSize: '12px'}} data-testid={`page-title-${page.id}`}>
+                          <h1 className="font-bold text-slate-700 dark:text-slate-300 text-center flex-1" style={{fontSize: '10px'}} data-testid={`page-title-${page.id}`}>
                             {page.title || "Untitled"}
                           </h1>
                           
