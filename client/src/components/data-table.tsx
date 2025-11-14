@@ -751,7 +751,7 @@ export function DataTable({
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
-      <div className="px-6 py-3 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-blue-500/5 dark:via-transparent dark:to-blue-500/5 backdrop-blur-sm text-[10px] transition-all duration-300" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+      <div className="px-6 py-3 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[10px] transition-all duration-300" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
         <div className="flex flex-row gap-3 items-center justify-between">
           
           {/* Left Side: Entries Selector */}
@@ -819,7 +819,7 @@ export function DataTable({
         
       </div>
       {/* Bottom Row: Sort/Filter/Clear (Left) and Search (Right) */}
-      <div className="flex justify-between items-center px-6 py-3 border-b border-border/20 bg-background/30">
+      <div className="flex justify-between items-center px-6 py-3 border-b border-border/20 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm">
         <div className="flex items-center gap-2 flex-shrink-0">
           {/* Sort Popover */}
           <Popover>
@@ -1078,7 +1078,7 @@ export function DataTable({
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearchTermChange?.(e.target.value)}
-              className="pl-7 pr-7 h-8 bg-transparent text-foreground placeholder:text-muted-foreground border-2 border-primary/20 hover:border-primary/30 hover:bg-primary/5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:border-primary/40 focus-visible:bg-primary/5 disabled:cursor-not-allowed disabled:opacity-50 transition-colors text-sm"
+              className="pl-7 pr-7 h-8 bg-white/80 dark:bg-gray-950/95 text-foreground placeholder:text-muted-foreground border-2 border-border/40 dark:border-gray-700 hover:border-border/60 dark:hover:border-gray-600 hover:bg-muted/10 dark:hover:bg-gray-950/100 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 dark:focus-visible:ring-gray-700 focus-visible:ring-offset-2 focus-visible:border-border/60 dark:focus-visible:border-gray-600 focus-visible:bg-muted/10 dark:focus-visible:bg-gray-950/100 disabled:cursor-not-allowed disabled:opacity-50 transition-colors text-sm"
               data-testid="search-input"
             />
             {searchTerm && (
@@ -1096,7 +1096,7 @@ export function DataTable({
       </div>
       {/* Active Filters Display */}
       {(searchTerm || filterValue.length > 0 || deliveryFilterValue.length > 0) && (
-        <div className="px-6 py-2 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-blue-500/5 dark:via-transparent dark:to-blue-500/5">
+        <div className="px-6 py-2 border-b border-border/20 bg-gradient-to-r from-muted/10 via-transparent to-muted/10 dark:from-gray-950/60 dark:via-gray-950/40 dark:to-gray-950/60">
           <div className="flex flex-wrap items-center gap-1">
             <span className="text-muted-foreground font-medium text-xs">Active:</span>
             {searchTerm && (
@@ -1164,7 +1164,7 @@ export function DataTable({
       >
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full">
-            <TableHeader className="glass-card sticky top-0 z-30 border-b border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/90 dark:bg-slate-900/90 transition-all duration-500 ease-in-out shadow-lg">
+            <TableHeader className="glass-card sticky top-0 z-30 border-b border-white/20 dark:border-white/10 backdrop-blur-xl bg-white/90 dark:bg-gray-950/90 transition-all duration-500 ease-in-out shadow-lg">
               <Droppable
                 droppableId="columns"
                 direction="horizontal"
@@ -1185,7 +1185,7 @@ export function DataTable({
                           <TableHead
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 z-30 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-sm whitespace-nowrap transition-all duration-300 ease-in-out hover:bg-white/90 dark:hover:bg-slate-900/90 hover:scale-105 hover:shadow-md"
+                            className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 z-30 bg-white/70 dark:bg-gray-950/70 backdrop-blur-xl shadow-sm whitespace-nowrap transition-all duration-300 ease-in-out hover:bg-white/90 dark:hover:bg-gray-950/90 hover:scale-105 hover:shadow-md"
                             style={{
                               textAlign: "center",
                               textDecoration: "normal",
@@ -1209,7 +1209,7 @@ export function DataTable({
                       </Draggable>
                     ))}
                     <TableHead
-                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 right-0 z-40 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm whitespace-nowrap transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-slate-900/80 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
+                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-white/20 dark:border-white/10 sticky top-0 right-0 z-40 bg-white/60 dark:bg-gray-950/60 backdrop-blur-xl shadow-sm whitespace-nowrap transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-gray-950/80 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
                       style={{
                         textAlign: "center",
                         textDecoration: "normal",
@@ -1238,7 +1238,7 @@ export function DataTable({
                         (_, index) => (
                           <tr
                             key={`skeleton-${index}`}
-                            className={`skeleton-row fade-in-stagger odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 backdrop-blur-sm hover:bg-blue-50/30 dark:hover:bg-blue-950/20 table-cell-unique-transition border-b border-gray-200 dark:border-gray-700`}
+                            className={`skeleton-row fade-in-stagger bg-white dark:bg-gray-950/80 backdrop-blur-sm hover:bg-blue-50/30 dark:hover:bg-blue-950/20 table-cell-unique-transition border-b border-gray-200 dark:border-gray-700`}
                           >
                             {/* Actions column */}
                             <td className="py-3 px-4 w-12">
@@ -1289,24 +1289,24 @@ export function DataTable({
                                   if (isSharedView || editMode) {
                                     const status = getScheduleStatus(row);
                                     if (status === 'inactive') {
-                                      return "bg-gray-100/60 dark:bg-gray-800/40 opacity-50 border-b border-gray-200 dark:border-gray-700";
+                                      return "bg-gray-100/60 dark:bg-gray-950/80 opacity-50 border-b border-gray-200 dark:border-gray-700";
                                     } else if (status === 'off-schedule') {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60 opacity-60 border-b border-gray-200 dark:border-gray-700" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 opacity-60 border-b border-gray-200 dark:border-gray-700";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80 opacity-60 border-b border-gray-200 dark:border-gray-700" 
+                                        : "bg-white dark:bg-gray-950/80 opacity-60 border-b border-gray-200 dark:border-gray-700";
                                     } else {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60 border-b border-gray-200 dark:border-gray-700" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80 border-b border-gray-200 dark:border-gray-700" 
+                                        : "bg-white dark:bg-gray-950/80 border-b border-gray-200 dark:border-gray-700";
                                     }
                                   } else {
                                     // Regular view mode: standard styling
                                     if (row.active === false) {
-                                      return "bg-gray-100/60 dark:bg-gray-800/40 opacity-50 border-b border-gray-200 dark:border-gray-700";
+                                      return "bg-gray-100/60 dark:bg-gray-950/80 opacity-50 border-b border-gray-200 dark:border-gray-700";
                                     } else {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-800/60 dark:to-slate-800/60 border-b border-gray-200 dark:border-gray-700" 
-                                        : "odd:bg-white dark:odd:bg-gray-900/50 even:bg-blue-50/50 dark:even:bg-blue-900/20 border-b border-gray-200 dark:border-gray-700";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80 border-b border-gray-200 dark:border-gray-700" 
+                                        : "bg-white dark:bg-gray-950/80 border-b border-gray-200 dark:border-gray-700";
                                     }
                                   }
                                 })()
@@ -1739,7 +1739,7 @@ export function DataTable({
                 {visibleColumns.map((column, index) => (
                   <TableCell
                     key={column.id}
-                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 z-20 bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl shadow-lg whitespace-nowrap h-12 transition-all duration-500 ease-in-out hover:bg-white/90 dark:hover:bg-slate-900/90 hover:scale-105 hover:shadow-xl animate-in fade-in slide-in-from-bottom-4"
+                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 z-20 bg-white/70 dark:bg-gray-950/95 backdrop-blur-2xl shadow-lg whitespace-nowrap h-12 transition-all duration-500 ease-in-out hover:bg-white/90 dark:hover:bg-gray-950/100 hover:scale-105 hover:shadow-xl animate-in fade-in slide-in-from-bottom-4"
                     style={{
                       textAlign: "center",
                       fontSize: "10px",
@@ -1776,7 +1776,7 @@ export function DataTable({
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 right-0 z-30 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-sm text-foreground whitespace-nowrap h-12 transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-slate-900/80 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]" style={{ textAlign: "center", fontSize: '10px' }}>
+                <TableCell className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-white/20 dark:border-white/10 sticky bottom-0 right-0 z-30 bg-white/60 dark:bg-gray-950/95 backdrop-blur-xl shadow-sm text-foreground whitespace-nowrap h-12 transition-all duration-300 ease-in-out hover:bg-white/80 dark:hover:bg-gray-950/100 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]" style={{ textAlign: "center", fontSize: '10px' }}>
                   <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                 </TableCell>
               </TableRow>
@@ -1785,7 +1785,7 @@ export function DataTable({
 
           {/* Pagination Controls */}
           {!disablePagination && (
-            <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-blue-200 dark:border-blue-500/20 transition-smooth-fast">
+            <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-blue-200 dark:border-gray-700 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast">
               <div className="flex items-center gap-1.5">
                 {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
                 {currentPage > 3 && (

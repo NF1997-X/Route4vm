@@ -1159,16 +1159,67 @@ export default function TablePage() {
       </div>
       <main className="pt-[72px] animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
         <div className="container mx-auto px-4 py-8" data-testid="table-page">
-          {/* Header Section - Carousel with Pages */}
-          <div className="mb-8 relative animate-in fade-in slide-in-from-top-2 duration-600 delay-300">
+          
+          {/* Main Table - Moved to Top */}
+          <div ref={tableRef} className="mb-6 animate-in fade-in slide-in-from-bottom-3 duration-700 delay-300">
+            <DataTable
+            rows={rowsWithDistances}
+            columns={displayColumns}
+            editMode={editMode}
+            disablePagination={true}
+            onUpdateRow={updateRow}
+            onDeleteRow={deleteRow}
+            onReorderRows={reorderRows}
+            onReorderColumns={reorderColumns}
+            onDeleteColumn={deleteColumn}
+            onSelectRowForImage={(rowId) => {
+              if (rowId === 'access-denied') {
+                toast({
+                  title: "Access Denied",
+                  description: "Please enable Edit mode to add images.",
+                  variant: "destructive",
+                });
+              } else {
+                setSelectedRowForImage(rowId);
+              }
+            }}
+            onShowCustomization={() => setCustomizationModalOpen(true)}
+            onOptimizeRoute={() => setOptimizationModalOpen(true)}
+            onShareTable={() => setShareDialogOpen(true)}
+            onSavedLinks={() => setSavedLinksModalOpen(true)}
+            isAuthenticated={isAuthenticated}
+            isLoading={exitingEditMode}
+            isFiltered={searchTerm !== "" || filterValue.length > 0 || deliveryFilterValue.length > 0}
+            // Search and filter props
+            searchTerm={searchTerm}
+            onSearchTermChange={setSearchTerm}
+            filterValue={filterValue}
+            onFilterValueChange={setFilterValue}
+            deliveryFilterValue={deliveryFilterValue}
+            onDeliveryFilterValueChange={setDeliveryFilterValue}
+            routeOptions={routeOptions}
+            deliveryOptions={deliveryOptions}
+            onClearAllFilters={clearAllFilters}
+            filteredRowsCount={filteredRows.length}
+            totalRowsCount={rows.length}
+          />
+          </div>
+
+          {/* Color Legend Panel - Middle */}
+          <div className="mb-6 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-500 flex justify-center">
+            <ColorLegendPanel />
+          </div>
+
+          {/* Header Section - Carousel with Pages - Moved to Bottom */}
+          <div className="mb-8 relative animate-in fade-in slide-in-from-top-2 duration-600 delay-700">
             {sortedPages.length > 0 ? (
               <Carousel 
                 className="w-full pb-16" 
                 opts={{ loop: sortedPages.length > 1 }}
                 setApi={setCarouselApi}
               >
-                <div className="overflow-hidden rounded-xl border border-white/30 dark:border-white/10 bg-white/80 dark:bg-black/70 backdrop-blur-2xl shadow-2xl shadow-black/10 dark:shadow-black/40 transition-all duration-500">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
+                <div className="overflow-hidden rounded-xl border border-white/30 dark:border-white/10 bg-white/80 dark:bg-gray-950/95 backdrop-blur-2xl shadow-2xl shadow-black/10 dark:shadow-black/40 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-gray-950/60 dark:via-gray-950/40 dark:to-gray-950/20 pointer-events-none rounded-xl"></div>
                   <CarouselContent>
                   {sortedPages.map((page, index) => {
                     const isCurrentSlide = index === currentSlideIndex;
@@ -1187,7 +1238,7 @@ export default function TablePage() {
                     >
                       {/* Header Bar */}
                       <div 
-                        className="flex items-center justify-between px-6 py-3 cursor-pointer hover:bg-white/30 dark:hover:bg-white/5 transition-colors duration-300 text-sm relative z-10"
+                        className="flex items-center justify-between px-6 py-3 cursor-pointer hover:bg-white/30 dark:hover:bg-gray-950/70 transition-colors duration-300 text-sm relative z-10"
                         onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
                       >
                         <div className="flex items-center gap-3 flex-1">
@@ -1289,7 +1340,7 @@ export default function TablePage() {
                           isHeaderExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                         }`}
                       >
-                        <div className="px-4 pb-3 border-t border-white/20 dark:border-white/10 pt-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/2 dark:to-transparent relative z-10">
+                        <div className="px-4 pb-3 border-t border-white/20 dark:border-white/10 pt-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-gray-950/40 dark:via-gray-950/20 dark:to-transparent relative z-10">
                             <dl className="space-y-1" style={{fontSize: '10px', lineHeight: '1.4'}} data-testid={`page-description-${page.id}`}>
                               {(page.description || "").split('\n').map((line, lineIndex) => {
                                 const trimmedLine = line.trim();
@@ -1534,56 +1585,6 @@ export default function TablePage() {
           );
         })()
       )}
-
-      {/* Color Legend Panel */}
-      <div className="mt-6 mb-6 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-500 flex justify-center">
-        <ColorLegendPanel />
-      </div>
-
-      {/* Main Table */}
-      <div ref={tableRef} className="animate-in fade-in slide-in-from-bottom-3 duration-700 delay-700">
-        <DataTable
-        rows={rowsWithDistances}
-        columns={displayColumns}
-        editMode={editMode}
-        disablePagination={true}
-        onUpdateRow={updateRow}
-        onDeleteRow={deleteRow}
-        onReorderRows={reorderRows}
-        onReorderColumns={reorderColumns}
-        onDeleteColumn={deleteColumn}
-        onSelectRowForImage={(rowId) => {
-          if (rowId === 'access-denied') {
-            toast({
-              title: "Access Denied",
-              description: "Please enable Edit mode to add images.",
-              variant: "destructive",
-            });
-          } else {
-            setSelectedRowForImage(rowId);
-          }
-        }}
-        onShowCustomization={() => setCustomizationModalOpen(true)}
-        onOptimizeRoute={() => setOptimizationModalOpen(true)}
-        onShareTable={() => setShareDialogOpen(true)}
-        onSavedLinks={() => setSavedLinksModalOpen(true)}
-        isAuthenticated={isAuthenticated}
-        isLoading={exitingEditMode}
-        isFiltered={searchTerm !== "" || filterValue.length > 0 || deliveryFilterValue.length > 0}
-        // Search and filter props
-        searchTerm={searchTerm}
-        onSearchTermChange={setSearchTerm}
-        filterValue={filterValue}
-        onFilterValueChange={setFilterValue}
-        deliveryFilterValue={deliveryFilterValue}
-        onDeliveryFilterValueChange={setDeliveryFilterValue}
-        routeOptions={routeOptions}
-        deliveryOptions={deliveryOptions}
-        onClearAllFilters={clearAllFilters}
-        filteredRowsCount={filteredRows.length}
-        totalRowsCount={rows.length}
-      />
-      </div>
 
       {/* Column Customization Modal */}
       <ColumnCustomizationModal
