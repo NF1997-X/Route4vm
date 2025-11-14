@@ -576,6 +576,7 @@ export default function CustomTableList() {
             <Button
               onClick={handleCreateTable}
               disabled={createTableMutation.isPending}
+              loading={createTableMutation.isPending}
               className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               {createTableMutation.isPending ? "Creating..." : "Create Table"}
@@ -673,7 +674,8 @@ export default function CustomTableList() {
             <Button
               onClick={handleUpdateTable}
               disabled={updateTableMutation.isPending}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              loading={updateTableMutation.isPending}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
             >
               {updateTableMutation.isPending ? "Updating..." : "Update Table"}
             </Button>
