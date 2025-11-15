@@ -172,8 +172,11 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             onChange={(e) => setEditValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={getPlaceholder()}
-            className="h-7 px-2 py-1 w-auto text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 hover:border-blue-600 focus:scale-105"
-            style={{ width: type === 'number' ? '60px' : type === 'currency' ? '80px' : '100px' }}
+            className="h-7 px-2 py-1 w-auto text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 hover:border-blue-600 focus:scale-105"
+            style={{ 
+              width: type === 'number' ? '60px' : type === 'currency' ? '80px' : '100px',
+              fontSize: (dataKey === 'location' || dataKey === 'code') ? '10px' : '10px'
+            }}
           />
         )}
         

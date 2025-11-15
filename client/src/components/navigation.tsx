@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Edit2, Table2, Link2, Sparkles, ArrowLeft, ChevronLeft, Palette } from "lucide-react";
+import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Edit2, Edit3, Table2, Link2, Sparkles, ArrowLeft, ChevronLeft, Palette } from "lucide-react";
 import { useLocation } from "wouter";
 import { useTheme } from "./theme-provider";
 import { AddColumnModal } from "./add-column-modal";
@@ -110,93 +110,86 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   };
 
   const renderMainMenu = () => (
-    <div className="p-4 space-y-1">
-      {/* Vm Route Menu Item */}
+    <div className="p-3 space-y-0.5">
+      {/* Vm Route Menu Item - iOS Sidebar Style */}
       <div 
         onClick={() => handleSubmenuOpen('vm-route')}
-        className="cursor-pointer group relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-indigo-950/20 dark:to-purple-950/20 hover:from-indigo-100/80 hover:to-purple-100/80 dark:hover:from-indigo-900/30 dark:hover:to-purple-900/30 transition-all duration-300 ease-out"
+        className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
         data-testid="menu-edit-page"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-purple-500/0 to-indigo-500/0 group-hover:from-indigo-500/10 group-hover:via-purple-500/10 group-hover:to-indigo-500/10 transition-all duration-500"></div>
-        <div className="flex items-center w-full p-4 relative z-10">
-          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30 group-hover:shadow-xl group-hover:shadow-indigo-500/40 group-hover:scale-110 transition-all duration-300">
-            <Edit2 className="w-5 h-5 text-white group-hover:rotate-12 transition-all duration-300" />
+        <div className="flex items-center w-full px-3 py-2.5">
+          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 mr-3">
+            <Edit2 className="w-4 h-4 text-white" />
           </div>
-          <div className="ml-4 flex-1">
-            <span className="text-sm font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-300">Vm Route</span>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Manage routes & tables</p>
+          <div className="flex-1 min-w-0">
+            <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Vm Route</span>
           </div>
-          <ChevronDown className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all duration-300" />
+          <ChevronDown className="w-4 h-4 text-gray-400 dark:text-gray-500 ml-2 flex-shrink-0 -rotate-90" />
         </div>
       </div>
 
-      {/* Theme Toggle */}
+      {/* Theme Toggle - iOS Sidebar Style */}
       <div 
         onClick={() => handleNavigationClick(toggleTheme)}
-        className="cursor-pointer group relative overflow-hidden rounded-xl bg-gradient-to-r from-yellow-50/50 to-orange-50/50 dark:from-gray-800/50 dark:to-gray-900/50 hover:from-yellow-100/80 hover:to-orange-100/80 dark:hover:from-gray-700/50 dark:hover:to-gray-800/50 transition-all duration-300 ease-out"
+        className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
         data-testid="menu-toggle-theme"
       >
-        <div className="flex items-center w-full p-4">
+        <div className="flex items-center w-full px-3 py-2.5">
           {theme === 'dark' ? (
             <>
-              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 shadow-lg shadow-yellow-500/30 group-hover:shadow-xl group-hover:shadow-yellow-500/40 group-hover:scale-110 transition-all duration-300">
-                <Sun className="w-5 h-5 text-white group-hover:rotate-180 transition-all duration-500" />
+              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-yellow-400 to-orange-500 mr-3">
+                <Sun className="w-4 h-4 text-white" />
               </div>
-              <div className="ml-4 flex-1">
-                <span className="text-sm font-semibold text-gray-800 dark:text-white">Light Mode</span>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Switch to light theme</p>
+              <div className="flex-1 min-w-0">
+                <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Light Mode</span>
               </div>
             </>
           ) : (
             <>
-              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 shadow-lg shadow-blue-500/30 group-hover:shadow-xl group-hover:shadow-blue-500/40 group-hover:scale-110 transition-all duration-300">
-                <Moon className="w-5 h-5 text-white group-hover:rotate-180 transition-all duration-500" />
+              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-indigo-600 to-purple-700 mr-3">
+                <Moon className="w-4 h-4 text-white" />
               </div>
-              <div className="ml-4 flex-1">
-                <span className="text-sm font-semibold text-gray-800 dark:text-white">Dark Mode</span>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Switch to dark theme</p>
+              <div className="flex-1 min-w-0">
+                <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Dark Mode</span>
               </div>
             </>
           )}
         </div>
       </div>
 
-      {/* Help Guide */}
+      {/* Help Guide - iOS Sidebar Style */}
       <div 
         onClick={() => handleNavigationClick(() => navigate('/help'))}
-        className="cursor-pointer group relative overflow-hidden rounded-xl bg-gradient-to-r from-green-50/50 to-emerald-50/50 dark:from-green-950/20 dark:to-emerald-950/20 hover:from-green-100/80 hover:to-emerald-100/80 dark:hover:from-green-900/30 dark:hover:to-emerald-900/30 transition-all duration-300 ease-out"
+        className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
         data-testid="menu-help-guide"
       >
-        <div className="flex items-center w-full p-4">
-          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-500/30 group-hover:shadow-xl group-hover:shadow-green-500/40 group-hover:scale-110 transition-all duration-300">
-            <BookOpen className="w-5 h-5 text-white group-hover:rotate-12 transition-all duration-300" />
+        <div className="flex items-center w-full px-3 py-2.5">
+          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-green-500 to-emerald-600 mr-3">
+            <BookOpen className="w-4 h-4 text-white" />
           </div>
-          <div className="ml-4 flex-1">
-            <span className="text-sm font-semibold text-gray-800 dark:text-white">User Guide</span>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Help & documentation</p>
+          <div className="flex-1 min-w-0">
+            <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">User Guide</span>
           </div>
         </div>
       </div>
 
-      <div className="my-3 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent dark:via-gray-700"></div>
+      <div className="my-2 h-px bg-gray-200 dark:bg-gray-700"></div>
 
-      {/* Edit Mode Options */}
+      {/* Edit Mode Options - iOS Sidebar Style */}
       {editMode ? (
         <>
           <div 
             onClick={() => handleNavigationClick(() => onAddRow && onAddRow())}
-            className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+            className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
             data-testid="menu-add-row"
           >
-            <div className="flex items-center w-full p-3">
-              <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                <Rows className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 group-hover:rotate-12 transition-all duration-500" />
+            <div className="flex items-center w-full px-3 py-2.5">
+              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-blue-600 mr-3">
+                <Rows className="w-4 h-4 text-white" />
               </div>
-              <div className="ml-3 flex-1">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Add Row</span>
-                <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Insert new table row</p>
+              <div className="flex-1 min-w-0">
+                <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Add Row</span>
               </div>
-              <div className="w-3 h-3 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
             </div>
           </div>
 
@@ -206,56 +199,50 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 const addColumnButton = document.querySelector('[data-testid="button-add-column"]') as HTMLButtonElement;
                 if (addColumnButton) addColumnButton.click();
               })}
-              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+              className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
               data-testid="menu-add-column"
             >
-              <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                  <Plus className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:text-green-600 dark:group-hover:text-green-300 group-hover:rotate-90 transition-all duration-500" />
+              <div className="flex items-center w-full px-3 py-2.5">
+                <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-green-500 to-emerald-600 mr-3">
+                  <Plus className="w-4 h-4 text-white" />
                 </div>
-                <div className="ml-3 flex-1">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors duration-300">Add Column</span>
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Create new column</p>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Add Column</span>
                 </div>
-                <div className="w-3 h-3 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
               </div>
             </div>
           )}
 
-          <div className="my-4 h-px bg-gradient-to-r from-transparent via-red-200/30 to-transparent dark:via-red-700/30"></div>
+          <div className="my-2 h-px bg-gray-200 dark:bg-gray-700"></div>
 
           <div 
             onClick={() => handleNavigationClick(() => onEditModeRequest && onEditModeRequest())}
-            className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400 group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+            className="cursor-pointer group rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 active:bg-red-100 dark:active:bg-red-900/30 transition-all duration-150"
             data-testid="menu-exit-edit"
           >
-            <div className="flex items-center w-full p-3">
-              <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                <DoorOpen className="w-5 h-5 text-red-500 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300 group-hover:rotate-12 transition-all duration-500" />
+            <div className="flex items-center w-full px-3 py-2.5">
+              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-red-500 to-red-600 mr-3">
+                <DoorOpen className="w-4 h-4 text-white" />
               </div>
-              <div className="ml-3 flex-1">
-                <span className="text-sm font-medium text-red-600 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300 transition-colors duration-300">Exit Edit Mode</span>
-                <p className="text-xs text-red-500/70 dark:text-red-400/70 mt-0.5">Return to view mode</p>
+              <div className="flex-1 min-w-0">
+                <span className="text-[13px] font-medium text-red-600 dark:text-red-400 leading-tight">Exit Edit Mode</span>
               </div>
-              <div className="w-3 h-3 rounded-full bg-red-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
             </div>
           </div>
         </>
       ) : (
         <div 
           onClick={() => handleNavigationClick(() => onEditModeRequest && onEditModeRequest())}
-          className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+          className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
           data-testid="menu-enter-edit"
         >
-          <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-              <Settings className="w-5 h-5 text-red-900 dark:text-red-400 group-hover:text-red-700 dark:group-hover:text-red-300 group-hover:rotate-90 transition-all duration-500" />
+          <div className="flex items-center w-full px-3 py-2.5">
+            <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-orange-500 to-orange-600 mr-3">
+              <Edit3 className="w-4 h-4 text-white" />
             </div>
-            <div className="ml-3 flex-1">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-300 transition-colors duration-300">Edit Mode</span>
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Enable table editing</p>
+            <div className="flex-1 min-w-0">
+              <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Edit Mode</span>
             </div>
-            <div className="w-3 h-3 rounded-full bg-red-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
           </div>
         </div>
       )}
@@ -265,19 +252,19 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   const renderVmRouteSubmenu = () => (
     <div className="h-full">
       {/* Back Button */}
-      <div className="px-3 py-3 border-b border-white/10 dark:border-white/5 bg-gradient-to-r from-white/5 to-transparent dark:from-white/3 dark:to-transparent">
+      <div className="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
         <Button
           variant="ghost"
           size="sm"
-          className="w-full justify-start text-gray-600 dark:text-gray-400 hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 group rounded"
+          className="w-full justify-start text-gray-600 dark:text-gray-400 hover:bg-gray-100/80 dark:hover:bg-gray-800/60 transition-all duration-150 rounded-lg"
           onClick={handleBackToMenu}
         >
-          <ChevronLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-300" />
+          <ChevronLeft className="w-4 h-4 mr-2" />
           <span className="text-sm font-medium">Back</span>
         </Button>
       </div>
       
-      <div className="p-3 space-y-2 max-h-[60vh] overflow-y-auto">
+      <div className="p-3 space-y-1 max-h-[60vh] overflow-y-auto">
         {editMode && (
           <>
             <div 
@@ -290,18 +277,14 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                   onBulkColorModal && onBulkColorModal();
                 });
               }}
-              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+              className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
               data-testid="submenu-bulk-color"
             >
-              <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                  <Palette className="w-5 h-5 text-purple-500 dark:text-purple-400 group-hover:text-purple-600 dark:group-hover:text-purple-300 group-hover:rotate-12 transition-all duration-500" />
+              <div className="flex items-center w-full px-3 py-2.5 pl-12">
+                <Palette className="w-4 h-4 text-gray-600 dark:text-gray-400 mr-3" />
+                <div className="flex-1 min-w-0">
+                  <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Bulk Color</span>
                 </div>
-                <div className="ml-3 flex-1">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300">Bulk Color Marker</span>
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Edit marker colors by route</p>
-                </div>
-                <div className="w-3 h-3 rounded-full bg-purple-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
               </div>
             </div>
 
@@ -315,18 +298,14 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                   onClearAllData && onClearAllData();
                 });
               }}
-              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+              className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
               data-testid="submenu-clear-data"
             >
-              <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                  <Database className="w-5 h-5 text-red-500 dark:text-red-400 group-hover:text-red-600 dark:group-hover:text-red-300 group-hover:rotate-12 transition-all duration-500" />
+              <div className="flex items-center w-full px-3 py-2.5 pl-12">
+                <Database className="w-4 h-4 text-gray-600 dark:text-gray-400 mr-3" />
+                <div className="flex-1 min-w-0">
+                  <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Clear Data</span>
                 </div>
-                <div className="ml-3 flex-1">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-300 transition-colors duration-300">Clear All Data</span>
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Delete all rows for fresh start</p>
-                </div>
-                <div className="w-3 h-3 rounded-full bg-red-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
               </div>
             </div>
 
@@ -340,18 +319,14 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                   navigate('/share/tzqe9a');
                 });
               }}
-              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+              className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
               data-testid="submenu-share-example"
             >
-              <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                  <Receipt className="w-5 h-5 text-blue-500 dark:text-blue-400 group-hover:text-blue-600 dark:group-hover:text-blue-300 group-hover:rotate-12 transition-all duration-500" />
+              <div className="flex items-center w-full px-3 py-2.5 pl-12">
+                <Receipt className="w-4 h-4 text-gray-600 dark:text-gray-400 mr-3" />
+                <div className="flex-1 min-w-0">
+                  <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Share Link</span>
                 </div>
-                <div className="ml-3 flex-1">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Share Link Page</span>
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Example page</p>
-                </div>
-                <div className="w-3 h-3 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
               </div>
             </div>
             
@@ -365,22 +340,18 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                   navigate('/custom/8m2v27');
                 });
               }}
-              className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+              className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
               data-testid="submenu-custom-example"
             >
-              <div className="flex items-center w-full p-3">
-                <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                  <Sparkles className="w-5 h-5 text-green-500 dark:text-green-400 group-hover:text-green-600 dark:group-hover:text-green-300 group-hover:rotate-12 transition-all duration-500" />
+              <div className="flex items-center w-full px-3 py-2.5 pl-12">
+                <Sparkles className="w-4 h-4 text-gray-600 dark:text-gray-400 mr-3" />
+                <div className="flex-1 min-w-0">
+                  <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Custom Page</span>
                 </div>
-                <div className="ml-3 flex-1">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors duration-300">Custom Page</span>
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Example page</p>
-                </div>
-                <div className="w-3 h-3 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
               </div>
             </div>
 
-            <div className="my-4 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10"></div>
+            <div className="my-2 h-px bg-gray-200 dark:bg-gray-700"></div>
           </>
         )}
         
@@ -389,18 +360,14 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             e.stopPropagation();
             handleSubmenuNavigation(() => navigate('/custom-tables'));
           }}
-          className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+          className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
           data-testid="submenu-custom-list"
         >
-          <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-              <Layout className="w-5 h-5 text-purple-500 dark:text-purple-400 group-hover:text-purple-600 dark:group-hover:text-purple-300 group-hover:rotate-12 transition-all duration-500" />
+          <div className="flex items-center w-full px-3 py-2.5 pl-12">
+            <Layout className="w-4 h-4 text-gray-600 dark:text-gray-400 mr-3" />
+            <div className="flex-1 min-w-0">
+              <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Custom Tables</span>
             </div>
-            <div className="ml-3 flex-1">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors duration-300">All Custom Tables</span>
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Manage your tables</p>
-            </div>
-            <div className="w-3 h-3 rounded-full bg-purple-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
           </div>
         </div>
         
@@ -413,18 +380,14 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               onSavedLinks && onSavedLinks();
             });
           }}
-          className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+          className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
           data-testid="submenu-saved-links"
         >
-          <div className="flex items-center w-full p-3">
-            <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-              <Bookmark className="w-5 h-5 text-amber-500 dark:text-amber-400 group-hover:text-amber-600 dark:group-hover:text-amber-300 group-hover:rotate-12 transition-all duration-500" />
+          <div className="flex items-center w-full px-3 py-2.5 pl-12">
+            <Bookmark className="w-4 h-4 text-gray-600 dark:text-gray-400 mr-3" />
+            <div className="flex-1 min-w-0">
+              <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Saved Links</span>
             </div>
-            <div className="ml-3 flex-1">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors duration-300">All Saved Links</span>
-              <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Your bookmarks</p>
-            </div>
-            <div className="w-3 h-3 rounded-full bg-amber-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
           </div>
         </div>
       </div>
@@ -432,7 +395,21 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   );
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
+    <>
+      {/* Backdrop blur overlay - only when menu is open */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/60 dark:bg-black/80 backdrop-blur-md transition-all duration-300"
+          onClick={() => {
+            console.log('Clicked outside - closing menu');
+            setIsMenuOpen(false);
+            setShowSubmenu(false);
+            setSubmenuType(null);
+          }}
+        />
+      )}
+
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between text-[12px]">
           {/* Logo/Brand */}
@@ -472,9 +449,9 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             
             {/* Custom Dropdown Content */}
             {isMenuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-80 max-h-[80vh] bg-white/80 dark:bg-black/70 backdrop-blur-2xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-2xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden z-50">
+              <div className="absolute right-0 top-full mt-2 w-80 max-h-[80vh] bg-white/95 dark:bg-gray-950/95 backdrop-blur-3xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/20 dark:shadow-black/60 rounded-2xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden z-50">
                 {/* Glass Background Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-2xl"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-white/20 to-white/10 dark:from-white/5 dark:via-white/3 dark:to-transparent pointer-events-none rounded-2xl"></div>
                 
                 {/* Content Container */}
                 <div className="relative z-10 overflow-hidden">
@@ -490,19 +467,6 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 </div>
               </div>
             )}
-            
-            {/* Click outside overlay */}
-            {isMenuOpen && (
-              <div 
-                className="fixed inset-0 z-40 bg-black/20 dark:bg-black/40 backdrop-blur-sm"
-                onClick={() => {
-                  console.log('Clicked outside - closing menu');
-                  setIsMenuOpen(false);
-                  setShowSubmenu(false);
-                  setSubmenuType(null);
-                }}
-              />
-            )}
           </div>
 
           {/* Hidden Add Column Modal */}
@@ -517,5 +481,6 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         </div>
       </div>
     </nav>
+    </>
   );
 }
