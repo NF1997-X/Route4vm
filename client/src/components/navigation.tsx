@@ -110,53 +110,52 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   };
 
   const renderMainMenu = () => (
-    <div className="p-3 space-y-2">
+    <div className="p-4 space-y-1">
       {/* Vm Route Menu Item */}
       <div 
         onClick={() => handleSubmenuOpen('vm-route')}
-        className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+        className="cursor-pointer group relative overflow-hidden rounded-xl bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-indigo-950/20 dark:to-purple-950/20 hover:from-indigo-100/80 hover:to-purple-100/80 dark:hover:from-indigo-900/30 dark:hover:to-purple-900/30 transition-all duration-300 ease-out"
         data-testid="menu-edit-page"
       >
-        <div className="flex items-center w-full p-3">
-          <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-            <Edit2 className="w-5 h-5 text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 group-hover:rotate-12 transition-all duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-purple-500/0 to-indigo-500/0 group-hover:from-indigo-500/10 group-hover:via-purple-500/10 group-hover:to-indigo-500/10 transition-all duration-500"></div>
+        <div className="flex items-center w-full p-4 relative z-10">
+          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30 group-hover:shadow-xl group-hover:shadow-indigo-500/40 group-hover:scale-110 transition-all duration-300">
+            <Edit2 className="w-5 h-5 text-white group-hover:rotate-12 transition-all duration-300" />
           </div>
-          <div className="ml-3 flex-1">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-300">Vm Route</span>
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Manage routes & tables</p>
+          <div className="ml-4 flex-1">
+            <span className="text-sm font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors duration-300">Vm Route</span>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Manage routes & tables</p>
           </div>
-          <Sparkles className="w-4 h-4 opacity-0 group-hover:opacity-100 text-purple-500 transition-all duration-300 ml-2" />
+          <ChevronDown className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all duration-300" />
         </div>
       </div>
 
       {/* Theme Toggle */}
       <div 
         onClick={() => handleNavigationClick(toggleTheme)}
-        className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+        className="cursor-pointer group relative overflow-hidden rounded-xl bg-gradient-to-r from-yellow-50/50 to-orange-50/50 dark:from-gray-800/50 dark:to-gray-900/50 hover:from-yellow-100/80 hover:to-orange-100/80 dark:hover:from-gray-700/50 dark:hover:to-gray-800/50 transition-all duration-300 ease-out"
         data-testid="menu-toggle-theme"
       >
-        <div className="flex items-center w-full p-3">
+        <div className="flex items-center w-full p-4">
           {theme === 'dark' ? (
             <>
-              <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                <Sun className="w-5 h-5 text-yellow-500 group-hover:text-yellow-600 dark:group-hover:text-yellow-400 group-hover:rotate-180 transition-all duration-500" />
+              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 shadow-lg shadow-yellow-500/30 group-hover:shadow-xl group-hover:shadow-yellow-500/40 group-hover:scale-110 transition-all duration-300">
+                <Sun className="w-5 h-5 text-white group-hover:rotate-180 transition-all duration-500" />
               </div>
-              <div className="ml-3 flex-1">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-yellow-600 dark:group-hover:text-yellow-300 transition-colors duration-300">Light Mode</span>
-                <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Switch to light theme</p>
+              <div className="ml-4 flex-1">
+                <span className="text-sm font-semibold text-gray-800 dark:text-white">Light Mode</span>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Switch to light theme</p>
               </div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
             </>
           ) : (
             <>
-              <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-                <Moon className="w-5 h-5 text-blue-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:rotate-180 transition-all duration-500" />
+              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 shadow-lg shadow-blue-500/30 group-hover:shadow-xl group-hover:shadow-blue-500/40 group-hover:scale-110 transition-all duration-300">
+                <Moon className="w-5 h-5 text-white group-hover:rotate-180 transition-all duration-500" />
               </div>
-              <div className="ml-3 flex-1">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-300">Dark Mode</span>
-                <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Switch to dark theme</p>
+              <div className="ml-4 flex-1">
+                <span className="text-sm font-semibold text-gray-800 dark:text-white">Dark Mode</span>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Switch to dark theme</p>
               </div>
-              <div className="w-3 h-3 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
             </>
           )}
         </div>
@@ -165,22 +164,21 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       {/* Help Guide */}
       <div 
         onClick={() => handleNavigationClick(() => navigate('/help'))}
-        className="cursor-pointer group hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 ease-out hover:scale-[1.02] transform rounded"
+        className="cursor-pointer group relative overflow-hidden rounded-xl bg-gradient-to-r from-green-50/50 to-emerald-50/50 dark:from-green-950/20 dark:to-emerald-950/20 hover:from-green-100/80 hover:to-emerald-100/80 dark:hover:from-green-900/30 dark:hover:to-emerald-900/30 transition-all duration-300 ease-out"
         data-testid="menu-help-guide"
       >
-        <div className="flex items-center w-full p-3">
-          <div className="flex items-center justify-center w-10 h-10 transition-all duration-500">
-            <BookOpen className="w-5 h-5 text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 group-hover:rotate-12 transition-all duration-500" />
+        <div className="flex items-center w-full p-4">
+          <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-500/30 group-hover:shadow-xl group-hover:shadow-green-500/40 group-hover:scale-110 transition-all duration-300">
+            <BookOpen className="w-5 h-5 text-white group-hover:rotate-12 transition-all duration-300" />
           </div>
-          <div className="ml-3 flex-1">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-green-600 dark:group-hover:text-green-300 transition-colors duration-300">User Guide</span>
-            <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5">Help & documentation</p>
+          <div className="ml-4 flex-1">
+            <span className="text-sm font-semibold text-gray-800 dark:text-white">User Guide</span>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Help & documentation</p>
           </div>
-          <div className="w-3 h-3 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-all duration-300 ml-2"></div>
         </div>
       </div>
 
-      <div className="my-4 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10"></div>
+      <div className="my-3 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent dark:via-gray-700"></div>
 
       {/* Edit Mode Options */}
       {editMode ? (
