@@ -449,7 +449,7 @@ export default function CustomTableList() {
                 return (
                   <div
                     key={table.id}
-                    className="custom-table-card bg-white/50 dark:bg-white/5 rounded-xl border border-gray-300 dark:border-gray-800/40 hover:shadow-lg transition-all duration-200 overflow-hidden"
+                    className="custom-table-card bg-transparent dark:bg-transparent rounded-xl border border-transparent dark:border-transparent hover:shadow-lg transition-all duration-200 overflow-hidden"
                   >
                     {/* Main Content */}
                     <div className="p-4">

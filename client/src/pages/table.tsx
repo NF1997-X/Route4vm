@@ -226,7 +226,7 @@ export default function TablePage() {
       }
 
       // Use defaults if nothing saved
-      const defaultVisibleColumnNames = ['No', 'Code', 'Location', 'Delivery'];
+      const defaultVisibleColumnNames = ['No', 'Code', 'Location', 'Delivery', 'Route', 'KM'];
       const defaultVisibleColumns = columns
         .filter(col => defaultVisibleColumnNames.includes(col.name))
         .map(col => col.id);

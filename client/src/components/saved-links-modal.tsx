@@ -192,7 +192,7 @@ export function SavedLinksModal({ open, onOpenChange }: SavedLinksModalProps) {
                 {savedLinks.map((link) => (
                   <div
                     key={link.id}
-                    className="p-4 rounded-2xl border border-white/20 dark:border-white/10 bg-white/20 dark:bg-black/20 backdrop-blur-xl hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-300 hover:scale-[1.02] animate-in zoom-in-95"
+                    className="p-4 rounded-2xl border border-transparent dark:border-transparent bg-transparent dark:bg-transparent backdrop-blur-xl hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-300 hover:scale-[1.02] animate-in zoom-in-95"
                     data-testid={`saved-link-${link.id}`}
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
