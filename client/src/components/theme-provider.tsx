@@ -20,8 +20,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     
     if (theme === 'dark') {
       root.classList.add('dark');
+      // Update meta theme-color for dark mode - BLACK browser tab
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#000000');
     } else {
       root.classList.remove('dark');
+      // Update meta theme-color for light mode
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#ffffff');
     }
     
     localStorage.setItem('theme', theme);

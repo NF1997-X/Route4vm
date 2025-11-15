@@ -157,6 +157,22 @@ export function RouteOptimizationModal({
         <div className="overflow-y-auto flex-1 -mx-6 px-6">
         {!optimizationResult ? (
           <div className="space-y-6 mt-4">
+            {selectedRowIds && selectedRowIds.length > 0 && selectedRowIds.length < rows.length && (
+              <div className="bg-amber-50/50 dark:bg-amber-950/30 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
+                <div className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-1">
+                      Using Filtered Results
+                    </h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      Route optimization will only apply to the {validRows.length} filtered locations currently displayed. To optimize all routes, clear all filters first.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div className="bg-blue-50/50 dark:bg-blue-950/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
               <div className="flex items-start gap-3">
                 <Zap className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />

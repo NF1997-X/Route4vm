@@ -6,6 +6,7 @@ import { ColorLegendPanel } from "@/components/color-legend-panel";
 import { useTableData } from "@/hooks/use-table-data";
 import { LoadingOverlay, NavigationSpinner } from "@/components/skeleton-loader";
 import { Footer } from "@/components/footer";
+import { RouteOptimizationModal } from "@/components/route-optimization-modal";
 import { Database } from "lucide-react";
 import { calculateDistance } from "@/utils/distance";
 import type { CustomTable, TableColumn, TableRow } from "@shared/schema";
@@ -36,6 +37,7 @@ export default function CustomTableView() {
   const [deliveryFilters, setDeliveryFilters] = useState<string[]>([]);
   const [routeFilters, setRouteFilters] = useState<string[]>([]);
   const [selectedRowForImage, setSelectedRowForImage] = useState<string | null>(null);
+  const [optimizationModalOpen, setOptimizationModalOpen] = useState(false);
 
   // Apply filters and column visibility
   const { filteredRows, displayColumns, deliveryOptions } = useMemo(() => {
@@ -355,7 +357,7 @@ export default function CustomTableView() {
               onDeleteColumn={readOnlyDeleteColumnMutation as any}
               onSelectRowForImage={setSelectedRowForImage}
               onShowCustomization={() => {}}
-              onOptimizeRoute={() => {}}
+              onOptimizeRoute={() => setOptimizationModalOpen(true)}
               isAuthenticated={false}
               searchTerm={searchTerm}
               onSearchTermChange={setSearchTerm}
@@ -388,6 +390,14 @@ export default function CustomTableView() {
       </div>
 
       <Footer editMode={false} />
+
+      {/* Route Optimization Modal */}
+      <RouteOptimizationModal
+        open={optimizationModalOpen}
+        onOpenChange={setOptimizationModalOpen}
+        rows={filteredRows.length < rows.length ? filteredRows : rows}
+        selectedRowIds={filteredRows.length < rows.length ? filteredRows.map(r => r.id) : undefined}
+      />
     </>
   );
 }

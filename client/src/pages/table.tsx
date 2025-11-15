@@ -1892,7 +1892,8 @@ export default function TablePage() {
       <RouteOptimizationModal
         open={optimizationModalOpen}
         onOpenChange={setOptimizationModalOpen}
-        rows={rows}
+        rows={filteredRows.length < rows.length ? filteredRows : rows}
+        selectedRowIds={filteredRows.length < rows.length ? filteredRows.map(r => r.id) : undefined}
       />
 
       {/* Share Dialog */}

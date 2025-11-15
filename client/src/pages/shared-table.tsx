@@ -7,6 +7,7 @@ import { useTableData } from "@/hooks/use-table-data";
 import { LoadingOverlay, NavigationSpinner } from "@/components/skeleton-loader";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { RouteOptimizationModal } from "@/components/route-optimization-modal";
 import { PasswordPrompt } from "@/components/password-prompt";
 import { Database } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
@@ -44,6 +45,7 @@ export default function SharedTablePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [editModeLoading, setEditModeLoading] = useState(false);
+  const [optimizationModalOpen, setOptimizationModalOpen] = useState(false);
 
   // Initialize filters from shared state
   useEffect(() => {
@@ -436,7 +438,7 @@ export default function SharedTablePage() {
               onDeleteColumn={readOnlyDeleteColumnMutation as any}
               onSelectRowForImage={setSelectedRowForImage}
               onShowCustomization={() => {}}
-              onOptimizeRoute={() => {}}
+              onOptimizeRoute={() => setOptimizationModalOpen(true)}
               isAuthenticated={isAuthenticated}
               searchTerm={searchTerm}
               onSearchTermChange={setSearchTerm}
@@ -469,6 +471,14 @@ export default function SharedTablePage() {
       </div>
 
       <Footer editMode={editMode} />
+
+      {/* Route Optimization Modal */}
+      <RouteOptimizationModal
+        open={optimizationModalOpen}
+        onOpenChange={setOptimizationModalOpen}
+        rows={filteredRows.length < rows.length ? filteredRows : rows}
+        selectedRowIds={filteredRows.length < rows.length ? filteredRows.map(r => r.id) : undefined}
+      />
 
       {/* Password Prompt Dialog */}
       <PasswordPrompt
