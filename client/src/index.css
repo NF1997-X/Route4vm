@@ -5,6 +5,47 @@
 /* Yet Another React Lightbox Styles */
 @import 'yet-another-react-lightbox/styles.css';
 
+/* Force Sticky Headers - Override Drag Library Transform */
+table thead {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
+}
+
+table thead tr {
+  transform: none !important;
+  position: relative !important;
+}
+
+table thead th {
+  transform: none !important;
+  position: relative !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  table thead th {
+    background: rgba(3, 7, 18, 0.95) !important;
+  }
+}
+
+/* Hide Scrollbars for Synchronized Scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure Perfect Table Alignment */
+.table-sync {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
 /* Custom Lightbox Improvements */
 .lightbox-overlay {
   backdrop-filter: blur(8px) saturate(180%);
