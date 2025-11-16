@@ -1816,6 +1816,8 @@ html.dark tfoot tr th .footer-total-blue {
   }
 }
 
+/* Table zoom animation - DISABLED for performance */
+/*
 @keyframes table-zoom-in {
   0% {
     opacity: 0;
@@ -1826,6 +1828,7 @@ html.dark tfoot tr th .footer-total-blue {
     transform: scale(1);
   }
 }
+*/
 
 /* Carousel zoom in/out transitions */
 @keyframes carousel-zoom-in {

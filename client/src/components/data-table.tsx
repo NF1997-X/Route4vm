@@ -747,11 +747,11 @@ export function DataTable({
 
   return (
     <div
-      className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-2xl table-container my-10 overflow-hidden transition-all duration-300 ease-in-out animate-in fade-in slide-in-from-bottom-4"
+      className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-2xl table-container my-10 overflow-hidden"
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
-      <div className="px-6 py-3 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[10px] transition-all duration-300" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+      <div className="px-6 py-3 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[10px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
         <div className="flex flex-row gap-3 items-center justify-between">
           
           {/* Left Side: Entries Selector */}
@@ -959,7 +959,7 @@ export function DataTable({
           <div className="w-auto">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-6 px-2 pagination-button text-xs justify-start transition-all duration-200 ease-in-out hover:scale-105 active:scale-95" data-testid="combined-filter-trigger">
+                <Button variant="outline" className="h-6 px-2 pagination-button text-xs justify-start" data-testid="combined-filter-trigger">
                   <span className="hidden sm:inline">
                     {isSharedView ? (
                       deliveryFilterValue.length === 0 
@@ -1073,18 +1073,18 @@ export function DataTable({
         {/* Right Side: Search Input */}
         <div className="flex-1 max-w-[30%] lg:max-w-md ml-auto flex items-center gap-2">
           <div className="relative group flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-4 text-muted-foreground" />
             <Input
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearchTermChange?.(e.target.value)}
-              className="pl-7 pr-7 h-8 bg-white/80 dark:bg-gray-950/95 text-foreground placeholder:text-muted-foreground border-2 border-border/40 dark:border-gray-700 hover:border-border/60 dark:hover:border-gray-600 hover:bg-muted/10 dark:hover:bg-gray-950/100 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 dark:focus-visible:ring-gray-700 focus-visible:ring-offset-2 focus-visible:border-border/60 dark:focus-visible:border-gray-600 focus-visible:bg-muted/10 dark:focus-visible:bg-gray-950/100 disabled:cursor-not-allowed disabled:opacity-50 transition-colors text-sm"
+              className="pl-7 pr-7 h-8 bg-white/80 dark:bg-gray-950/95 text-foreground placeholder:text-muted-foreground border-2 border-border/40 dark:border-gray-700 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 dark:focus-visible:ring-gray-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-sm"
               data-testid="search-input"
             />
             {searchTerm && (
               <button
                 onClick={() => onSearchTermChange?.('')}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 p-0.5 w-5 h-5 rounded-full hover:bg-muted/50 transition-colors flex items-center justify-center"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 p-0.5 w-5 h-5 rounded-full hover:bg-muted/50 flex items-center justify-center"
                 data-testid="clear-search"
                 aria-label="Clear search"
               >
@@ -1200,7 +1200,7 @@ export function DataTable({
                 <TableBody
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="pt-2 motion-layer zoom-in"
+                  className="pt-2"
                   key={`page-${currentPage}`}
                 >
                   {isLoading
@@ -1208,7 +1208,7 @@ export function DataTable({
                         (_, index) => (
                           <tr
                             key={`skeleton-${index}`}
-                            className={`skeleton-row fade-in-stagger bg-white dark:bg-gray-950/80 backdrop-blur-sm hover:bg-blue-50/30 dark:hover:bg-blue-950/20 table-cell-unique-transition border-b border-gray-200 dark:border-gray-700`}
+                            className={`skeleton-row bg-white dark:bg-gray-950/80 backdrop-blur-sm hover:bg-blue-50/30 dark:hover:bg-blue-950/20 border-b border-gray-200 dark:border-gray-700`}
                           >
                             {/* Actions column */}
                             <td className="py-3 px-4 w-12">
@@ -1253,7 +1253,7 @@ export function DataTable({
                             <TableRow
                               ref={provided.innerRef}
                               {...provided.draggableProps}
-                              className={`glass-hover group animate-in fade-in slide-in-from-bottom-2 duration-300 transition-all ease-in-out hover:shadow-lg hover:scale-[1.02] hover:-translate-y-0.5 ${
+                              className={`group hover:bg-slate-50 dark:hover:bg-gray-900/50 ${
                                 (() => {
                                   // Apply 3-color styling ONLY for shared view or edit mode
                                   if (isSharedView || editMode) {
@@ -1288,7 +1288,7 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="py-3 px-4 align-middle table-cell-10px text-center text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal table-zoom-in"
+                                  className="py-3 px-4 align-middle table-cell-10px text-center text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal"
                                   style={{
                                     textAlign: "center",
                                     minWidth: "100px",
@@ -1350,7 +1350,7 @@ export function DataTable({
                                       {editMode && (
                                         <button
                                           onClick={() => onSelectRowForImage(row.id)}
-                                          className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs transition-all duration-200 hover:scale-110 shadow-lg"
+                                          className="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs shadow-lg"
                                           title="Add Image"
                                         >
                                           +

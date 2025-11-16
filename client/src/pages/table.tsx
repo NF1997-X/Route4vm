@@ -1157,11 +1157,11 @@ export default function TablePage() {
           isAuthenticated={true}
         />
       </div>
-      <main className="pt-[72px] animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
+      <main className="pt-[72px]">
         <div className="container mx-auto px-4 py-8" data-testid="table-page">
           
           {/* Main Table - Moved to Top */}
-          <div ref={tableRef} className="mb-6 animate-in fade-in slide-in-from-bottom-3 duration-700 delay-300">
+          <div ref={tableRef} className="mb-6">
             <DataTable
             rows={rowsWithDistances}
             columns={displayColumns}
@@ -1206,7 +1206,7 @@ export default function TablePage() {
           </div>
 
           {/* Color Legend Panel - Middle */}
-          <div className="mb-6 animate-in fade-in slide-in-from-bottom-2 duration-700 delay-500 flex justify-center">
+          <div className="mb-6 flex justify-center">
             <ColorLegendPanel />
           </div>
 
