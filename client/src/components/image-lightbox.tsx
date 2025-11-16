@@ -535,7 +535,7 @@ export function ImagePreview({ images, maxVisible = 2, onImageClick }: ImagePrev
   const remainingCount = imageMedia.length - maxVisible;
 
   return (
-    <div className="flex items-center gap-3 mt-4">
+    <div className="flex items-center justify-center gap-3 mt-4">
       <div className="flex items-center gap-2">
         {visibleImages.map((image, index) => (
           <div
@@ -583,13 +583,13 @@ export function ImagePreview({ images, maxVisible = 2, onImageClick }: ImagePrev
         </Button>
       )}
       
-      {/* Quick stats */}
-      <div className="flex items-center gap-2 text-xs text-muted-foreground ml-auto">
+      {/* Quick stats - Hidden as requested */}
+      {/* <div className="flex items-center gap-2 text-xs text-muted-foreground ml-auto">
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
           <span>{imageMedia.length} image{imageMedia.length !== 1 ? 's' : ''}</span>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

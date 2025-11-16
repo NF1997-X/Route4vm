@@ -1511,7 +1511,7 @@ export function DataTable({
                                 </TableCell>
                               ))}
                               <TableCell
-                                className="px-2 py-2 text-sm text-center sticky right-0 z-10 bg-white dark:bg-gray-900 shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
+                                className="px-2 py-2 text-sm text-center sticky right-0 z-10 bg-gray-100 dark:bg-black shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
                                 style={{ textAlign: "center" }}
                               >
                                 <div className="flex flex-col items-center gap-1">

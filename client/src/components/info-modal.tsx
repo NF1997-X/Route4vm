@@ -287,10 +287,22 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           }}
         />
         <DialogHeader 
-          className="pb-4 border-b border-blue-900 dark:border-cyan-400/50 flex-shrink-0"
+          className="pb-4 border-b border-blue-900 dark:border-cyan-400/50 flex-shrink-0 relative"
           style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}
         >
-          <DialogTitle className="font-semibold text-center text-slate-900 dark:text-slate-400 truncate" style={{fontSize: '10px'}}>
+          {/* Smart Close Button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute top-2 right-2 h-8 w-8 p-0 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 hover:scale-110 active:scale-95 z-10"
+            onClick={() => setOpen(false)}
+            data-testid="button-smart-close"
+            title="Close"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+          
+          <DialogTitle className="font-semibold text-center text-slate-900 dark:text-slate-400 truncate pr-10" style={{fontSize: '10px'}}>
             {location || 'Location'}
           </DialogTitle>
           <div className="text-center text-muted-foreground pt-1 truncate" style={{fontSize: '10px'}}>
@@ -684,18 +696,18 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
 
         </div>
         <DialogFooter 
-          className="pt-6 mt-2 border-t border-blue-500/20 dark:border-blue-400/20 bg-blue-50/30 dark:bg-blue-950/20 backdrop-blur-sm rounded-b-2xl -mx-6 -mb-6 px-6 relative overflow-hidden transition-all duration-500"
+          className="pt-6 mt-2 border-t border-blue-500/20 dark:border-blue-400/20 bg-white/80 dark:bg-black/70 backdrop-blur-2xl rounded-b-2xl -mx-6 -mb-6 px-6 relative overflow-hidden transition-all duration-500"
           style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
         >
           {/* Main Grid Button - iOS Style */}
-          <div className={`flex justify-center items-center w-full transition-all duration-300 ${showActionsMenu ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          <div className={`flex justify-center items-center w-full transition-all duration-300 m-2.5 ${showActionsMenu ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
             <Button
               variant="ghost"
               className="h-12 w-12 p-0 bg-transparent border-transparent hover:bg-transparent hover:border-transparent hover:scale-110 active:scale-95 transition-all rounded-xl"
               onClick={() => setShowActionsMenu(!showActionsMenu)}
               data-testid="button-actions-menu"
             >
-              <FolderOpen className="w-6 h-6 text-blue-500 dark:text-blue-400" />
+              <FolderOpen className="w-6 h-6 text-blue-500 dark:text-blue-400 animate-pulse hover:animate-bounce" />
             </Button>
           </div>
 
