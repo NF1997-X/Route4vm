@@ -1251,7 +1251,7 @@ export function DataTable({
                         (_, index) => (
                           <tr
                             key={`skeleton-${index}`}
-                            className={`skeleton-row bg-white dark:bg-gray-950/80 backdrop-blur-sm hover:bg-blue-50/30 dark:hover:bg-blue-950/20`}
+                            className={`skeleton-row bg-white dark:bg-gray-950/80 backdrop-blur-sm hover:bg-blue-50/50 dark:hover:bg-blue-950/30 hover:shadow-sm dark:hover:shadow-lg transition-all duration-200 cursor-pointer`}
                           >
                             {/* Actions column */}
                             <td className="py-3 px-4 w-12">
@@ -1323,7 +1323,7 @@ export function DataTable({
                                     }
                                   }
                                 })()
-                              } hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors ${
+                              } hover:bg-blue-50/50 dark:hover:bg-blue-950/30 hover:shadow-sm dark:hover:shadow-lg transition-all duration-200 cursor-pointer ${
                                 snapshot.isDragging ? "drag-elevate" : ""
                               }`}
                               data-testid={`table-row-${row.id}`}
