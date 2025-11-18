@@ -68,7 +68,7 @@ import {
 } from "./skeleton-loader";
 import { TableRow as TableRowType, TableColumn } from "@shared/schema";
 import { UseMutationResult } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -363,7 +363,7 @@ export function DataTable({
     if (page === currentPage) return;
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
   };
-  const handleDragEnd = (result: any) => {
+  const handleDragEnd = useCallback((result: any) => {
     if (!result.destination) return;
 
     const { source, destination, type } = result;
@@ -383,7 +383,7 @@ export function DataTable({
       const rowIds = newRowOrder.map((row) => row.id);
       onReorderRows.mutate(rowIds);
     }
-  };
+  }, [columns, rows, onReorderColumns, onReorderRows]);
 
   const formatNumber = (value: string | number) => {
     const num = typeof value === "string" ? parseFloat(value) : value;
@@ -660,7 +660,7 @@ export function DataTable({
     onReorderRows.mutate(sortedRowIds);
   };
 
-  const handleSortToggle = (column: string) => {
+  const handleSortToggle = useCallback((column: string) => {
     // Cycle through: null → asc → desc → null
     let newDirection: 'asc' | 'desc' | null = null;
     
@@ -706,7 +706,7 @@ export function DataTable({
       default:
         break;
     }
-  };
+  }, [sortState, handleSortByRoute, handleSortByCode, handleSortByDelivery, handleSortByLocation, handleSortByKilometer, handleSortBySortOrder]);
 
   const handleDeleteClick = (rowId: string) => {
     setSelectedRowForDelete(rowId);
@@ -727,23 +727,23 @@ export function DataTable({
   };
 
   // Filter toggle functions
-  const toggleRouteFilter = (route: string) => {
+  const toggleRouteFilter = useCallback((route: string) => {
     if (!onFilterValueChange) return;
     
     const newFilters = filterValue.includes(route)
       ? filterValue.filter(f => f !== route)
       : [...filterValue, route];
     onFilterValueChange(newFilters);
-  };
+  }, [filterValue, onFilterValueChange]);
 
-  const toggleDeliveryFilter = (delivery: string) => {
+  const toggleDeliveryFilter = useCallback((delivery: string) => {
     if (!onDeliveryFilterValueChange) return;
     
     const newFilters = deliveryFilterValue.includes(delivery)
       ? deliveryFilterValue.filter(f => f !== delivery)
       : [...deliveryFilterValue, delivery];
     onDeliveryFilterValueChange(newFilters);
-  };
+  }, [deliveryFilterValue, onDeliveryFilterValueChange]);
 
   return (
     <div
@@ -1185,11 +1185,14 @@ export function DataTable({
       </Table>
 
       <div 
-        className="overflow-x-auto scroll-smooth w-full relative"
+        className="overflow-x-auto scroll-smooth w-full relative contain-layout contain-paint"
         style={disablePagination ? {
           maxHeight: 'calc(100vh - 280px)',
           overflowY: 'auto',
-        } : undefined}
+          willChange: 'transform',
+        } : {
+          willChange: 'transform',
+        }}
       >
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full" style={{tableLayout: "fixed"}}>
