@@ -1200,15 +1200,15 @@ html.dark tfoot tr th .footer-total-blue {
 .pagination-button {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(239, 246, 255, 0.9));
-  border-color: rgb(191, 219, 254);
+  background: transparent;
+  border-color: transparent;
   color: rgb(37, 99, 235);
   font-weight: 500;
 }
 
 .dark .pagination-button {
-  background: linear-gradient(135deg, rgba(30, 58, 138, 0.3), rgba(59, 130, 246, 0.2));
-  border-color: rgba(59, 130, 246, 0.4);
+  background: transparent;
+  border-color: transparent;
   color: rgb(147, 197, 253);
 }
 
@@ -1221,54 +1221,52 @@ html.dark tfoot tr th .footer-total-blue {
 }
 
 .pagination-button:hover {
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(219, 234, 254, 1));
-  border-color: rgb(59, 130, 246);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  background: rgba(59, 130, 246, 0.05);
+  border-color: transparent;
 }
 
 .dark .pagination-button:hover {
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-  background: linear-gradient(135deg, rgba(30, 58, 138, 0.5), rgba(59, 130, 246, 0.3));
-  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.1);
+  border-color: transparent;
 }
 
 .pagination-button.active {
-  /* Same background as normal button */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(239, 246, 255, 0.9));
+  /* Subtle background for active button */
+  background: rgba(59, 130, 246, 0.1);
   color: rgb(37, 99, 235);
   font-weight: 600;
-  /* Slow blinking border animation */
-  animation: pagination-border-blink 2s ease-in-out infinite;
+  border-color: transparent;
+  /* Slow blinking glow animation */
+  animation: pagination-glow-blink 2s ease-in-out infinite;
 }
 
 .dark .pagination-button.active {
-  /* Same background as normal button in dark mode */
-  background: linear-gradient(135deg, rgba(30, 58, 138, 0.3), rgba(59, 130, 246, 0.2));
+  /* Subtle background for active button in dark mode */
+  background: rgba(59, 130, 246, 0.15);
   color: rgb(147, 197, 253);
-  /* Slow blinking border animation */
-  animation: pagination-border-blink-dark 2s ease-in-out infinite;
+  border-color: transparent;
+  /* Slow blinking glow animation */
+  animation: pagination-glow-blink-dark 2s ease-in-out infinite;
 }
 
-/* Slow blinking border animation for light mode */
-@keyframes pagination-border-blink {
+/* Slow blinking glow animation for light mode */
+@keyframes pagination-glow-blink {
   0%, 100% {
-    border-color: rgb(191, 219, 254);
     box-shadow: none;
   }
   50% {
-    border-color: rgb(59, 130, 246);
     box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
   }
 }
 
-/* Slow blinking border animation for dark mode */
-@keyframes pagination-border-blink-dark {
+/* Slow blinking glow animation for dark mode */
+@keyframes pagination-glow-blink-dark {
   0%, 100% {
-    border-color: rgba(59, 130, 246, 0.4);
     box-shadow: none;
   }
   50% {
-    border-color: rgba(59, 130, 246, 0.8);
     box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
   }
 }
