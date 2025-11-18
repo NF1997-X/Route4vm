@@ -1251,7 +1251,7 @@ export function DataTable({
                         (_, index) => (
                           <tr
                             key={`skeleton-${index}`}
-                            className={`skeleton-row bg-white dark:bg-gray-950/80 backdrop-blur-sm hover:bg-blue-50/30 dark:hover:bg-blue-950/20 border-b border-gray-200 dark:border-gray-700`}
+                            className={`skeleton-row bg-white dark:bg-gray-950/80 backdrop-blur-sm hover:bg-blue-50/30 dark:hover:bg-blue-950/20`}
                           >
                             {/* Actions column */}
                             <td className="py-3 px-4 w-12">
@@ -1302,24 +1302,24 @@ export function DataTable({
                                   if (isSharedView || editMode) {
                                     const status = getScheduleStatus(row);
                                     if (status === 'inactive') {
-                                      return "bg-gray-100/60 dark:bg-gray-950/80 opacity-50 border-b border-gray-200 dark:border-gray-700";
+                                      return "bg-gray-100/60 dark:bg-gray-950/80 opacity-50";
                                     } else if (status === 'off-schedule') {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80 opacity-60 border-b border-gray-200 dark:border-gray-700" 
-                                        : "bg-white dark:bg-gray-950/80 opacity-60 border-b border-gray-200 dark:border-gray-700";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80 opacity-60" 
+                                        : "bg-white dark:bg-gray-950/80 opacity-60";
                                     } else {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80 border-b border-gray-200 dark:border-gray-700" 
-                                        : "bg-white dark:bg-gray-950/80 border-b border-gray-200 dark:border-gray-700";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80" 
+                                        : "bg-white dark:bg-gray-950/80";
                                     }
                                   } else {
                                     // Regular view mode: standard styling
                                     if (row.active === false) {
-                                      return "bg-gray-100/60 dark:bg-gray-950/80 opacity-50 border-b border-gray-200 dark:border-gray-700";
+                                      return "bg-gray-100/60 dark:bg-gray-950/80 opacity-50";
                                     } else {
                                       return row.location === "QL Kitchen" 
-                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80 border-b border-gray-200 dark:border-gray-700" 
-                                        : "bg-white dark:bg-gray-950/80 border-b border-gray-200 dark:border-gray-700";
+                                        ? "bg-gradient-to-r from-gray-100/80 to-slate-100/80 dark:from-gray-950/80 dark:to-slate-950/80" 
+                                        : "bg-white dark:bg-gray-950/80";
                                     }
                                   }
                                 })()
