@@ -1,9 +1,16 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 
+// Create the Express app
 const app = express();
+
+// Setup body parsing middleware
 app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoding({ extended: false, limit: '50mb' }));
+
+// For urlencoded, check if it exists (some bundling scenarios may not include it)
+if (typeof (express as any).urlencoded === 'function') {
+  app.use((express as any).urlencoded({ extended: false, limit: '50mb' }));
+}
 
 // CORS
 app.use((req: Request, res: Response, next: NextFunction) => {
