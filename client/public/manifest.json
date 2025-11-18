@@ -10,44 +10,20 @@
   "background_color": "#ffffff",
   "prefer_related_applications": false,
   "categories": ["logistics", "productivity"],
-  "icons": [
-    {
-      "src": "/assets/FamilyMart.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/assets/FamilyMart.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/assets/FamilyMart.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "/assets/FamilyMart.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    }
-  ],
   "screenshots": [
     {
       "src": "/assets/FamilyMart.png",
       "sizes": "540x720",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "purpose": "any"
     },
     {
       "src": "/assets/FamilyMart.png",
       "sizes": "1280x720",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "purpose": "any"
     }
   ],
   "shortcuts": [
@@ -60,7 +36,8 @@
         {
           "src": "/assets/FamilyMart.png",
           "sizes": "96x96",
-          "type": "image/png"
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     },
@@ -73,9 +50,9 @@
         {
           "src": "/assets/FamilyMart.png",
           "sizes": "96x96",
-          "type": "image/png"
+          "type": "image/png",
+          "purpose": "any"
         }
       ]
     }
   ]
-}
