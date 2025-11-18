@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, Download, Home } from 'lucide-react';
+import { X, Download } from 'lucide-react';
 import { useInstallPrompt } from '@/hooks/use-install-prompt';
-import { Button } from '@/components/ui/button';
 
 export function InstallPrompt() {
   const { isInstallable, promptInstall, hidePrompt } = useInstallPrompt();
@@ -11,7 +10,6 @@ export function InstallPrompt() {
   useEffect(() => {
     if (isInstallable) {
       setIsVisible(true);
-      // Trigger animation
       setTimeout(() => setShowAnimation(true), 100);
     }
   }, [isInstallable]);
@@ -33,104 +31,90 @@ export function InstallPrompt() {
 
   return (
     <>
-      {/* Backdrop */}
+      {/* iOS Backdrop Blur */}
       <div
-        className={`fixed inset-0 bg-black/40 dark:bg-black/60 transition-opacity duration-300 z-40 pointer-events-none ${
+        className={`fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 z-40 ${
           showAnimation ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ pointerEvents: showAnimation ? 'auto' : 'none' }}
         onClick={handleDismiss}
       />
 
-      {/* Install Prompt Card */}
+      {/* iOS Card - Install Prompt */}
       <div
-        className={`fixed bottom-6 left-6 right-6 sm:left-auto sm:right-6 sm:max-w-md bg-white dark:bg-slate-900 rounded-xl shadow-2xl transition-all duration-300 z-50 border border-white/20 dark:border-white/10 overflow-hidden ${
+        className={`fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-sm 
+          ios-card rounded-2xl overflow-hidden z-50 transition-all duration-300 ${
           showAnimation
             ? 'translate-y-0 opacity-100 scale-100'
-            : 'translate-y-6 opacity-0 scale-95'
+            : 'translate-y-4 opacity-0 scale-95'
         }`}
       >
-        {/* Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-transparent dark:from-blue-950/20 dark:via-transparent dark:to-transparent pointer-events-none" />
+        {/* Close Button - iOS Style */}
+        <button
+          onClick={handleDismiss}
+          className="absolute top-4 right-4 p-2 rounded-full 
+            hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+          aria-label="Close"
+        >
+          <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+        </button>
 
         {/* Content */}
-        <div className="relative z-10 p-5 sm:p-6">
-          {/* Close Button */}
-          <button
-            onClick={handleDismiss}
-            className="absolute top-4 right-4 p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            aria-label="Close"
-          >
-            <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          </button>
-
-          {/* Header with Icon */}
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2.5 rounded-lg bg-blue-100 dark:bg-blue-950/50">
+        <div className="pr-12">
+          {/* Header */}
+          <div className="flex items-start gap-3 mb-3">
+            <div className="p-2.5 rounded-full bg-blue-100 dark:bg-blue-950/50 flex-shrink-0">
               <Download className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100">
-                Install App
-              </h3>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
+              <h3 className="ios-subheading text-base">Install App</h3>
+              <p className="ios-caption text-gray-600 dark:text-gray-400 mt-0.5">
                 FM Route System
               </p>
             </div>
           </div>
 
+          {/* Divider */}
+          <div className="h-px bg-gray-200 dark:bg-white/10 my-3" />
+
           {/* Description */}
-          <p className="text-sm text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
-            Get faster access and work offline. Install on your home screen just like an app from the App Store.
+          <p className="ios-body text-sm mb-4">
+            Get instant access and work offline. Install on your home screen just like a native app.
           </p>
 
           {/* Features */}
           <div className="space-y-2 mb-5">
-            <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-              <Home className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <span>Add to your home screen</span>
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-4 h-4 rounded-full bg-green-500" />
+              <span className="text-gray-700 dark:text-gray-300">Add to home screen</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-              <span className="text-lg">⚡</span>
-              <span>Works offline</span>
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-4 h-4 rounded-full bg-orange-500" />
+              <span className="text-gray-700 dark:text-gray-300">Works offline</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-              <span className="text-lg">🚀</span>
-              <span>Instant access</span>
+            <div className="flex items-center gap-2 text-sm">
+              <div className="w-4 h-4 rounded-full bg-blue-500" />
+              <span className="text-gray-700 dark:text-gray-300">Faster access</span>
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              size="sm"
+          {/* iOS Buttons */}
+          <div className="flex gap-2">
+            <button
               onClick={handleDismiss}
-              className="flex-1 rounded-lg"
+              className="flex-1 btn-ios-secondary text-sm"
             >
               Not Now
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={handleInstall}
-              size="sm"
-              className="flex-1 rounded-lg bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white"
+              className="flex-1 btn-ios text-sm flex items-center justify-center gap-1"
             >
-              <Download className="w-4 h-4 mr-1" />
+              <Download className="w-4 h-4" />
               Install
-            </Button>
+            </button>
           </div>
         </div>
-
-        {/* Pulse Animation for attention */}
-        <style>{`
-          @keyframes pulse-subtle {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-          }
-          .animate-pulse-subtle {
-            animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-          }
-        `}</style>
       </div>
     </>
   );
