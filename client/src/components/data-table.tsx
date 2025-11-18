@@ -1331,7 +1331,7 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="py-3 sm:py-4 px-4 sm:px-5 align-middle table-cell-10px text-center text-[8px] sm:text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal h-10 sm:h-11"
+                                  className="py-3 sm:py-4 px-4 sm:px-5 align-middle table-cell-10px text-center text-[7px] sm:text-[9px] bg-transparent text-foreground whitespace-nowrap font-normal h-10 sm:h-11"
                                   style={{
                                     textAlign: "center",
                                     minWidth: "80px",
@@ -1339,11 +1339,11 @@ export function DataTable({
                                     maxHeight: "44px",
                                     ...(column.dataKey === "location" && {
                                       minWidth: `${140 + 20}px`,
-                                      fontSize: "10px",
+                                      fontSize: "9px",
                                     }),
                                     ...(column.dataKey === "delivery" && {
                                       minWidth: "130px",
-                                      fontSize: "10px",
+                                      fontSize: "9px",
                                       fontWeight: "normal",
                                     }),
                                     ...(column.dataKey === "id" && {

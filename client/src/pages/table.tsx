@@ -1338,7 +1338,7 @@ export default function TablePage() {
                               </div>
                             </div>
                           )}
-                            <dl className="space-y-1" style={{fontSize: '10px', lineHeight: '1.4'}} data-testid={`page-description-${page.id}`}>
+                            <dl className="space-y-1" style={{fontSize: '9px', lineHeight: '1.4'}} data-testid={`page-description-${page.id}`}>
                               {(page.description || "").split('\n').map((line, lineIndex) => {
                                 const trimmedLine = line.trim();
                                 if (!trimmedLine) return null;
