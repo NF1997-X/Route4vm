@@ -1155,6 +1155,35 @@ export function DataTable({
           </div>
         </div>
       )}
+      {/* Fixed Header */}
+      <Table className="min-w-full" style={{tableLayout: "fixed"}}>
+        <TableHeader>
+          <TableRow>
+            {visibleColumns.map((column, index) => (
+              <TableHead
+                key={column.id}
+                className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
+                style={{ textAlign: "center", fontSize: "9px" }}
+                colSpan={column.dataKey === "location" ? 3 : 1}
+              >
+                <ColumnHeader
+                  column={column}
+                  dragHandleProps={undefined}
+                  onDelete={() => onDeleteColumn.mutate(column.id)}
+                  isAuthenticated={isAuthenticated}
+                  editMode={editMode}
+                />
+              </TableHead>
+            ))}
+            <TableHead className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
+              <span className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent text-xs sm:text-sm font-bold">
+                Act
+              </span>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+      </Table>
+
       <div 
         className="overflow-x-auto scroll-smooth w-full relative"
         style={disablePagination ? {
@@ -1162,35 +1191,6 @@ export function DataTable({
           overflowY: 'auto',
         } : undefined}
       >
-        {/* Fixed Header - Scrolls with content */}
-        <Table className="min-w-full" style={{tableLayout: "fixed"}}>
-          <TableHeader>
-            <TableRow>
-              {visibleColumns.map((column, index) => (
-                <TableHead
-                  key={column.id}
-                  className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12 sticky top-0 z-30"
-                  style={{ textAlign: "center", fontSize: "9px" }}
-                  colSpan={column.dataKey === "location" ? 3 : 1}
-                >
-                  <ColumnHeader
-                    column={column}
-                    dragHandleProps={undefined}
-                    onDelete={() => onDeleteColumn.mutate(column.id)}
-                    isAuthenticated={isAuthenticated}
-                    editMode={editMode}
-                  />
-                </TableHead>
-              ))}
-              <TableHead className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12 sticky right-0 top-0 z-50 shadow-lg">
-                <span className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent text-xs sm:text-sm font-bold">
-                  Act
-                </span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-        </Table>
-
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full" style={{tableLayout: "fixed"}}>
             <Droppable droppableId="rows" type="row">
@@ -1480,7 +1480,7 @@ export function DataTable({
                                 </TableCell>
                               ))}
                               <TableCell
-                                className="px-2 py-2 text-sm text-center sticky right-0 z-10 bg-gray-100 dark:bg-black shadow-[-4px_0_8px_rgba(0,0,0,0.1)] dark:shadow-[-4px_0_8px_rgba(0,0,0,0.3)]"
+                                className="px-2 py-2 text-sm text-center bg-gray-100 dark:bg-black"
                                 style={{ textAlign: "center" }}
                               >
                                 <div className="flex flex-col items-center gap-1">
@@ -1808,55 +1808,55 @@ export function DataTable({
             </div>
           )}
         </DragDropContext>
-        
-        {/* Fixed Footer - Scrolls with content */}
-        <Table className="min-w-full" style={{tableLayout: "fixed"}}>
-          <tfoot>
-            <TableRow className="h-10 sm:h-12 sticky bottom-0 z-30 bg-white/95 dark:bg-gray-950/95">
-              {visibleColumns.map((column, index) => (
-                <TableCell
-                  key={column.id}
-                  className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
-                  style={{ textAlign: "center", fontSize: "9px" }}
-                  colSpan={column.dataKey === "location" ? 3 : 1}
-                  >
-                    {index === 0 ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '11px'}}>Totals</span>
-                    ) : column.dataKey === "no" ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
-                    ) : column.dataKey === "kilometer" ? (
-                      <span className="font-semibold text-blue-600 dark:text-blue-400">
-                        {(() => {
-                          const total = calculateColumnSum("kilometer", column.type);
-                          return total > 0 ? `${total.toFixed(2)} km` : "—";
-                        })()}
-                      </span>
-                    ) : column.dataKey === "tngRoute" &&
-                      column.type === "currency" ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-                        {formatCurrency(
-                          calculateColumnSum("tngRoute", column.type),
-                        )}
-                      </span>
-                    ) : column.dataKey === "tollPrice" &&
-                      column.type === "currency" ? (
-                      <span className="font-semibold text-green-600 dark:text-green-400">
-                        {formatCurrency(
-                          calculateColumnSum("tollPrice", column.type),
-                        )}
-                      </span>
-                    ) : (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
-                    )}
-                  </TableCell>
-                ))}
-                <TableCell className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12 sticky right-0 z-50">
-                  <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
-                </TableCell>
-              </TableRow>
-            </tfoot>
-          </Table>
       </div>
+        
+      {/* Fixed Footer */}
+      <Table className="min-w-full" style={{tableLayout: "fixed"}}>
+        <tfoot>
+          <TableRow className="h-10 sm:h-12 bg-white/95 dark:bg-gray-950/95">
+            {visibleColumns.map((column, index) => (
+              <TableCell
+                key={column.id}
+                className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
+                style={{ textAlign: "center", fontSize: "9px" }}
+                colSpan={column.dataKey === "location" ? 3 : 1}
+              >
+                {index === 0 ? (
+                  <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '11px'}}>Totals</span>
+                ) : column.dataKey === "no" ? (
+                  <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
+                ) : column.dataKey === "kilometer" ? (
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                    {(() => {
+                      const total = calculateColumnSum("kilometer", column.type);
+                      return total > 0 ? `${total.toFixed(2)} km` : "—";
+                    })()}
+                  </span>
+                ) : column.dataKey === "tngRoute" &&
+                  column.type === "currency" ? (
+                  <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                    {formatCurrency(
+                      calculateColumnSum("tngRoute", column.type),
+                    )}
+                  </span>
+                ) : column.dataKey === "tollPrice" &&
+                  column.type === "currency" ? (
+                  <span className="font-semibold text-green-600 dark:text-green-400">
+                    {formatCurrency(
+                      calculateColumnSum("tollPrice", column.type),
+                    )}
+                  </span>
+                ) : (
+                  <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
+                )}
+              </TableCell>
+            ))}
+            <TableCell className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
+              <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
+            </TableCell>
+          </TableRow>
+        </tfoot>
+      </Table>
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
         <DialogContent className="sm:max-w-[425px] transition-smooth-fast">
