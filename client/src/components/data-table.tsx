@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import { ColumnHeader } from "./column-header";
 import { EditableCell } from "./editable-cell";
-import { ImageLightbox } from "./image-lightbox";
+import { ImagePreview } from "./image-preview";
 import { InfoModal } from "./info-modal";
 import { SlidingDescription } from "./sliding-description";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,6 @@ import {
   Share2,
   Power,
   Trash,
-  ZoomIn,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -258,7 +257,6 @@ export function DataTable({
     string | null
   >(null);
   const [sortState, setSortState] = useState<{column: string; direction: 'asc' | 'desc'} | null>(null);
-  const [selectedRowImages, setSelectedRowImages] = useState<{ rowId: string; images: any[] } | null>(null);
   const { toast } = useToast();
 
   // Filter columns to hide "info" column when not in edit mode
@@ -1383,31 +1381,18 @@ export function DataTable({
                                 >
                                   <div className="w-[98%] mx-auto text-center">
                                   {column.dataKey === "images" ? (
-                                    <div className="relative flex items-center justify-center">
-                                      {row.images && row.images.length > 0 ? (
-                                        <div
-                                          className="w-12 h-12 rounded-md overflow-hidden cursor-pointer border border-border/30 hover:border-border/60 transition-all duration-300 transform hover:scale-110 hover:shadow-lg group"
-                                          onClick={() => setSelectedRowImages({ rowId: row.id, images: row.images || [] })}
-                                        >
-                                          <img
-                                            src={row.images[0].url}
-                                            alt={row.images[0].caption || "Image"}
-                                            className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
-                                            loading="lazy"
-                                          />
-                                          {/* Overlay with zoom icon and count */}
-                                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-0.5">
-                                            <ZoomIn className="h-3 w-3 text-white" />
-                                            {row.images.length > 1 && (
-                                              <span className="text-white text-xs font-semibold">+{row.images.length - 1}</span>
-                                            )}
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <div className="w-12 h-12 rounded-md bg-muted/30 flex items-center justify-center text-muted-foreground text-xs">
-                                          -
-                                        </div>
-                                      )}
+                                    <div className="relative">
+                                      <ImagePreview
+                                        images={row.images || []}
+                                        rowId={row.id}
+                                        onAddImage={() =>
+                                          onSelectRowForImage(row.id)
+                                        }
+                                        editMode={editMode}
+                                        onAccessDenied={() =>
+                                          onSelectRowForImage("access-denied")
+                                        }
+                                      />
                                       {editMode && (
                                         <button
                                           onClick={() => onSelectRowForImage(row.id)}
@@ -1945,16 +1930,6 @@ export function DataTable({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* Image Lightbox Modal */}
-      {selectedRowImages && (
-        <ImageLightbox
-          images={selectedRowImages.images}
-          isOpen={true}
-          onClose={() => setSelectedRowImages(null)}
-          initialIndex={0}
-        />
-      )}
     </div>
   );
 }
