@@ -11,23 +11,31 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    return savedTheme || 'light';
+    // Try to get theme from localStorage
+    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    if (savedTheme) {
+      return savedTheme;
+    }
+    
+    // Check system preference
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    
+    return 'light';
   });
 
   useEffect(() => {
     const root = document.documentElement;
     
+    // Apply theme class to html element
     if (theme === 'dark') {
       root.classList.add('dark');
-      // Update meta theme-color for dark mode - BLACK browser tab
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#000000');
     } else {
       root.classList.remove('dark');
-      // Update meta theme-color for light mode
-      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#ffffff');
     }
     
+    // Save theme preference
     localStorage.setItem('theme', theme);
   }, [theme]);
 
