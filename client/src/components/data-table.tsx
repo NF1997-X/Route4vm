@@ -793,17 +793,17 @@ export function DataTable({
 
   return (
     <div
-      className="glass-table rounded-lg border border-gray-200/60 dark:border-white/10 shadow-md table-container my-4 overflow-hidden"
+      className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-md table-container my-4 overflow-hidden"
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
-      <div className="px-3 py-1.5 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[8px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
-        <div className="flex flex-row gap-2 items-center justify-between">
+      <div className="px-2 py-1 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[7px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+        <div className="flex flex-row gap-1 items-center justify-between">
           
           {/* Left Side: Entries Selector */}
           {!disablePagination && (
-            <div className="flex items-center gap-1.5 flex-shrink-0">
-              <span className="text-[9px] text-muted-foreground font-medium">
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <span className="text-[7px] text-muted-foreground font-medium">
                 Show
               </span>
               <Select
@@ -820,19 +820,19 @@ export function DataTable({
                   <SelectItem value="100" className="font-semibold text-[7px]">100</SelectItem>
                 </SelectContent>
               </Select>
-              <span className="text-[9px] text-muted-foreground font-medium">
+              <span className="text-[7px] text-muted-foreground font-medium">
                 of {totalRows} entries
               </span>
             </div>
           )}
           
           {/* Right Side: Customize and Other Buttons */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1">
             <Button
               onClick={onShowCustomization}
               variant="outline"
               size="sm"
-              className="w-6 h-6 p-0 pagination-button rounded-sm"
+              className="w-5 h-5 p-0 pagination-button rounded-md"
               data-testid="button-show"
               title="Customize columns"
             >
@@ -842,7 +842,7 @@ export function DataTable({
               onClick={onOptimizeRoute}
               variant="outline"
               size="sm"
-              className="w-6 h-6 p-0 pagination-button rounded-sm"
+              className="w-5 h-5 p-0 pagination-button rounded-md"
               data-testid="button-optimize-route"
               title="Optimize delivery route with AI"
             >
@@ -853,7 +853,7 @@ export function DataTable({
                 onClick={onShareTable}
                 variant="outline"
                 size="sm"
-                className="w-6 h-6 p-0 pagination-button rounded-sm"
+                className="w-5 h-5 p-0 pagination-button rounded-md"
                 data-testid="button-share-table"
                 title="Share current table view"
               >
@@ -865,14 +865,14 @@ export function DataTable({
         
       </div>
       {/* Bottom Row: Sort/Filter/Clear (Left) and Search (Right) */}
-      <div className="flex justify-between items-center px-3 py-1.5 border-b border-border/20 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm rounded-t-md">
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+      <div className="flex justify-between items-center px-2 py-1 border-b border-border/20 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm rounded-t-md">
+        <div className="flex items-center gap-1 flex-shrink-0">
           {/* Sort Popover */}
           <Popover>
             <PopoverTrigger asChild>
               <Button 
                 variant="outline" 
-                className="h-5 px-1.5 pagination-button text-[7px] justify-start rounded-sm"
+                className="h-4 px-1 pagination-button text-[6px] justify-start rounded-md"
                 data-testid="sort-trigger"
               >
                 {sortState && (
@@ -897,13 +897,13 @@ export function DataTable({
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-44 p-0 rounded-md" align="start">
-              <div className="p-1.5 btn-glass rounded-md">
-                <h4 className="font-medium text-[10px] mb-1.5 pb-1.5 border-b border-border/20 flex items-center gap-1.5">
+            <PopoverContent className="w-40 p-0 rounded-lg" align="start">
+              <div className="p-1 btn-glass rounded-lg">
+                <h4 className="font-medium text-[9px] mb-1 pb-1 border-b border-border/20 flex items-center gap-1">
                   <ArrowUpDown className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                   Sort By
                 </h4>
-                <div className="space-y-1.5 text-sm">
+                <div className="space-y-1 text-xs">
                   <Button
                     variant={sortState?.column === 'route' ? 'default' : 'ghost'}
                     size="sm"
@@ -1005,7 +1005,7 @@ export function DataTable({
           <div className="w-auto">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-6 px-2 pagination-button text-[9px] justify-start rounded-md" data-testid="combined-filter-trigger">
+                <Button variant="outline" className="h-5 px-1.5 pagination-button text-[7px] justify-start rounded-md" data-testid="combined-filter-trigger">
                   <span className="hidden sm:inline">
                     {isSharedView ? (
                       deliveryFilterValue.length === 0 
@@ -1028,33 +1028,33 @@ export function DataTable({
                   </span>
                 </Button>
               </PopoverTrigger>
-            <PopoverContent className="w-60 p-0 rounded-lg" align="start">
-              <div className="space-y-3 p-3 text-[9px] btn-glass rounded-lg">
+            <PopoverContent className="w-56 p-0 rounded-lg" align="start">
+              <div className="space-y-2 p-2 text-[8px] btn-glass rounded-lg">
                 {/* Routes Section - Hidden in shared view */}
                 {!isSharedView && (
                   <>
-                    <div className="space-y-2">
+                    <div className="space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-xs flex items-center gap-2">
+                        <h4 className="font-medium text-[7px] flex items-center gap-1.5">
                           <MapPin className="w-3 h-3 text-accent" />
                           Routes ({filterValue.length} selected)
                         </h4>
                         {filterValue.length > 0 && (
-                          <Button variant="ghost" size="sm" onClick={() => onFilterValueChange?.([])} className="h-auto p-0.5 text-[8px]">
+                          <Button variant="ghost" size="sm" onClick={() => onFilterValueChange?.([])} className="h-auto p-0.5 text-[6px]">
                             <X className="w-3 h-3 mr-1" />
                             Clear
                           </Button>
                         )}
                       </div>
-                      <div className="space-y-2 max-h-32 overflow-y-auto border rounded p-2 bg-background/50">
+                      <div className="space-y-1 max-h-32 overflow-y-auto border rounded p-1.5 bg-background/50">
                         {routeOptions.filter(route => route !== "WH").map(route => (
-                          <div key={route} className="flex items-center space-x-2">
+                          <div key={route} className="flex items-center space-x-1.5">
                             <Checkbox
                               id={`route-${route}`}
                               checked={filterValue.includes(route)}
                               onCheckedChange={() => toggleRouteFilter(route)}
                             />
-                            <Label htmlFor={`route-${route}`} className="text-xs cursor-pointer">
+                            <Label htmlFor={`route-${route}`} className="text-[7px] cursor-pointer">
                               📍 {route}
                             </Label>
                           </div>
@@ -1063,33 +1063,33 @@ export function DataTable({
                     </div>
                     
                     {/* Separator */}
-                    <div className="border-t border-border/20"></div>
+                    <div className="border-t border-border/20 my-1"></div>
                   </>
                 )}
                 
                 {/* Trips Section (Delivery Filter) */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-medium text-sm flex items-center gap-2">
+                    <h4 className="font-medium text-[7px] flex items-center gap-1.5">
                       <Filter className="w-3 h-3 text-orange-500" />
                       Hide Deliveries ({deliveryFilterValue.length} hidden)
                     </h4>
                     {deliveryFilterValue.length > 0 && (
-                      <Button variant="ghost" size="sm" onClick={() => onDeliveryFilterValueChange?.([])} className="h-auto p-1 text-xs">
+                      <Button variant="ghost" size="sm" onClick={() => onDeliveryFilterValueChange?.([])} className="h-auto p-0.5 text-[6px]">
                         <X className="w-3 h-3 mr-1" />
                         Clear
                       </Button>
                     )}
                   </div>
-                  <div className="space-y-2 max-h-32 overflow-y-auto border rounded p-2 bg-background/50">
+                  <div className="space-y-1 max-h-32 overflow-y-auto border rounded p-1.5 bg-background/50">
                     {deliveryOptions.map(delivery => (
-                      <div key={delivery} className="flex items-center space-x-2">
+                      <div key={delivery} className="flex items-center space-x-1.5">
                         <Checkbox
                           id={`delivery-${delivery}`}
                           checked={deliveryFilterValue.includes(delivery)}
                           onCheckedChange={() => toggleDeliveryFilter(delivery)}
                         />
-                        <Label htmlFor={`delivery-${delivery}`} className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-xs cursor-pointer font-medium">
+                        <Label htmlFor={`delivery-${delivery}`} className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[7px] cursor-pointer font-medium">
                           🚫 {delivery}
                         </Label>
                       </div>
@@ -1107,7 +1107,7 @@ export function DataTable({
               onClick={onClearAllFilters}
               variant="outline"
               size="sm"
-              className="h-6 px-2 pagination-button text-[9px] border-destructive/30 hover:bg-destructive/10 hover:border-destructive/50 rounded-md"
+              className="h-5 px-1.5 pagination-button text-[7px] border-destructive/30 hover:bg-destructive/10 hover:border-destructive/50 rounded-md"
               data-testid="clear-all-filters"
             >
               <span className="hidden sm:inline bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent">Clear</span>
@@ -1119,18 +1119,18 @@ export function DataTable({
         {/* Right Side: Search Input */}
         <div className="flex-1 max-w-[30%] lg:max-w-md ml-auto flex items-center gap-2">
           <div className="relative group flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-4 text-muted-foreground" />
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2.5 h-3 text-muted-foreground" />
             <Input
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearchTermChange?.(e.target.value)}
-              className="pl-7 pr-7 h-8 bg-white/80 dark:bg-gray-950/95 text-foreground placeholder:text-muted-foreground border-2 border-border/40 dark:border-gray-700 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 dark:focus-visible:ring-gray-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-sm"
+              className="pl-6 pr-6 h-7 bg-white/80 dark:bg-gray-950/95 text-foreground placeholder:text-muted-foreground border-1.5 border-border/40 dark:border-gray-700 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 dark:focus-visible:ring-gray-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-xs"
               data-testid="search-input"
             />
             {searchTerm && (
               <button
                 onClick={() => onSearchTermChange?.('')}
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 p-0.5 w-5 h-5 rounded-full hover:bg-muted/50 flex items-center justify-center"
+                className="absolute right-0.5 top-1/2 transform -translate-y-1/2 p-0.5 w-4 h-4 rounded-full hover:bg-muted/50 flex items-center justify-center"
                 data-testid="clear-search"
                 aria-label="Clear search"
               >
@@ -1142,9 +1142,9 @@ export function DataTable({
       </div>
       {/* Active Filters Display */}
       {(searchTerm || filterValue.length > 0 || deliveryFilterValue.length > 0) && (
-        <div className="px-6 py-2 border-b border-border/20 bg-gradient-to-r from-muted/10 via-transparent to-muted/10 dark:from-gray-950/60 dark:via-gray-950/40 dark:to-gray-950/60">
-          <div className="flex flex-wrap items-center gap-1">
-            <span className="text-muted-foreground font-medium text-xs">Active:</span>
+        <div className="px-4 py-1.5 border-b border-border/20 bg-gradient-to-r from-muted/10 via-transparent to-muted/10 dark:from-gray-950/60 dark:via-gray-950/40 dark:to-gray-950/60">
+          <div className="flex flex-wrap items-center gap-0.5">
+            <span className="text-muted-foreground font-medium text-[7px]">Active:</span>
             {searchTerm && (
               <div className="flex items-center gap-0.5 px-2 py-0.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-xs">
                 <Search className="w-2.5 h-2.5" />
