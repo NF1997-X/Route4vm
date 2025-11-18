@@ -253,15 +253,13 @@ textarea {
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.09);
   --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.1);
 
-  /* === SPACING & BORDER RADIUS === */
-  --radius: 6px;                  /* Base radius - smaller */
-  --radius-xs: 2px;               /* Extra small */
-  --radius-sm: 4px;               /* Small */
-  --radius-md: 6px;               /* Medium */
-  --radius-lg: 10px;              /* Large */
-  --radius-xl: 12px;              /* Extra large */
-  --radius-2xl: 16px;             /* 2X large */
-  --radius-full: 9999px;          /* Full/pill shape */
+  /* === SPACING === */
+  --radius: 8px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
 
   /* === TYPOGRAPHY === */
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -489,41 +487,41 @@ textarea {
   /* iOS-style card with rounded corners and shadows */
   .ios-card {
     background: var(--color-bg-primary);
-    border-radius: 12px;
-    box-shadow: 0 1px 4px var(--color-card-shadow);
+    border-radius: 16px;
+    box-shadow: 0 2px 8px var(--color-card-shadow);
     border: 1px solid var(--color-border);
-    padding: 12px;
+    padding: 16px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .ios-card:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
   }
 
   .dark .ios-card {
     background: var(--color-card);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
 
   .dark .ios-card:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   }
 
   /* iOS group card (for grouped lists) */
   .ios-group-card {
     background: var(--color-bg-primary);
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--color-border);
     overflow: hidden;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   }
 
   .dark .ios-group-card {
     background: var(--color-card);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
   /* ============================================
@@ -535,21 +533,21 @@ textarea {
     background: var(--color-primary);
     color: white;
     font-weight: 600;
-    font-size: 14px;
-    padding: 10px 18px;
-    border-radius: 8px;
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 10px;
     border: none;
     cursor: pointer;
     transition: all 0.2s ease-out;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     position: relative;
     overflow: hidden;
   }
 
   .btn-ios:hover {
     background: var(--color-primary-dark);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    transform: translateY(-0.5px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    transform: translateY(-1px);
   }
 
   .btn-ios:active {
@@ -558,12 +556,12 @@ textarea {
 
   .dark .btn-ios {
     background: var(--color-primary);
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
   }
 
   .dark .btn-ios:hover {
     background: var(--color-primary-light);
-    box-shadow: 0 4px 12px rgba(96, 165, 250, 0.25);
+    box-shadow: 0 8px 20px rgba(96, 165, 250, 0.3);
   }
 
   /* iOS secondary button */
@@ -571,9 +569,9 @@ textarea {
     background: var(--color-bg-secondary);
     color: var(--color-text-primary);
     font-weight: 600;
-    font-size: 14px;
-    padding: 10px 18px;
-    border-radius: 8px;
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 10px;
     border: 1px solid var(--color-border);
     cursor: pointer;
     transition: all 0.2s ease-out;
@@ -607,9 +605,9 @@ textarea {
   .ios-input {
     background: var(--color-input-bg);
     border: 1px solid var(--color-input-border);
-    border-radius: 6px;
-    padding: 8px 10px;
-    font-size: 14px;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 16px;
     color: var(--color-input-text);
     font-family: inherit;
     transition: all 0.2s ease-out;
@@ -627,7 +625,7 @@ textarea {
     outline: none;
     border-color: var(--color-input-border-focus);
     background: var(--color-input-bg-focus);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
   .dark .ios-input {
@@ -639,15 +637,15 @@ textarea {
   .dark .ios-input:focus {
     border-color: var(--color-primary);
     background: rgba(59, 130, 246, 0.05);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
   }
 
   /* iOS-style label */
   .ios-label {
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     color: var(--color-text-secondary);
   }
 

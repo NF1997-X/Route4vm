@@ -793,46 +793,46 @@ export function DataTable({
 
   return (
     <div
-      className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-2xl table-container my-10 overflow-hidden"
+      className="glass-table rounded-lg border border-gray-200/60 dark:border-white/10 shadow-md table-container my-4 overflow-hidden"
       data-testid="data-table"
     >
       {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
-      <div className="px-6 py-3 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[10px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
-        <div className="flex flex-row gap-3 items-center justify-between">
+      <div className="px-3 py-1.5 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[8px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+        <div className="flex flex-row gap-2 items-center justify-between">
           
           {/* Left Side: Entries Selector */}
           {!disablePagination && (
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-xs text-muted-foreground font-medium">
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <span className="text-[9px] text-muted-foreground font-medium">
                 Show
               </span>
               <Select
                 value={pageSize.toString()}
                 onValueChange={handlePageSizeChange}
               >
-                <SelectTrigger className="h-7 px-2.5 pagination-button text-xs font-semibold [&>svg]:hidden w-auto min-w-[3rem]">
+                <SelectTrigger className="h-5 px-1.5 pagination-button text-[7px] font-semibold [&>svg]:hidden w-auto min-w-[2rem] rounded-sm">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700">
-                  <SelectItem value="10" className="font-semibold">10</SelectItem>
-                  <SelectItem value="30" className="font-semibold">30</SelectItem>
-                  <SelectItem value="50" className="font-semibold">50</SelectItem>
-                  <SelectItem value="100" className="font-semibold">100</SelectItem>
+                <SelectContent className="bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-md">
+                  <SelectItem value="10" className="font-semibold text-[7px]">10</SelectItem>
+                  <SelectItem value="30" className="font-semibold text-[7px]">30</SelectItem>
+                  <SelectItem value="50" className="font-semibold text-[7px]">50</SelectItem>
+                  <SelectItem value="100" className="font-semibold text-[7px]">100</SelectItem>
                 </SelectContent>
               </Select>
-              <span className="text-xs text-muted-foreground font-medium">
+              <span className="text-[9px] text-muted-foreground font-medium">
                 of {totalRows} entries
               </span>
             </div>
           )}
           
           {/* Right Side: Customize and Other Buttons */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <Button
               onClick={onShowCustomization}
               variant="outline"
               size="sm"
-              className="w-8 h-8 p-0 pagination-button"
+              className="w-6 h-6 p-0 pagination-button rounded-sm"
               data-testid="button-show"
               title="Customize columns"
             >
@@ -842,7 +842,7 @@ export function DataTable({
               onClick={onOptimizeRoute}
               variant="outline"
               size="sm"
-              className="w-8 h-8 p-0 pagination-button"
+              className="w-6 h-6 p-0 pagination-button rounded-sm"
               data-testid="button-optimize-route"
               title="Optimize delivery route with AI"
             >
@@ -853,7 +853,7 @@ export function DataTable({
                 onClick={onShareTable}
                 variant="outline"
                 size="sm"
-                className="w-8 h-8 p-0 pagination-button"
+                className="w-6 h-6 p-0 pagination-button rounded-sm"
                 data-testid="button-share-table"
                 title="Share current table view"
               >
@@ -865,20 +865,20 @@ export function DataTable({
         
       </div>
       {/* Bottom Row: Sort/Filter/Clear (Left) and Search (Right) */}
-      <div className="flex justify-between items-center px-6 py-3 border-b border-border/20 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm">
-        <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="flex justify-between items-center px-3 py-1.5 border-b border-border/20 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm rounded-t-md">
+        <div className="flex items-center gap-1.5 flex-shrink-0">
           {/* Sort Popover */}
           <Popover>
             <PopoverTrigger asChild>
               <Button 
                 variant="outline" 
-                className="h-6 px-2 pagination-button text-xs justify-start"
+                className="h-5 px-1.5 pagination-button text-[7px] justify-start rounded-sm"
                 data-testid="sort-trigger"
               >
                 {sortState && (
                   <>
-                    {sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3 mr-1" /> : <ArrowDown className="w-3 h-3 mr-1" />}
-                    <span className="hidden sm:inline">
+                    {sortState.direction === 'asc' ? <ArrowUp className="w-2.5 h-2.5 mr-0.5" /> : <ArrowDown className="w-2.5 h-2.5 mr-0.5" />}
+                    <span className="hidden sm:inline text-[8px]">
                       {sortState.column === 'route' && 'Route'}
                       {sortState.column === 'code' && 'Code'}
                       {sortState.column === 'location' && 'Location'}
@@ -886,20 +886,20 @@ export function DataTable({
                       {sortState.column === 'kilometer' && 'Km'}
                       {sortState.column === 'order' && 'No'}
                     </span>
-                    <span className="sm:hidden">Sort</span>
+                    <span className="sm:hidden text-[8px]">Sort</span>
                   </>
                 )}
                 {!sortState && (
                   <>
-                    <ArrowUpDown className="w-3 h-3 mr-1 opacity-50" />
-                    <span>Sort</span>
+                    <ArrowUpDown className="w-2.5 h-2.5 mr-0.5 opacity-50" />
+                    <span className="text-[8px]">Sort</span>
                   </>
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-52 p-0" align="start">
-              <div className="p-3 btn-glass">
-                <h4 className="font-medium text-sm mb-3 pb-2 border-b border-border/20 flex items-center gap-2">
+            <PopoverContent className="w-44 p-0 rounded-md" align="start">
+              <div className="p-1.5 btn-glass rounded-md">
+                <h4 className="font-medium text-[10px] mb-1.5 pb-1.5 border-b border-border/20 flex items-center gap-1.5">
                   <ArrowUpDown className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
                   Sort By
                 </h4>
@@ -1005,7 +1005,7 @@ export function DataTable({
           <div className="w-auto">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-6 px-2 pagination-button text-xs justify-start" data-testid="combined-filter-trigger">
+                <Button variant="outline" className="h-6 px-2 pagination-button text-[9px] justify-start rounded-md" data-testid="combined-filter-trigger">
                   <span className="hidden sm:inline">
                     {isSharedView ? (
                       deliveryFilterValue.length === 0 
@@ -1028,19 +1028,19 @@ export function DataTable({
                   </span>
                 </Button>
               </PopoverTrigger>
-            <PopoverContent className="w-64 p-0" align="start">
-              <div className="space-y-4 p-4 text-sm btn-glass">
+            <PopoverContent className="w-60 p-0 rounded-lg" align="start">
+              <div className="space-y-3 p-3 text-[9px] btn-glass rounded-lg">
                 {/* Routes Section - Hidden in shared view */}
                 {!isSharedView && (
                   <>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-sm flex items-center gap-2">
+                        <h4 className="font-medium text-xs flex items-center gap-2">
                           <MapPin className="w-3 h-3 text-accent" />
                           Routes ({filterValue.length} selected)
                         </h4>
                         {filterValue.length > 0 && (
-                          <Button variant="ghost" size="sm" onClick={() => onFilterValueChange?.([])} className="h-auto p-1 text-xs">
+                          <Button variant="ghost" size="sm" onClick={() => onFilterValueChange?.([])} className="h-auto p-0.5 text-[8px]">
                             <X className="w-3 h-3 mr-1" />
                             Clear
                           </Button>
@@ -1107,7 +1107,7 @@ export function DataTable({
               onClick={onClearAllFilters}
               variant="outline"
               size="sm"
-              className="h-6 px-2 pagination-button text-xs border-destructive/30 hover:bg-destructive/10 hover:border-destructive/50"
+              className="h-6 px-2 pagination-button text-[9px] border-destructive/30 hover:bg-destructive/10 hover:border-destructive/50 rounded-md"
               data-testid="clear-all-filters"
             >
               <span className="hidden sm:inline bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent">Clear</span>
@@ -1331,7 +1331,7 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="py-3 sm:py-4 px-4 sm:px-5 align-middle table-cell-10px text-center text-[7px] sm:text-[9px] bg-transparent text-foreground whitespace-nowrap font-normal h-10 sm:h-11"
+                                  className="py-2 sm:py-2.5 px-3 sm:px-4 align-middle table-cell-10px text-center text-[6px] sm:text-[8px] bg-transparent text-foreground whitespace-nowrap font-normal h-8 sm:h-9 rounded-sm"
                                   style={{
                                     textAlign: "center",
                                     minWidth: "80px",
