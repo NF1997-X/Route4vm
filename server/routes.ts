@@ -914,15 +914,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/global-settings/:key", async (req, res) => {
     try {
       const key = req.params.key;
-      const setting = await storage.getGlobalSetting(key);
-      if (!setting) {
-        // Return default value for footerCompanyName if not found
-        if (key === 'footerCompanyName') {
-          return res.json({ key, value: 'Vending Machine' });
+      try {
+        const setting = await storage.getGlobalSetting(key);
+        if (!setting) {
+          // Return default value for footerCompanyName if not found
+          if (key === 'footerCompanyName') {
+            return res.json({ key, value: 'Vending Machine' });
+          }
+          if (key === 'footerCompanyUrl') {
+            return res.json({ key, value: '' });
+          }
+          return res.status(404).json({ message: "Setting not found" });
         }
-        return res.status(404).json({ message: "Setting not found" });
+        res.json(setting);
+      } catch (dbError: any) {
+        // Handle database connection errors gracefully
+        if (dbError?.message?.includes('DATABASE_URL') || dbError?.code === 'ECONNREFUSED') {
+          console.error('Database connection error in global settings:', dbError);
+          // Return default values on database connection failure
+          if (key === 'footerCompanyName') {
+            return res.json({ key, value: 'Vending Machine' });
+          }
+          if (key === 'footerCompanyUrl') {
+            return res.json({ key, value: '' });
+          }
+          return res.status(503).json({ message: "Database temporarily unavailable" });
+        }
+        throw dbError;
       }
-      res.json(setting);
     } catch (error) {
       console.error("Get global setting error:", error);
       res.status(500).json({ message: "Failed to fetch global setting" });
@@ -936,8 +955,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         value: z.string(),
       });
       const { key, value } = schema.parse(req.body);
-      const setting = await storage.setGlobalSetting(key, value);
-      res.json(setting);
+      try {
+        const setting = await storage.setGlobalSetting(key, value);
+        res.json(setting);
+      } catch (dbError: any) {
+        if (dbError?.message?.includes('DATABASE_URL') || dbError?.code === 'ECONNREFUSED') {
+          console.error('Database connection error in set global settings:', dbError);
+          return res.status(503).json({ message: "Database temporarily unavailable" });
+        }
+        throw dbError;
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "Invalid data", errors: error.errors });

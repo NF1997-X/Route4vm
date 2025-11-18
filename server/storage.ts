@@ -1874,4 +1874,18 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+let _storage: DatabaseStorage | null = null;
+
+export function getStorage(): DatabaseStorage {
+  if (!_storage) {
+    _storage = new DatabaseStorage();
+  }
+  return _storage;
+}
+
+// For backward compatibility, export a lazy proxy
+export const storage = new Proxy({} as DatabaseStorage, {
+  get(_target, prop) {
+    return (getStorage() as any)[prop];
+  }
+});
