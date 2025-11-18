@@ -1242,57 +1242,10 @@ export default function TablePage() {
                         onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
                       >
                         <div className="flex items-center gap-3 flex-1">
-                          {/* Left Swipe Hint - Animated Arrows */}
-                          {sortedPages.length > 1 && showSlideHints && (
-                            <div className="flex items-center gap-0.5">
-                              <style>{`
-                                @keyframes slideLeft {
-                                  0%, 100% { opacity: 0.3; transform: translateX(0px); }
-                                  50% { opacity: 1; transform: translateX(-4px); }
-                                }
-                                .arrow-left-1 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0s; }
-                                .arrow-left-2 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0.2s; }
-                                .arrow-left-3 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0.4s; }
-                              `}</style>
-                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                          )}
                           
                           <h1 className="font-bold text-slate-700 dark:text-slate-300 text-center flex-1" style={{fontSize: '10px'}} data-testid={`page-title-${page.id}`}>
                             {page.title || "Untitled"}
                           </h1>
-                          
-                          {/* Right Swipe Hint - Animated Arrows */}
-                          {sortedPages.length > 1 && showSlideHints && (
-                            <div className="flex items-center gap-0.5">
-                              <style>{`
-                                @keyframes slideRight {
-                                  0%, 100% { opacity: 0.3; transform: translateX(0px); }
-                                  50% { opacity: 1; transform: translateX(4px); }
-                                }
-                                .arrow-right-1 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0s; }
-                                .arrow-right-2 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0.2s; }
-                                .arrow-right-3 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0.4s; }
-                              `}</style>
-                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                              </svg>
-                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                              </svg>
-                              <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                          )}
                           {editMode && (
                             <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
                               <Button
@@ -1341,6 +1294,50 @@ export default function TablePage() {
                         }`}
                       >
                         <div className="px-4 pb-3 border-t border-white/20 dark:border-white/10 pt-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-gray-950/40 dark:via-gray-950/20 dark:to-transparent relative z-10">
+                          {/* Swipe Hints - Animated Arrows in Description */}
+                          {sortedPages.length > 1 && showSlideHints && (
+                            <div className="flex items-center justify-center gap-4 mb-3 pb-2 border-b border-white/10 dark:border-gray-950/20">
+                              <div className="flex items-center gap-0.5">
+                                <style>{`
+                                  @keyframes slideLeft {
+                                    0%, 100% { opacity: 0.3; transform: translateX(0px); }
+                                    50% { opacity: 1; transform: translateX(-4px); }
+                                  }
+                                  .arrow-left-1 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0s; }
+                                  .arrow-left-2 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0.2s; }
+                                  .arrow-left-3 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0.4s; }
+                                  @keyframes slideRight {
+                                    0%, 100% { opacity: 0.3; transform: translateX(0px); }
+                                    50% { opacity: 1; transform: translateX(4px); }
+                                  }
+                                  .arrow-right-1 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0s; }
+                                  .arrow-right-2 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0.2s; }
+                                  .arrow-right-3 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0.4s; }
+                                `}</style>
+                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-1" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-2" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-3" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <span className="text-xs text-slate-600 dark:text-slate-400 ml-1">Swipe</span>
+                              </div>
+                              <div className="flex items-center gap-0.5">
+                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-1" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-2" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                </svg>
+                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-3" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                            </div>
+                          )}
                             <dl className="space-y-1" style={{fontSize: '10px', lineHeight: '1.4'}} data-testid={`page-description-${page.id}`}>
                               {(page.description || "").split('\n').map((line, lineIndex) => {
                                 const trimmedLine = line.trim();

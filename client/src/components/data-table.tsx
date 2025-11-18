@@ -1156,7 +1156,7 @@ export function DataTable({
         </div>
       )}
       <div 
-        className="overflow-x-auto scroll-smooth w-full relative contain-layout contain-paint"
+        className="overflow-hidden w-full relative contain-layout contain-paint"
         style={disablePagination ? {
           maxHeight: 'calc(100vh - 280px)',
           overflowY: 'auto',
