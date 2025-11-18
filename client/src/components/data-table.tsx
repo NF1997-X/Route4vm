@@ -1331,47 +1331,47 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="py-2 sm:py-3 px-3 sm:px-4 align-middle table-cell-10px text-center text-[8px] sm:text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal h-9 sm:h-10"
+                                  className="py-3 sm:py-4 px-4 sm:px-5 align-middle table-cell-10px text-center text-[8px] sm:text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal h-10 sm:h-11"
                                   style={{
                                     textAlign: "center",
-                                    minWidth: "60px",
-                                    height: "32px",
-                                    maxHeight: "40px",
+                                    minWidth: "80px",
+                                    height: "36px",
+                                    maxHeight: "44px",
                                     ...(column.dataKey === "location" && {
-                                      minWidth: `${120 + 15}px`,
+                                      minWidth: `${140 + 20}px`,
                                       fontSize: "10px",
                                     }),
                                     ...(column.dataKey === "delivery" && {
-                                      minWidth: "110px",
+                                      minWidth: "130px",
                                       fontSize: "10px",
                                       fontWeight: "normal",
                                     }),
                                     ...(column.dataKey === "id" && {
-                                      minWidth: "120px",
+                                      minWidth: "140px",
                                     }),
                                     ...(column.dataKey === "code" && {
-                                      minWidth: "100px",
-                                    }),
-                                    ...(column.dataKey === "route" && {
-                                      minWidth: "90px",
-                                    }),
-                                    ...(column.dataKey === "no" && {
-                                      minWidth: "70px",
-                                    }),
-                                    ...(column.dataKey === "kilometer" && {
-                                      minWidth: "80px",
-                                    }),
-                                    ...(column.dataKey === "tollPrice" && {
-                                      minWidth: "90px",
-                                    }),
-                                    ...(column.dataKey === "tngRoute" && {
-                                      minWidth: "90px",
-                                    }),
-                                    ...(column.dataKey === "images" && {
                                       minWidth: "120px",
                                     }),
-                                    ...(column.type === "currency" && !column.dataKey.match(/tollPrice|tngRoute/) && {
+                                    ...(column.dataKey === "route" && {
+                                      minWidth: "110px",
+                                    }),
+                                    ...(column.dataKey === "no" && {
+                                      minWidth: "90px",
+                                    }),
+                                    ...(column.dataKey === "kilometer" && {
                                       minWidth: "100px",
+                                    }),
+                                    ...(column.dataKey === "tollPrice" && {
+                                      minWidth: "110px",
+                                    }),
+                                    ...(column.dataKey === "tngRoute" && {
+                                      minWidth: "110px",
+                                    }),
+                                    ...(column.dataKey === "images" && {
+                                      minWidth: "140px",
+                                    }),
+                                    ...(column.type === "currency" && !column.dataKey.match(/tollPrice|tngRoute/) && {
+                                      minWidth: "120px",
                                     }),
                                   }}
                                   colSpan={
