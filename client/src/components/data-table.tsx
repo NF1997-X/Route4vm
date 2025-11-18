@@ -1386,7 +1386,7 @@ export function DataTable({
                                     <div className="relative flex items-center justify-center">
                                       {row.images && row.images.length > 0 ? (
                                         <div
-                                          className="w-16 h-16 rounded-lg overflow-hidden cursor-pointer border border-border/30 hover:border-border/60 transition-all duration-300 transform hover:scale-110 hover:shadow-lg group"
+                                          className="w-12 h-12 rounded-md overflow-hidden cursor-pointer border border-border/30 hover:border-border/60 transition-all duration-300 transform hover:scale-110 hover:shadow-lg group"
                                           onClick={() => setSelectedRowImages({ rowId: row.id, images: row.images || [] })}
                                         >
                                           <img
@@ -1396,16 +1396,16 @@ export function DataTable({
                                             loading="lazy"
                                           />
                                           {/* Overlay with zoom icon and count */}
-                                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-1">
-                                            <ZoomIn className="h-4 w-4 text-white" />
+                                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-0.5">
+                                            <ZoomIn className="h-3 w-3 text-white" />
                                             {row.images.length > 1 && (
                                               <span className="text-white text-xs font-semibold">+{row.images.length - 1}</span>
                                             )}
                                           </div>
                                         </div>
                                       ) : (
-                                        <div className="w-16 h-16 rounded-lg bg-muted/30 flex items-center justify-center text-muted-foreground text-xs">
-                                          No image
+                                        <div className="w-12 h-12 rounded-md bg-muted/30 flex items-center justify-center text-muted-foreground text-xs">
+                                          -
                                         </div>
                                       )}
                                       {editMode && (
