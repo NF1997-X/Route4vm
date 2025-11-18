@@ -1156,7 +1156,7 @@ export function DataTable({
         </div>
       )}
       <div 
-        className="overflow-x-auto w-full"
+        className="overflow-x-auto scroll-smooth w-full relative"
         style={disablePagination ? {
           maxHeight: 'calc(100vh - 280px)',
           overflowY: 'auto',
@@ -1170,8 +1170,8 @@ export function DataTable({
                 {visibleColumns.map((column, index) => (
                   <TableHead
                     key={column.id}
-                    className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12"
-                    style={{ textAlign: "center", fontSize: "10px" }}
+                    className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-10 sm:h-12"
+                    style={{ textAlign: "center", fontSize: "9px" }}
                     colSpan={column.dataKey === "location" ? 3 : 1}
                   >
                     <ColumnHeader
@@ -1183,9 +1183,9 @@ export function DataTable({
                     />
                   </TableHead>
                 ))}
-                <TableHead className="px-4 py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12">
-                  <span className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent">
-                    Actions
+                <TableHead className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-10 sm:h-12 sticky right-0 z-50 bg-white/95 dark:bg-gray-950/95 shadow-lg">
+                  <span className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent text-xs sm:text-sm font-bold">
+                    Act
                   </span>
                 </TableHead>
               </TableRow>
@@ -1288,11 +1288,11 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="py-3 px-4 align-middle table-cell-10px text-center text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal"
+                                  className="py-2 sm:py-3 px-2 sm:px-4 align-middle table-cell-10px text-center text-[8px] sm:text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal h-8 sm:h-10"
                                   style={{
                                     textAlign: "center",
-                                    minWidth: "100px",
-                                    height: "40px",
+                                    minWidth: "60px",
+                                    height: "32px",
                                     maxHeight: "40px",
                                     ...(column.dataKey === "location" && {
                                       minWidth: `${120 + 15}px`,
