@@ -1479,8 +1479,8 @@ export function DataTable({
                                 </TableCell>
                               ))}
                               <TableCell
-                                className="px-2 sm:px-3 py-2 text-sm text-center bg-red-100/50 dark:bg-red-950/30"
-                                style={{ textAlign: "center", minWidth: "120px" }}
+                                className="px-2 py-2 text-sm text-center"
+                                style={{ textAlign: "center" }}
                               >
                                 <div className="flex flex-col items-center gap-1">
                                   <div className="flex items-center gap-2">
@@ -1500,7 +1500,7 @@ export function DataTable({
                                         <Button
                                           size="sm"
                                           variant="ghost"
-                                          className={`bg-transparent border-transparent hover:bg-transparent hover:border-transparent text-blue-400 dark:text-blue-300 hover:text-blue-500 dark:hover:text-blue-400 ${
+                                          className={`bg-transparent border-transparent hover:bg-transparent hover:border-transparent text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 ${
                                             onUpdateRow.isPending &&
                                             onUpdateRow.variables?.id === row.id
                                               ? "opacity-50"
