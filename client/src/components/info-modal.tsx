@@ -844,7 +844,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
           <div className="relative z-10">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+            <DialogTitle className="flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400">
               <CheckCircle className="w-5 h-5" />
               QR Code Detected
             </DialogTitle>
@@ -898,7 +898,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
           <div className="relative z-10">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+            <DialogTitle className="flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400">
               <ListChecks className="w-5 h-5" />
               Open Checklist
             </DialogTitle>
@@ -952,7 +952,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
           <div className="relative z-10">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+            <DialogTitle className="flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400">
               {navigationType === 'google' ? (
                 <SiGooglemaps className="w-5 h-5" />
               ) : (
@@ -1015,7 +1015,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
           <div className="relative z-10">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
+            <DialogTitle className="flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400">
               <ExternalLink className="w-5 h-5" />
               Open External Link
             </DialogTitle>
@@ -1069,7 +1069,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent pointer-events-none rounded-xl"></div>
           <div className="relative z-10">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-green-600 dark:text-green-400">
+            <DialogTitle className="flex items-center justify-center gap-2 text-green-600 dark:text-green-400">
               <Save className="w-5 h-5" />
               Save Changes
             </DialogTitle>
