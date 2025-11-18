@@ -1172,7 +1172,7 @@ export function DataTable({
                 {visibleColumns.map((column, index) => (
                   <TableHead
                     key={column.id}
-                    className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
+                    className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
                     style={{ textAlign: "center", fontSize: "9px" }}
                     colSpan={column.dataKey === "location" ? 3 : 1}
                   >
@@ -1185,7 +1185,7 @@ export function DataTable({
                     />
                   </TableHead>
                 ))}
-                <TableHead className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
+                <TableHead className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
                   <span className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent text-xs sm:text-sm font-bold">
                     Act
                   </span>
@@ -1285,10 +1285,10 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="py-2 sm:py-3 px-2 sm:px-4 align-middle table-cell-10px text-center text-[8px] sm:text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal h-8 sm:h-10"
+                                  className="py-2 sm:py-3 px-3 sm:px-4 align-middle table-cell-10px text-center text-[8px] sm:text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal h-9 sm:h-10"
                                   style={{
                                     textAlign: "center",
-                                    minWidth: "60px",
+                                    minWidth: "75px",
                                     height: "32px",
                                     maxHeight: "40px",
                                     ...(column.dataKey === "location" && {
@@ -1707,7 +1707,7 @@ export function DataTable({
                 {visibleColumns.map((column, index) => (
                   <TableCell
                     key={column.id}
-                    className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
+                    className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
                     style={{ textAlign: "center", fontSize: "9px" }}
                     colSpan={column.dataKey === "location" ? 3 : 1}
                   >
@@ -1741,7 +1741,7 @@ export function DataTable({
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-2 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
+                <TableCell className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
                   <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                 </TableCell>
               </TableRow>

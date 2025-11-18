@@ -1759,7 +1759,7 @@ html.dark tfoot tr th .footer-total-blue {
   /* Compact cells */
   .table-cell-10px {
     font-size: 8px;
-    padding: 6px 3px;
+    padding: 8px 6px;
   }
   
   /* Smaller pagination */
