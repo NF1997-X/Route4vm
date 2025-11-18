@@ -1200,9 +1200,9 @@ export function DataTable({
             <Table className="min-w-full" style={{tableLayout: "fixed"}}>
               <Droppable droppableId="rows" type="row">
                 {(provided) => (
-                <TableBody
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
+                  <TableBody
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
                   className="pt-2"
                   key={`page-${currentPage}`}
                 >
