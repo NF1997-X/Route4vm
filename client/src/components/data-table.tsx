@@ -1202,7 +1202,7 @@ export function DataTable({
         </div>
       )}
       <div 
-        className="overflow-hidden w-full relative contain-layout contain-paint"
+        className="w-full relative contain-layout contain-paint overflow-x-auto"
         style={disablePagination ? {
           maxHeight: 'calc(100vh - 280px)',
           overflowY: 'auto',
@@ -1212,7 +1212,7 @@ export function DataTable({
         }}
       >
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Table className="min-w-full" style={{tableLayout: "fixed"}}>
+          <Table className="w-full" style={{tableLayout: "auto", width: "100%"}}>
             <TableHeader>
               <TableRow>
                 {visibleColumns.map((column, index) => (
