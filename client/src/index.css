@@ -421,99 +421,32 @@ textarea {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* ============================================
-     iOS GLASS MORPHISM EFFECTS
-     ============================================ */
-  
-  /* Base glass effect */
+  /* iOS Glass morphism utilities */
   .glass {
     background: var(--glass-bg);
     backdrop-filter: blur(40px) saturate(1.8);
     -webkit-backdrop-filter: blur(40px) saturate(1.8);
     border: 1px solid var(--glass-border);
     border-radius: calc(var(--radius) + 1px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-
+  
   .dark .glass {
     backdrop-filter: blur(60px) saturate(2) brightness(1.15);
     -webkit-backdrop-filter: blur(60px) saturate(2) brightness(1.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    box-shadow: var(--glass-shadow), inset 0 1px 1px rgba(255, 255, 255, 0.15), inset 0 -1px 1px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.12);
   }
 
-  .glass:hover {
-    backdrop-filter: blur(50px) saturate(2);
-    -webkit-backdrop-filter: blur(50px) saturate(2);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
-  }
-
-  .dark .glass:hover {
-    backdrop-filter: blur(70px) saturate(2.2) brightness(1.2);
-    -webkit-backdrop-filter: blur(70px) saturate(2.2) brightness(1.2);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
-  }
-
-  /* Glass card for panels */
   .glass-card {
     background: var(--glass-bg);
     backdrop-filter: blur(32px) saturate(1.6);
     -webkit-backdrop-filter: blur(32px) saturate(1.6);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .dark .glass-card {
-    backdrop-filter: blur(50px) saturate(1.8) brightness(1.1);
-    -webkit-backdrop-filter: blur(50px) saturate(1.8) brightness(1.1);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .glass-card:hover {
-    backdrop-filter: blur(40px) saturate(1.8);
-    -webkit-backdrop-filter: blur(40px) saturate(1.8);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
-
-  .dark .glass-card:hover {
-    backdrop-filter: blur(60px) saturate(2) brightness(1.15);
-    -webkit-backdrop-filter: blur(60px) saturate(2) brightness(1.15);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.12);
-  }
-
-  /* Premium glass blur layer */
-  .glass-blur {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
-  .dark .glass-blur {
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
-  /* Ultra glass for modals */
-  .glass-modal {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(60px) saturate(2);
-    -webkit-backdrop-filter: blur(60px) saturate(2);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
-  }
-
-  .dark .glass-modal {
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(80px) saturate(2.5) brightness(1.2);
-    -webkit-backdrop-filter: blur(80px) saturate(2.5) brightness(1.2);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
   }
   
   .dark .glass-card {
@@ -662,121 +595,6 @@ textarea {
 
   .dark .glass-textarea::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
-  }
-
-  /* ============================================
-     iOS BUTTON STYLES
-     ============================================ */
-
-  /* iOS Primary Button */
-  .btn-ios-primary {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn-ios-primary::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s;
-  }
-
-  .btn-ios-primary:hover {
-    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
-    transform: translateY(-2px);
-  }
-
-  .btn-ios-primary:active {
-    transform: translateY(0) scale(0.98);
-  }
-
-  .dark .btn-ios-primary {
-    background: linear-gradient(135deg, #60a5fa, #3b82f6);
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
-  }
-
-  .dark .btn-ios-primary:hover {
-    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
-  }
-
-  /* iOS Secondary Button */
-  .btn-ios-secondary {
-    background: rgba(0, 0, 0, 0.06);
-    color: var(--color-text-primary);
-    font-weight: 500;
-    font-size: 14px;
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-  }
-
-  .btn-ios-secondary:hover {
-    background: rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-  }
-
-  .btn-ios-secondary:active {
-    transform: translateY(0) scale(0.98);
-  }
-
-  .dark .btn-ios-secondary {
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--color-text-primary);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-  }
-
-  .dark .btn-ios-secondary:hover {
-    background: rgba(255, 255, 255, 0.18);
-  }
-
-  /* iOS Destructive Button */
-  .btn-ios-destructive {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);
-  }
-
-  .btn-ios-destructive:hover {
-    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
-    transform: translateY(-2px);
-  }
-
-  .btn-ios-destructive:active {
-    transform: translateY(0) scale(0.98);
-  }
-
-  .dark .btn-ios-destructive {
-    background: linear-gradient(135deg, #f87171, #ef4444);
-    box-shadow: 0 4px 16px rgba(248, 113, 113, 0.3);
-  }
-
-  .dark .btn-ios-destructive:hover {
-    box-shadow: 0 8px 24px rgba(248, 113, 113, 0.4);
   }
 
   /* Matte Glass Utilities */
