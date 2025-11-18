@@ -1494,7 +1494,7 @@ export function DataTable({
                                     >
                                       <GripVertical className="w-4 h-4" />
                                     </div>
-                                    <div className="flex items-center gap-3 opacity-60 group-hover:opacity-100 transition-opacity">
+                                    <div className="flex items-center gap-3">
                                     {editMode && (
                                       <>
                                         <Button
