@@ -1707,109 +1707,6 @@ export function DataTable({
               )}
             </Droppable>
           </Table>
-
-          {/* Pagination Controls */}
-          {!disablePagination && (
-            <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-blue-200 dark:border-gray-700 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast">
-              <div className="flex items-center gap-1.5">
-                {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
-                {currentPage > 3 && (
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    onClick={() => goToPage(1)}
-                    className="pagination-button"
-                    data-testid="button-first-page"
-                  >
-                    <ChevronsLeft className="h-3 w-3" />
-                  </Button>
-                )}
-
-                <div className="flex items-center gap-1">
-                  {(() => {
-                    // Calculate sliding window of max 6 pages
-                    const maxButtons = 6;
-                    
-                    // If total pages <= maxButtons, show all pages
-                    if (totalPages <= maxButtons) {
-                      const pages = [];
-                      for (let i = 1; i <= totalPages; i++) {
-                        pages.push(i);
-                      }
-                      
-                      return pages.map((pageNum) => {
-                        const isCurrentPage = pageNum === currentPage;
-                        return (
-                          <Button
-                            key={pageNum}
-                            variant="outline"
-                            size="xs"
-                            onClick={() => goToPage(pageNum)}
-                            className={`pagination-button page-number ${
-                              isCurrentPage ? "active" : ""
-                            }`}
-                            data-testid={`button-page-${pageNum}`}
-                          >
-                            {pageNum}
-                          </Button>
-                        );
-                      });
-                    }
-                    
-                    // For more than maxButtons pages, calculate sliding window
-                    let startPage = Math.max(1, currentPage - 3);
-                    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-                    // Adjust if we're near the end to always show maxButtons
-                    if (endPage - startPage < maxButtons - 1) {
-                      startPage = Math.max(1, endPage - maxButtons + 1);
-                    }
-
-                    const pages = [];
-                    for (let i = startPage; i <= endPage; i++) {
-                      pages.push(i);
-                    }
-
-                    return pages.map((pageNum) => {
-                      const isCurrentPage = pageNum === currentPage;
-
-                      return (
-                        <Button
-                          key={pageNum}
-                          variant="outline"
-                          size="xs"
-                          onClick={() => goToPage(pageNum)}
-                          className={`pagination-button page-number ${
-                            isCurrentPage ? "active" : ""
-                          }`}
-                          data-testid={`button-page-${pageNum}`}
-                        >
-                          {pageNum}
-                        </Button>
-                      );
-                    });
-                  })()}
-                </div>
-
-                {/* Show Last button only when (totalPages - currentPage) >= 3 (has 3+ pages after) */}
-                {(totalPages - currentPage) >= 3 && (
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    onClick={() => goToPage(totalPages)}
-                    className="pagination-button"
-                    data-testid="button-last-page"
-                  >
-                    <ChevronsRight className="h-3 w-3" />
-                  </Button>
-                )}
-              </div>
-
-              <div className="text-xs font-medium text-muted-foreground whitespace-nowrap">
-                {currentPage} of {totalPages}
-              </div>
-            </div>
-          )}
         </DragDropContext>
       </div>
         
@@ -1860,6 +1757,110 @@ export function DataTable({
           </TableRow>
         </tfoot>
       </Table>
+
+      {/* Pagination Controls - Below Footer */}
+      {!disablePagination && (
+        <div className="flex flex-col items-center gap-3 px-4 py-4 border-t border-blue-200 dark:border-gray-700 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast rounded-b-xl">
+          <div className="flex items-center gap-1.5">
+            {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
+            {currentPage > 3 && (
+              <Button
+                variant="outline"
+                size="xs"
+                onClick={() => goToPage(1)}
+                className="pagination-button"
+                data-testid="button-first-page"
+              >
+                <ChevronsLeft className="h-3 w-3" />
+              </Button>
+            )}
+
+            <div className="flex items-center gap-1">
+              {(() => {
+                // Calculate sliding window of max 6 pages
+                const maxButtons = 6;
+                
+                // If total pages <= maxButtons, show all pages
+                if (totalPages <= maxButtons) {
+                  const pages = [];
+                  for (let i = 1; i <= totalPages; i++) {
+                    pages.push(i);
+                  }
+                  
+                  return pages.map((pageNum) => {
+                    const isCurrentPage = pageNum === currentPage;
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant="outline"
+                        size="xs"
+                        onClick={() => goToPage(pageNum)}
+                        className={`pagination-button page-number ${
+                          isCurrentPage ? "active" : ""
+                        }`}
+                        data-testid={`button-page-${pageNum}`}
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  });
+                }
+                
+                // For more than maxButtons pages, calculate sliding window
+                let startPage = Math.max(1, currentPage - 3);
+                let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+                // Adjust if we're near the end to always show maxButtons
+                if (endPage - startPage < maxButtons - 1) {
+                  startPage = Math.max(1, endPage - maxButtons + 1);
+                }
+
+                const pages = [];
+                for (let i = startPage; i <= endPage; i++) {
+                  pages.push(i);
+                }
+
+                return pages.map((pageNum) => {
+                  const isCurrentPage = pageNum === currentPage;
+
+                  return (
+                    <Button
+                      key={pageNum}
+                      variant="outline"
+                      size="xs"
+                      onClick={() => goToPage(pageNum)}
+                      className={`pagination-button page-number ${
+                        isCurrentPage ? "active" : ""
+                      }`}
+                      data-testid={`button-page-${pageNum}`}
+                    >
+                      {pageNum}
+                    </Button>
+                  );
+                });
+              })()}
+            </div>
+
+            {/* Show Last button only when (totalPages - currentPage) >= 3 (has 3+ pages after) */}
+            {(totalPages - currentPage) >= 3 && (
+              <Button
+                variant="outline"
+                size="xs"
+                onClick={() => goToPage(totalPages)}
+                className="pagination-button"
+                data-testid="button-last-page"
+              >
+                <ChevronsRight className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+
+          <div className="text-xs font-medium text-muted-foreground whitespace-nowrap">
+            {currentPage} of {totalPages}
+          </div>
+        </div>
+      )}
+
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
         <DialogContent className="sm:max-w-[425px] transition-smooth-fast">
