@@ -1198,7 +1198,7 @@ export function DataTable({
         >
           <DragDropContext onDragEnd={handleDragEnd}>
             <Table className="min-w-full" style={{tableLayout: "fixed"}}>
-            <Droppable droppableId="rows" type="row">
+              <Droppable droppableId="rows" type="row">
               {(provided) => (
                 <TableBody
                   ref={provided.innerRef}
