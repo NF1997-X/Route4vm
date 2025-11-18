@@ -183,6 +183,52 @@ interface DataTableProps {
   totalRowsCount?: number;
 }
 
+// SlightTable utility class for managing column visibility and horizontal scroll
+class SlightTable {
+  selector: HTMLElement | null;
+  options: { maxCols?: number };
+  table: HTMLTableElement | null;
+  thead: HTMLTableSectionElement | null;
+  tbody: HTMLTableSectionElement | null;
+  visibleCols: number = 0;
+
+  constructor(selector: HTMLElement | null, options: { maxCols?: number } = {}) {
+    this.selector = selector;
+    this.options = options;
+    this.table = selector?.querySelector('table') as HTMLTableElement;
+    this.thead = this.table?.querySelector('thead') as HTMLTableSectionElement;
+    this.tbody = this.table?.querySelector('tbody') as HTMLTableSectionElement;
+    
+    if (this.table) {
+      this.init();
+    }
+  }
+
+  init() {
+    if (!this.table || !this.thead) return;
+    
+    const headerCells = this.thead.querySelectorAll('th');
+    this.visibleCols = headerCells.length;
+
+    // If visible columns exceed maxCols, enable horizontal scroll
+    if (this.options.maxCols && this.visibleCols > this.options.maxCols) {
+      this.enableHorizontalScroll();
+    }
+  }
+
+  enableHorizontalScroll() {
+    if (!this.selector) return;
+
+    // Ensure the table container allows horizontal scrolling
+    this.selector.style.overflowX = 'auto';
+    this.selector.style.overflowY = 'hidden';
+    (this.selector.style as any)['-webkit-overflow-scrolling'] = 'touch';
+
+    // Add smooth scrolling behavior
+    this.selector.style.scrollBehavior = 'smooth';
+  }
+}
+
 export function DataTable({
   rows,
   columns,
@@ -234,6 +280,18 @@ export function DataTable({
       setCurrentPage(1);
     }
   }, [rows.length]);
+
+  // Initialize SlightTable for horizontal scroll when too many columns
+  useEffect(() => {
+    const tableContainer = document.querySelector('[data-testid="data-table"]') as HTMLElement;
+    if (tableContainer) {
+      // Set maxCols based on visible columns - enable horizontal scroll if more than 8 columns
+      const maxCols = Math.min(8, visibleColumns.length);
+      if (visibleColumns.length > maxCols) {
+        new SlightTable(tableContainer, { maxCols });
+      }
+    }
+  }, [visibleColumns.length]);
 
   // Use rows as provided (already filtered by parent with distances calculated)
   
