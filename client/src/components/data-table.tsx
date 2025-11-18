@@ -13,7 +13,6 @@ import { ImagePreview } from "./image-lightbox";
 import { InfoModal } from "./info-modal";
 import { SlidingDescription } from "./sliding-description";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -30,35 +29,22 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  Edit,
-  Trash,
-  ChevronLeft,
   ChevronRight,
   GripVertical,
   PlusCircle,
-  RefreshCw,
   ChevronsLeft,
   ChevronsRight,
   Eye,
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
-  Infinity,
   FileText,
   Search,
   Filter,
   X,
   MapPin,
-  Route,
-  Share2,
   Power,
-  Bookmark,
+  Trash,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
