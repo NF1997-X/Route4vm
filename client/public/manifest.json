@@ -1,0 +1,81 @@
+{
+  "name": "FamilyMart Route System",
+  "short_name": "FM Route",
+  "description": "Interactive route management system for FamilyMart vending machine delivery with drag & drop, calculations, and image gallery",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1e293b",
+  "background_color": "#ffffff",
+  "prefer_related_applications": false,
+  "categories": ["logistics", "productivity"],
+  "icons": [
+    {
+      "src": "/assets/FamilyMart.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/FamilyMart.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/FamilyMart.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/FamilyMart.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/FamilyMart.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/assets/FamilyMart.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create New Route",
+      "short_name": "New Route",
+      "description": "Quickly create a new route",
+      "url": "/?mode=create",
+      "icons": [
+        {
+          "src": "/assets/FamilyMart.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "View All Routes",
+      "short_name": "Routes",
+      "description": "View all your routes",
+      "url": "/?mode=view",
+      "icons": [
+        {
+          "src": "/assets/FamilyMart.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

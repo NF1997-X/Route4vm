@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
+import { InstallPrompt } from "@/components/install-prompt";
 import TablePage from "@/pages/table";
 import SharedTablePage from "@/pages/shared-table";
 import CustomTableList from "@/pages/custom-table-list";
@@ -42,6 +43,7 @@ function App() {
       <ThemeProvider>
         <TooltipProvider>
           <Toaster />
+          <InstallPrompt />
           <Router />
         </TooltipProvider>
       </ThemeProvider>
