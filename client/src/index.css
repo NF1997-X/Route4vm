@@ -1722,12 +1722,17 @@ html.dark tfoot tr th .footer-total-blue {
   /* Optimize table headers for mobile */
   .table-header-footer-12px {
     font-size: 10px;
-    padding: 8px 6px;
+    padding: 10px 8px !important;
+    line-height: 1.3;
   }
   
   /* Optimize table cells for mobile */
   .table-cell-10px {
     font-size: 9px;
+    padding: 10px 8px !important;
+    line-height: 1.3;
+    letter-spacing: 0.3px;
+  }
     padding: 8px 4px;
   }
   
@@ -1753,13 +1758,13 @@ html.dark tfoot tr th .footer-total-blue {
   /* Even more compact headers */
   .table-header-footer-12px {
     font-size: 9px;
-    padding: 6px 4px;
+    padding: 8px 6px !important;
   }
   
   /* Compact cells */
   .table-cell-10px {
     font-size: 8px;
-    padding: 8px 6px;
+    padding: 10px 8px !important;
   }
   
   /* Smaller pagination */
@@ -1767,6 +1772,17 @@ html.dark tfoot tr th .footer-total-blue {
     min-width: 28px;
     height: 28px;
     font-size: 8px;
+  }
+
+  /* Mobile table optimizations */
+  .overflow-x-auto {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure table cells have proper minimum width for mobile */
+  table {
+    min-width: 100%;
   }
 }
 
