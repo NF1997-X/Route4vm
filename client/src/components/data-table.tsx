@@ -1288,44 +1288,44 @@ export function DataTable({
                                   className="py-2 sm:py-3 px-3 sm:px-4 align-middle table-cell-10px text-center text-[8px] sm:text-[10px] bg-transparent text-foreground whitespace-nowrap font-normal h-9 sm:h-10"
                                   style={{
                                     textAlign: "center",
-                                    minWidth: "75px",
+                                    minWidth: "85px",
                                     height: "32px",
                                     maxHeight: "40px",
                                     ...(column.dataKey === "location" && {
-                                      minWidth: `${120 + 15}px`,
+                                      minWidth: `${145}px`,
                                       fontSize: "10px",
                                     }),
                                     ...(column.dataKey === "delivery" && {
-                                      minWidth: "110px",
+                                      minWidth: "120px",
                                       fontSize: "10px",
                                       fontWeight: "normal",
                                     }),
                                     ...(column.dataKey === "id" && {
-                                      minWidth: "120px",
+                                      minWidth: "130px",
                                     }),
                                     ...(column.dataKey === "code" && {
-                                      minWidth: "100px",
+                                      minWidth: "110px",
                                     }),
                                     ...(column.dataKey === "route" && {
-                                      minWidth: "90px",
+                                      minWidth: "100px",
                                     }),
                                     ...(column.dataKey === "no" && {
-                                      minWidth: "70px",
-                                    }),
-                                    ...(column.dataKey === "kilometer" && {
                                       minWidth: "80px",
                                     }),
+                                    ...(column.dataKey === "kilometer" && {
+                                      minWidth: "95px",
+                                    }),
                                     ...(column.dataKey === "tollPrice" && {
-                                      minWidth: "90px",
+                                      minWidth: "100px",
                                     }),
                                     ...(column.dataKey === "tngRoute" && {
-                                      minWidth: "90px",
+                                      minWidth: "100px",
                                     }),
                                     ...(column.dataKey === "images" && {
-                                      minWidth: "120px",
+                                      minWidth: "130px",
                                     }),
                                     ...(column.type === "currency" && !column.dataKey.match(/tollPrice|tngRoute/) && {
-                                      minWidth: "100px",
+                                      minWidth: "110px",
                                     }),
                                   }}
                                   colSpan={
