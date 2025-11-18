@@ -91,5 +91,5 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Export as Vercel serverless function handler
-// Vercel will call this with (req, res) from Node's http module
-export default app;
+// Use CommonJS export for compatibility with Vercel and bundled dependencies
+module.exports = app;
