@@ -1155,46 +1155,49 @@ export function DataTable({
           </div>
         </div>
       )}
-      <div 
-        className="overflow-x-auto w-full"
-        style={disablePagination ? {
-          maxHeight: 'calc(100vh - 280px)',
-          overflowY: 'auto',
-        } : undefined}
-      >
+      <div className="w-full flex flex-col">
         {/* Separate Fixed Header */}
         <div className="sticky top-0 z-40 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-lg">
-          <Table className="min-w-full" style={{tableLayout: "fixed"}}>
-            <TableHeader>
-              <TableRow>
-                {visibleColumns.map((column, index) => (
-                  <TableHead
-                    key={column.id}
-                    className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12"
-                    style={{ textAlign: "center", fontSize: "10px" }}
-                    colSpan={column.dataKey === "location" ? 3 : 1}
-                  >
-                    <ColumnHeader
-                      column={column}
-                      dragHandleProps={undefined}
-                      onDelete={() => onDeleteColumn.mutate(column.id)}
-                      isAuthenticated={isAuthenticated}
-                      editMode={editMode}
-                    />
+          <div className="overflow-x-auto scroll-smooth">
+            <Table className="min-w-full" style={{tableLayout: "fixed"}}>
+              <TableHeader>
+                <TableRow>
+                  {visibleColumns.map((column, index) => (
+                    <TableHead
+                      key={column.id}
+                      className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12"
+                      style={{ textAlign: "center", fontSize: "10px" }}
+                      colSpan={column.dataKey === "location" ? 3 : 1}
+                    >
+                      <ColumnHeader
+                        column={column}
+                        dragHandleProps={undefined}
+                        onDelete={() => onDeleteColumn.mutate(column.id)}
+                        isAuthenticated={isAuthenticated}
+                        editMode={editMode}
+                      />
+                    </TableHead>
+                  ))}
+                  <TableHead className="px-4 py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12">
+                    <span className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent">
+                      Actions
+                    </span>
                   </TableHead>
-                ))}
-                <TableHead className="px-4 py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12">
-                  <span className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent">
-                    Actions
-                  </span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-          </Table>
+                </TableRow>
+              </TableHeader>
+            </Table>
+          </div>
         </div>
 
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Table className="min-w-full" style={{tableLayout: "fixed"}}>
+        <div 
+          className="overflow-x-auto scroll-smooth w-full flex-1"
+          style={disablePagination ? {
+            maxHeight: 'calc(100vh - 280px)',
+            overflowY: 'auto',
+          } : undefined}
+        >
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Table className="min-w-full" style={{tableLayout: "fixed"}}>
             <Droppable droppableId="rows" type="row">
               {(provided) => (
                 <TableBody
@@ -1813,52 +1816,54 @@ export function DataTable({
         
         {/* Separate Fixed Footer */}
         <div className="sticky bottom-0 z-40 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl border-t border-white/20 dark:border-white/10 shadow-lg">
-          <Table className="min-w-full" style={{tableLayout: "fixed"}}>
-            <tfoot>
-              <TableRow className="h-12">
-                {visibleColumns.map((column, index) => (
-                  <TableCell
-                    key={column.id}
-                    className="px-4 py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12"
-                    style={{ textAlign: "center", fontSize: "10px" }}
-                    colSpan={column.dataKey === "location" ? 3 : 1}
-                  >
-                    {index === 0 ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '11px'}}>Totals</span>
-                    ) : column.dataKey === "no" ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
-                    ) : column.dataKey === "kilometer" ? (
-                      <span className="font-semibold text-blue-600 dark:text-blue-400">
-                        {(() => {
-                          const total = calculateColumnSum("kilometer", column.type);
-                          return total > 0 ? `${total.toFixed(2)} km` : "—";
-                        })()}
-                      </span>
-                    ) : column.dataKey === "tngRoute" &&
-                      column.type === "currency" ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-                        {formatCurrency(
-                          calculateColumnSum("tngRoute", column.type),
-                        )}
-                      </span>
-                    ) : column.dataKey === "tollPrice" &&
-                      column.type === "currency" ? (
-                      <span className="font-semibold text-green-600 dark:text-green-400">
-                        {formatCurrency(
-                          calculateColumnSum("tollPrice", column.type),
-                        )}
-                      </span>
-                    ) : (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
-                    )}
+          <div className="overflow-x-auto scroll-smooth">
+            <Table className="min-w-full" style={{tableLayout: "fixed"}}>
+              <tfoot>
+                <TableRow className="h-12">
+                  {visibleColumns.map((column, index) => (
+                    <TableCell
+                      key={column.id}
+                      className="px-4 py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12"
+                      style={{ textAlign: "center", fontSize: "10px" }}
+                      colSpan={column.dataKey === "location" ? 3 : 1}
+                    >
+                      {index === 0 ? (
+                        <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '11px'}}>Totals</span>
+                      ) : column.dataKey === "no" ? (
+                        <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
+                      ) : column.dataKey === "kilometer" ? (
+                        <span className="font-semibold text-blue-600 dark:text-blue-400">
+                          {(() => {
+                            const total = calculateColumnSum("kilometer", column.type);
+                            return total > 0 ? `${total.toFixed(2)} km` : "—";
+                          })()}
+                        </span>
+                      ) : column.dataKey === "tngRoute" &&
+                        column.type === "currency" ? (
+                        <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                          {formatCurrency(
+                            calculateColumnSum("tngRoute", column.type),
+                          )}
+                        </span>
+                      ) : column.dataKey === "tollPrice" &&
+                        column.type === "currency" ? (
+                        <span className="font-semibold text-green-600 dark:text-green-400">
+                          {formatCurrency(
+                            calculateColumnSum("tollPrice", column.type),
+                          )}
+                        </span>
+                      ) : (
+                        <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
+                      )}
+                    </TableCell>
+                  ))}
+                  <TableCell className="px-4 py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12">
+                    <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                   </TableCell>
-                ))}
-                <TableCell className="px-4 py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-transparent whitespace-nowrap h-12">
-                  <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
-                </TableCell>
-              </TableRow>
-            </tfoot>
-          </Table>
+                </TableRow>
+              </tfoot>
+            </Table>
+          </div>
         </div>
       </div>
       {/* Delete Confirmation Dialog */}

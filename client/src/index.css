@@ -39,6 +39,51 @@ table thead th {
   display: none;
 }
 
+/* Smooth Scrolling for Table Container */
+.overflow-x-auto {
+  scroll-behavior: smooth;
+}
+
+/* Table Header and Footer Scroll Sync */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Style scrollbar for table overflow */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.4), rgba(99, 102, 241, 0.4));
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.6), rgba(99, 102, 241, 0.6));
+  background-clip: content-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: linear-gradient(to right, rgba(59, 130, 246, 0.3), rgba(99, 102, 241, 0.3));
+    background-clip: content-box;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to right, rgba(59, 130, 246, 0.5), rgba(99, 102, 241, 0.5));
+    background-clip: content-box;
+  }
+}
+
 /* Ensure Perfect Table Alignment */
 .table-sync {
   table-layout: fixed;
