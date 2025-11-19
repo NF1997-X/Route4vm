@@ -832,32 +832,32 @@ export function DataTable({
               onClick={onShowCustomization}
               variant="outline"
               size="sm"
-              className="w-6 h-6 p-0 pagination-button rounded-md"
+              className="w-8 h-8 p-0 pagination-button rounded-md"
               data-testid="button-show"
               title="Customize columns"
             >
-              <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </Button>
             <Button
               onClick={onOptimizeRoute}
               variant="outline"
               size="sm"
-              className="w-6 h-6 p-0 pagination-button rounded-md"
+              className="w-8 h-8 p-0 pagination-button rounded-md"
               data-testid="button-optimize-route"
               title="Optimize delivery route with AI"
             >
-              <Route className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <Route className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </Button>
             {!hideShareButton && (
               <Button
                 onClick={onShareTable}
                 variant="outline"
                 size="sm"
-                className="w-6 h-6 p-0 pagination-button rounded-md"
+                className="w-8 h-8 p-0 pagination-button rounded-md"
                 data-testid="button-share-table"
                 title="Share current table view"
               >
-                <Share2 className="w-4 h-4 text-green-500 dark:text-green-400" />
+                <Share2 className="w-5 h-5 text-green-500 dark:text-green-400" />
               </Button>
             )}
           </div>
