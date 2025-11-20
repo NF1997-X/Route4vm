@@ -1350,7 +1350,7 @@ export function DataTable({
                   </TableHead>
                 ))}
                 <TableHead className="px-3 sm:px-4 py-3 text-center font-bold bg-gradient-to-b from-red-50 via-orange-50/50 to-white dark:from-red-950/50 dark:via-orange-950/30 dark:to-gray-950 border-l-2 border-red-200 dark:border-red-800 whitespace-nowrap h-12 shadow-sm">
-                  <span className="bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent font-bold uppercase tracking-wide" style={{fontSize: '10px'}}>
+                  <span className="bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent font-bold uppercase tracking-wide" style={{fontSize: '9px'}}>
                     Action
                   </span>
                 </TableHead>
@@ -1479,7 +1479,7 @@ export function DataTable({
                                     minWidth: "80px",
                                     height: "36px",
                                     maxHeight: "44px",
-                                    fontSize: "9px",
+                                    fontSize: "8px",
                                     ...(column.dataKey === "location" && {
                                       minWidth: `${140 + 20}px`,
                                       fontSize: "9px",
@@ -1900,11 +1900,11 @@ export function DataTable({
                   <TableCell
                     key={column.id}
                     className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
-                    style={{ textAlign: "center", fontSize: "10px" }}
+                    style={{ textAlign: "center", fontSize: "9px" }}
                     colSpan={column.dataKey === "location" ? 3 : 1}
                   >
                     {index === 0 ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '10px'}}>Totals</span>
+                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '9px'}}>Totals</span>
                     ) : column.dataKey === "no" ? (
                       <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                     ) : column.dataKey === "kilometer" ? (
@@ -1933,7 +1933,7 @@ export function DataTable({
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-3 sm:px-4 py-2 sm:py-3 text-center font-semibold text-red-700 dark:text-red-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12" style={{fontSize: '10px'}}>
+                <TableCell className="px-3 sm:px-4 py-2 sm:py-3 text-center font-semibold text-red-700 dark:text-red-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12" style={{fontSize: '9px'}}>
                   <span className="font-semibold bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent">—</span>
                 </TableCell>
               </TableRow>
