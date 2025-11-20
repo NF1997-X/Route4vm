@@ -1874,11 +1874,19 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-let _storage: DatabaseStorage | null = null;
+let _storage: DatabaseStorage | MemStorage | null = null;
 
-export function getStorage(): DatabaseStorage {
+export function getStorage(): DatabaseStorage | MemStorage {
   if (!_storage) {
-    _storage = new DatabaseStorage();
+    // Use in-memory storage if DATABASE_URL is not set or if in development
+    const useMemory = !process.env.DATABASE_URL || process.env.USE_MEMORY_STORAGE === 'true';
+    
+    if (useMemory) {
+      console.log('⚠️  Using in-memory storage (data will not persist)');
+      _storage = new MemStorage();
+    } else {
+      _storage = new DatabaseStorage();
+    }
   }
   return _storage;
 }

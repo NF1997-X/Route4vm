@@ -28012,6 +28012,9 @@ var insertCustomTableRowSchema = createInsertSchema(customTableRows).omit({
   createdAt: true
 });
 
+// server/storage.ts
+var import_crypto = require("crypto");
+
 // server/db.ts
 var import_serverless = require("@neondatabase/serverless");
 var import_neon_serverless = require("drizzle-orm/neon-serverless");
@@ -28075,6 +28078,743 @@ var db = getDb();
 
 // server/storage.ts
 var import_drizzle_orm3 = require("drizzle-orm");
+var MemStorage = class {
+  tableRows;
+  tableColumns;
+  savedRoutes;
+  layoutPrefs;
+  pages;
+  sharedStates;
+  constructor() {
+    this.tableRows = /* @__PURE__ */ new Map();
+    this.tableColumns = /* @__PURE__ */ new Map();
+    this.savedRoutes = /* @__PURE__ */ new Map();
+    this.layoutPrefs = /* @__PURE__ */ new Map();
+    this.pages = /* @__PURE__ */ new Map();
+    this.sharedStates = /* @__PURE__ */ new Map();
+    this.initializeData();
+    this.ensureCoreColumns();
+  }
+  initializeData() {
+    const defaultColumns = [
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "ID",
+        dataKey: "id",
+        type: "text",
+        sortOrder: 1,
+        isEditable: "false",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "No",
+        dataKey: "no",
+        type: "text",
+        sortOrder: 2,
+        isEditable: "false",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Route",
+        dataKey: "route",
+        type: "select",
+        sortOrder: 3,
+        isEditable: "true",
+        options: [
+          "KL 1",
+          "KL 2",
+          "KL 3",
+          "KL 4",
+          "KL 5",
+          "KL 6",
+          "KL 7",
+          "SL 1",
+          "SL 2",
+          "SL 3"
+        ]
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Code",
+        dataKey: "code",
+        type: "text",
+        sortOrder: 4,
+        isEditable: "true",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Location",
+        dataKey: "location",
+        type: "text",
+        sortOrder: 5,
+        isEditable: "true",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Delivery",
+        dataKey: "delivery",
+        type: "select",
+        sortOrder: 6,
+        isEditable: "true",
+        options: ["None", "Daily", "Weekday", "Alt 1", "Alt 2"]
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Trip",
+        dataKey: "trip",
+        type: "select",
+        sortOrder: 7,
+        isEditable: "true",
+        options: ["Daily", "Weekday", "Alt 1", "Alt 2"]
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Parking",
+        dataKey: "tngRoute",
+        type: "currency",
+        sortOrder: 8,
+        isEditable: "true",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Info",
+        dataKey: "info",
+        type: "text",
+        sortOrder: 9,
+        isEditable: "true",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Images",
+        dataKey: "images",
+        type: "images",
+        sortOrder: 10,
+        isEditable: "false",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Kilometer",
+        dataKey: "kilometer",
+        type: "number",
+        sortOrder: 11,
+        isEditable: "false",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Toll Price",
+        dataKey: "tollPrice",
+        type: "currency",
+        sortOrder: 12,
+        isEditable: "false",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Latitude",
+        dataKey: "latitude",
+        type: "text",
+        sortOrder: 13,
+        isEditable: "true",
+        options: []
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Longitude",
+        dataKey: "longitude",
+        type: "text",
+        sortOrder: 14,
+        isEditable: "true",
+        options: []
+      }
+    ];
+    defaultColumns.forEach((column) => {
+      this.tableColumns.set(column.id, column);
+    });
+    const defaultRows = [
+      {
+        id: (0, import_crypto.randomUUID)(),
+        no: 999,
+        route: "Warehouse",
+        code: "QL001",
+        location: "QL Kitchen",
+        delivery: "Daily",
+        info: "Special QL Kitchen warehouse route",
+        tngSite: "QL Central",
+        tngRoute: "0.00",
+        destination: "0.00",
+        tollPrice: "0.00",
+        latitude: "3.139003",
+        longitude: "101.686855",
+        images: [],
+        qrCode: "",
+        sortOrder: -1,
+        active: true,
+        deliveryAlt: "normal",
+        markerColor: "#3b82f6"
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        no: 1,
+        route: "KL-01",
+        code: "CODE001",
+        location: "Kuala Lumpur",
+        delivery: "Daily",
+        info: "Sample information for row 1",
+        tngSite: "TnG KL Central",
+        tngRoute: "15.50",
+        destination: "25.00",
+        tollPrice: "0.00",
+        latitude: "3.139003",
+        longitude: "101.686855",
+        images: [
+          {
+            url: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+            caption: "Modern city skyline",
+            type: "image"
+          },
+          {
+            url: "https://images.unsplash.com/photo-1573167507387-4d8c0a67ceb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+            caption: "Urban landscape",
+            type: "image"
+          }
+        ],
+        qrCode: "",
+        sortOrder: 0,
+        active: true,
+        deliveryAlt: "normal",
+        markerColor: "#3b82f6"
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        no: 2,
+        route: "SG-02",
+        code: "CODE002",
+        location: "Selangor",
+        delivery: "Weekday",
+        info: "Details for Selangor route",
+        tngSite: "TnG Shah Alam",
+        tngRoute: "22.75",
+        destination: "18.50",
+        tollPrice: "0.00",
+        latitude: "3.085602",
+        longitude: "101.532303",
+        images: [
+          {
+            url: "https://images.unsplash.com/photo-1560472355-536de3962603?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+            caption: "Suburban area",
+            type: "image"
+          }
+        ],
+        qrCode: "",
+        sortOrder: 1,
+        active: true,
+        deliveryAlt: "normal",
+        markerColor: "#3b82f6"
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        no: 3,
+        route: "JB-03",
+        code: "CODE003",
+        location: "Johor Bahru",
+        delivery: "Alt 1",
+        info: "Information about Johor Bahru delivery",
+        tngSite: "TnG JB Plaza",
+        tngRoute: "8.90",
+        destination: "12.75",
+        tollPrice: "0.00",
+        latitude: "1.464651",
+        longitude: "103.761475",
+        images: [],
+        qrCode: "",
+        sortOrder: 2,
+        active: true,
+        deliveryAlt: "normal",
+        markerColor: "#3b82f6"
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        no: 4,
+        route: "PG-04",
+        code: "CODE004",
+        location: "Penang",
+        delivery: "Alt 2",
+        info: "Penang delivery information",
+        tngSite: "TnG Georgetown",
+        tngRoute: "32.40",
+        destination: "28.75",
+        tollPrice: "0.00",
+        latitude: "5.414184",
+        longitude: "100.329113",
+        images: [
+          {
+            url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+            caption: "Georgetown bridge",
+            type: "image"
+          }
+        ],
+        qrCode: "",
+        sortOrder: 3,
+        active: true,
+        deliveryAlt: "normal",
+        markerColor: "#3b82f6"
+      },
+      {
+        id: (0, import_crypto.randomUUID)(),
+        no: 5,
+        route: "KT-05",
+        code: "CODE005",
+        location: "Kota Kinabalu",
+        delivery: "Daily",
+        info: "Extended delivery to East Malaysia",
+        tngSite: "TnG KK Mall",
+        tngRoute: "45.20",
+        destination: "35.60",
+        tollPrice: "0.00",
+        latitude: "5.974407",
+        longitude: "116.095692",
+        images: [],
+        qrCode: "",
+        sortOrder: 4,
+        active: true,
+        deliveryAlt: "normal",
+        markerColor: "#3b82f6"
+      }
+    ];
+    defaultRows.forEach((row) => {
+      this.tableRows.set(row.id, row);
+    });
+  }
+  ensureCoreColumns() {
+    const existingColumns = Array.from(this.tableColumns.values());
+    const kilometerColumn = existingColumns.find((col) => col.dataKey === "kilometer");
+    const tollPriceColumn = existingColumns.find((col) => col.dataKey === "tollPrice");
+    if (!kilometerColumn) {
+      const infoColumn = existingColumns.find((col) => col.dataKey === "info");
+      const infoSortOrder = infoColumn ? infoColumn.sortOrder : 6;
+      const kilometerCol = {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Kilometer",
+        dataKey: "kilometer",
+        type: "number",
+        sortOrder: infoSortOrder + 1,
+        isEditable: "false",
+        options: []
+      };
+      this.tableColumns.set(kilometerCol.id, kilometerCol);
+      existingColumns.forEach((col) => {
+        if (col.sortOrder > infoSortOrder) {
+          col.sortOrder += 1;
+          this.tableColumns.set(col.id, col);
+        }
+      });
+    }
+    if (!tollPriceColumn) {
+      const kilometerCol = existingColumns.find((col) => col.dataKey === "kilometer") || Array.from(this.tableColumns.values()).find((col) => col.dataKey === "kilometer");
+      const kilometerSortOrder = kilometerCol ? kilometerCol.sortOrder : 11;
+      const tollPriceCol = {
+        id: (0, import_crypto.randomUUID)(),
+        name: "Toll Price",
+        dataKey: "tollPrice",
+        type: "currency",
+        sortOrder: kilometerSortOrder + 1,
+        isEditable: "false",
+        options: []
+      };
+      this.tableColumns.set(tollPriceCol.id, tollPriceCol);
+      const currentColumns = Array.from(this.tableColumns.values());
+      currentColumns.forEach((col) => {
+        if (col.sortOrder > kilometerSortOrder && col.id !== tollPriceCol.id) {
+          col.sortOrder += 1;
+          this.tableColumns.set(col.id, col);
+        }
+      });
+    }
+    const deliveryColumn = existingColumns.find((col) => col.dataKey === "delivery");
+    if (deliveryColumn && deliveryColumn.type !== "select") {
+      deliveryColumn.type = "select";
+      deliveryColumn.options = ["None", "Daily", "Weekday", "Alt 1", "Alt 2"];
+      this.tableColumns.set(deliveryColumn.id, deliveryColumn);
+    }
+  }
+  // Table rows methods
+  async getTableRows() {
+    return Array.from(this.tableRows.values()).sort((a, b) => {
+      if (a.sortOrder === -1) return -1;
+      if (b.sortOrder === -1) return 1;
+      const codeA = parseInt(a.code || "0") || 0;
+      const codeB = parseInt(b.code || "0") || 0;
+      return codeA - codeB;
+    });
+  }
+  async getTableRow(id) {
+    return this.tableRows.get(id);
+  }
+  async getQlKitchenRow() {
+    return Array.from(this.tableRows.values()).find(
+      (row) => row.location === "QL Kitchen" && row.sortOrder === -1
+    );
+  }
+  async createTableRow(insertRow) {
+    const id = (0, import_crypto.randomUUID)();
+    const maxSortOrder = Math.max(
+      ...Array.from(this.tableRows.values()).map((r) => r.sortOrder),
+      -1
+    );
+    const row = {
+      no: insertRow.no || 0,
+      route: insertRow.route || "",
+      code: insertRow.code || "",
+      location: insertRow.location || "",
+      delivery: insertRow.delivery || "",
+      info: insertRow.info || "",
+      tngSite: insertRow.tngSite || "",
+      tngRoute: insertRow.tngRoute || "",
+      destination: insertRow.destination || "0.00",
+      tollPrice: insertRow.tollPrice || "0.00",
+      latitude: insertRow.latitude || null,
+      longitude: insertRow.longitude || null,
+      images: insertRow.images || [],
+      qrCode: insertRow.qrCode || "",
+      id,
+      sortOrder: maxSortOrder + 1,
+      active: insertRow.active !== void 0 ? insertRow.active : true,
+      deliveryAlt: insertRow.deliveryAlt || "normal",
+      markerColor: insertRow.markerColor || "#3b82f6"
+    };
+    this.tableRows.set(id, row);
+    return row;
+  }
+  async updateTableRow(id, updates) {
+    const existingRow = this.tableRows.get(id);
+    if (!existingRow) return void 0;
+    const updatedRow = { ...existingRow, ...updates };
+    this.tableRows.set(id, updatedRow);
+    return updatedRow;
+  }
+  async deleteTableRow(id) {
+    return this.tableRows.delete(id);
+  }
+  async deleteAllTableRows() {
+    const count = this.tableRows.size;
+    this.tableRows.clear();
+    return count;
+  }
+  async reorderTableRows(rowIds) {
+    rowIds.forEach((id, index) => {
+      const row = this.tableRows.get(id);
+      if (row) {
+        row.sortOrder = index;
+        this.tableRows.set(id, row);
+      }
+    });
+    return this.getTableRows();
+  }
+  async bulkUpdateMarkerColorByRoute(route, color) {
+    let updatedCount = 0;
+    this.tableRows.forEach((row) => {
+      if (row.route === route) {
+        row.markerColor = color;
+        this.tableRows.set(row.id, row);
+        updatedCount++;
+      }
+    });
+    return updatedCount;
+  }
+  // Table columns methods
+  async getTableColumns() {
+    return Array.from(this.tableColumns.values()).sort(
+      (a, b) => a.sortOrder - b.sortOrder
+    );
+  }
+  async getTableColumn(id) {
+    return this.tableColumns.get(id);
+  }
+  async createTableColumn(insertColumn) {
+    const id = (0, import_crypto.randomUUID)();
+    const maxSortOrder = Math.max(
+      ...Array.from(this.tableColumns.values()).map((c) => c.sortOrder),
+      -1
+    );
+    const column = {
+      name: insertColumn.name,
+      dataKey: insertColumn.dataKey,
+      type: insertColumn.type || "text",
+      isEditable: insertColumn.isEditable || "true",
+      options: insertColumn.options || [],
+      id,
+      sortOrder: maxSortOrder + 1
+    };
+    this.tableColumns.set(id, column);
+    return column;
+  }
+  async updateTableColumn(id, updates) {
+    const existingColumn = this.tableColumns.get(id);
+    if (!existingColumn) return void 0;
+    const updatedColumn = { ...existingColumn, ...updates };
+    this.tableColumns.set(id, updatedColumn);
+    return updatedColumn;
+  }
+  async deleteTableColumn(id) {
+    const column = this.tableColumns.get(id);
+    if (!column) return false;
+    const coreDataKeys = [
+      "id",
+      "no",
+      "route",
+      "code",
+      "location",
+      "trip",
+      "info",
+      "tngRoute",
+      "latitude",
+      "longitude",
+      "kilometer",
+      "images"
+    ];
+    if (coreDataKeys.includes(column.dataKey)) {
+      return false;
+    }
+    return this.tableColumns.delete(id);
+  }
+  async reorderTableColumns(columnIds) {
+    columnIds.forEach((id, index) => {
+      const column = this.tableColumns.get(id);
+      if (column) {
+        column.sortOrder = index;
+        this.tableColumns.set(id, column);
+      }
+    });
+    return this.getTableColumns();
+  }
+  // Route optimization results methods
+  async getSavedRoutes() {
+    return Array.from(this.savedRoutes.values()).sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }
+  async getSavedRoute(id) {
+    return this.savedRoutes.get(id);
+  }
+  async saveRoute(route) {
+    const id = (0, import_crypto.randomUUID)();
+    const savedRoute = {
+      id,
+      ...route,
+      originalOrder: [...route.originalOrder],
+      optimizedOrder: [...route.optimizedOrder],
+      algorithm: route.algorithm || "nearest_neighbor",
+      createdAt: /* @__PURE__ */ new Date()
+    };
+    this.savedRoutes.set(id, savedRoute);
+    return savedRoute;
+  }
+  async deleteSavedRoute(id) {
+    return this.savedRoutes.delete(id);
+  }
+  // Layout preferences methods
+  async getLayoutPreferences(userId) {
+    return this.layoutPrefs.get(userId);
+  }
+  async saveLayoutPreferences(userId, layout) {
+    const existingLayout = this.layoutPrefs.get(userId);
+    const id = existingLayout?.id || (0, import_crypto.randomUUID)();
+    const savedLayout = {
+      id,
+      userId,
+      columnOrder: Array.from(layout.columnOrder || []),
+      columnVisibility: { ...layout.columnVisibility || {} },
+      creatorName: layout.creatorName || existingLayout?.creatorName || "Somebody",
+      creatorUrl: layout.creatorUrl || existingLayout?.creatorUrl || "",
+      updatedAt: /* @__PURE__ */ new Date()
+    };
+    this.layoutPrefs.set(userId, savedLayout);
+    return savedLayout;
+  }
+  // Pages methods
+  async getPages() {
+    return Array.from(this.pages.values()).sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+  async getPage(id) {
+    return this.pages.get(id);
+  }
+  async createPage(page) {
+    const id = (0, import_crypto.randomUUID)();
+    const newPage = {
+      id,
+      title: page.title || "",
+      description: page.description || "",
+      sortOrder: page.sortOrder || this.pages.size
+    };
+    this.pages.set(id, newPage);
+    return newPage;
+  }
+  async updatePage(id, updates) {
+    const page = this.pages.get(id);
+    if (!page) return void 0;
+    const updatedPage = {
+      ...page,
+      ...updates
+    };
+    this.pages.set(id, updatedPage);
+    return updatedPage;
+  }
+  async deletePage(id) {
+    return this.pages.delete(id);
+  }
+  async getGlobalSetting(key) {
+    if (key === "footerCompanyName") {
+      return {
+        id: (0, import_crypto.randomUUID)(),
+        key: "footerCompanyName",
+        value: "App v1.0.0",
+        updatedAt: /* @__PURE__ */ new Date()
+      };
+    }
+    return void 0;
+  }
+  async setGlobalSetting(key, value) {
+    return {
+      id: (0, import_crypto.randomUUID)(),
+      key,
+      value,
+      updatedAt: /* @__PURE__ */ new Date()
+    };
+  }
+  // Shared table states methods
+  async createSharedTableState(state) {
+    const id = (0, import_crypto.randomUUID)();
+    const sharedState = {
+      id,
+      shareId: state.shareId,
+      tableState: {
+        filters: {
+          searchTerm: state.tableState.filters.searchTerm,
+          routeFilters: Array.from(state.tableState.filters.routeFilters),
+          deliveryFilters: Array.from(state.tableState.filters.deliveryFilters)
+        },
+        sorting: state.tableState.sorting,
+        columnVisibility: { ...state.tableState.columnVisibility },
+        columnOrder: Array.from(state.tableState.columnOrder)
+      },
+      remark: state.remark || "",
+      createdAt: /* @__PURE__ */ new Date(),
+      expiresAt: state.expiresAt || null
+    };
+    this.sharedStates.set(state.shareId, sharedState);
+    return sharedState;
+  }
+  async getSharedTableState(shareId) {
+    return this.sharedStates.get(shareId);
+  }
+  async updateSharedTableRemark(shareId, remark) {
+    const existing = this.sharedStates.get(shareId);
+    if (!existing) return void 0;
+    const updated = { ...existing, remark };
+    this.sharedStates.set(shareId, updated);
+    return updated;
+  }
+  // Saved share links methods (in-memory)
+  savedLinks = /* @__PURE__ */ new Map();
+  async getSavedShareLinks() {
+    return Array.from(this.savedLinks.values()).sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    );
+  }
+  async getSavedShareLink(id) {
+    return this.savedLinks.get(id);
+  }
+  async createSavedShareLink(link) {
+    const id = (0, import_crypto.randomUUID)();
+    const saved = {
+      id,
+      shareId: link.shareId,
+      url: link.url,
+      remark: link.remark || "",
+      createdAt: /* @__PURE__ */ new Date()
+    };
+    this.savedLinks.set(id, saved);
+    return saved;
+  }
+  async updateSavedShareLinkRemark(id, remark) {
+    const link = this.savedLinks.get(id);
+    if (link) {
+      const updated = { ...link, remark };
+      this.savedLinks.set(id, updated);
+      return updated;
+    }
+    return void 0;
+  }
+  async deleteSavedShareLink(id) {
+    return this.savedLinks.delete(id);
+  }
+  // Custom tables methods (in-memory)
+  customTablesMap = /* @__PURE__ */ new Map();
+  customTableRowsMap = /* @__PURE__ */ new Map();
+  async getCustomTables() {
+    return Array.from(this.customTablesMap.values()).sort(
+      (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+    );
+  }
+  async getCustomTable(id) {
+    return this.customTablesMap.get(id);
+  }
+  async getCustomTableByShareId(shareId) {
+    return Array.from(this.customTablesMap.values()).find(
+      (table) => table.shareId === shareId
+    );
+  }
+  async getCustomTableRows(customTableId) {
+    const customRows = this.customTableRowsMap.get(customTableId) || [];
+    return customRows.map((cr) => this.tableRows.get(cr.tableRowId)).filter((row) => row !== void 0).sort((a, b) => {
+      const aRow = customRows.find((cr) => cr.tableRowId === a.id);
+      const bRow = customRows.find((cr) => cr.tableRowId === b.id);
+      return (aRow?.sortOrder || 0) - (bRow?.sortOrder || 0);
+    });
+  }
+  async createCustomTable(table, rowIds) {
+    const id = (0, import_crypto.randomUUID)();
+    const customTable = {
+      id,
+      name: table.name,
+      shareId: table.shareId,
+      description: table.description || "",
+      createdAt: /* @__PURE__ */ new Date(),
+      updatedAt: /* @__PURE__ */ new Date()
+    };
+    this.customTablesMap.set(id, customTable);
+    const tableRowsAssoc = rowIds.map((rowId, index) => ({
+      id: (0, import_crypto.randomUUID)(),
+      customTableId: id,
+      tableRowId: rowId,
+      sortOrder: index,
+      createdAt: /* @__PURE__ */ new Date()
+    }));
+    this.customTableRowsMap.set(id, tableRowsAssoc);
+    return customTable;
+  }
+  async updateCustomTable(id, updates) {
+    const table = this.customTablesMap.get(id);
+    if (table) {
+      const updated = { ...table, ...updates, updatedAt: /* @__PURE__ */ new Date() };
+      this.customTablesMap.set(id, updated);
+      return updated;
+    }
+    return void 0;
+  }
+  async deleteCustomTable(id) {
+    this.customTableRowsMap.delete(id);
+    return this.customTablesMap.delete(id);
+  }
+};
 var DatabaseStorage = class {
   constructor() {
     this.initializeData().catch(console.error);
@@ -28752,7 +29492,13 @@ var DatabaseStorage = class {
 var _storage = null;
 function getStorage() {
   if (!_storage) {
-    _storage = new DatabaseStorage();
+    const useMemory = !process.env.DATABASE_URL || process.env.USE_MEMORY_STORAGE === "true";
+    if (useMemory) {
+      console.log("\u26A0\uFE0F  Using in-memory storage (data will not persist)");
+      _storage = new MemStorage();
+    } else {
+      _storage = new DatabaseStorage();
+    }
   }
   return _storage;
 }

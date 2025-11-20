@@ -257,10 +257,80 @@ export function DataTable({
     string | null
   >(null);
   const [sortState, setSortState] = useState<{column: string; direction: 'asc' | 'desc'} | null>(null);
+  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const [showBulkActions, setShowBulkActions] = useState(false);
   const { toast } = useToast();
+
+  // Keyboard shortcuts for productivity
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (!editMode) return;
+      
+      // Ctrl/Cmd + A: Select all visible rows
+      if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+        e.preventDefault();
+        const visibleIds = new Set(rows.map(row => row.id));
+        setSelectedRows(visibleIds);
+        setShowBulkActions(true);
+        toast({
+          title: "Selected All",
+          description: `${visibleIds.size} rows selected`,
+        });
+      }
+      
+      // Escape: Clear selection
+      if (e.key === 'Escape' && selectedRows.size > 0) {
+        setSelectedRows(new Set());
+        setShowBulkActions(false);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [editMode, rows, selectedRows.size, toast]);
 
   // Filter columns to hide "info" column when not in edit mode
   const visibleColumns = editMode ? columns : columns.filter(col => col.dataKey !== 'info');
+
+  // Export to CSV functionality
+  const exportToCSV = useCallback(() => {
+    const csvRows = [];
+    
+    // Add headers
+    const headers = visibleColumns.map(col => col.name);
+    csvRows.push(headers.join(','));
+    
+    // Add data rows (selected rows if any, otherwise all)
+    const dataRows = selectedRows.size > 0 
+      ? rows.filter(row => selectedRows.has(row.id))
+      : rows;
+    
+    dataRows.forEach(row => {
+      const values = visibleColumns.map(col => {
+        const value = (row as any)[col.dataKey];
+        if (col.type === 'images') return `"[${(value || []).length} images]"`;
+        if (typeof value === 'string' && value.includes(',')) return `"${value.replace(/"/g, '""')}"`;
+        return value || '';
+      });
+      csvRows.push(values.join(','));
+    });
+    
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `route4vm-export-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Exported",
+      description: `${dataRows.length} rows exported to CSV`,
+    });
+  }, [visibleColumns, rows, selectedRows, toast]);
 
   // Reset to page 1 when rows change (due to filtering)
   useEffect(() => {
@@ -282,7 +352,7 @@ export function DataTable({
   }, [visibleColumns.length]);
 
   // Use rows as provided (already filtered by parent with distances calculated)
-  
+
   // Helper function to determine schedule status
   const getScheduleStatus = (row: TableRowType) => {
     const currentDay = new Date().getDay();
@@ -797,11 +867,64 @@ export function DataTable({
       data-testid="data-table"
     >
       {/* Top Row: Customize Buttons */}
-      <div className="px-2 py-1 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[7px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
-        <div className="flex flex-row gap-1 items-center justify-end">
+      <div className="px-2 py-1 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-blue-500/3 to-blue-500/5 dark:bg-gray-950/95 backdrop-blur-sm text-[7px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+        <div className="flex flex-row gap-1 items-center justify-between">
+          
+          {/* Left Side: Bulk Actions (shown when rows are selected) */}
+          {editMode && selectedRows.size > 0 && (
+            <div className="flex items-center gap-1 text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded-md">
+              <span className="font-medium text-blue-700 dark:text-blue-300">
+                {selectedRows.size} selected
+              </span>
+              <Button
+                onClick={() => {
+                  if (confirm(`Delete ${selectedRows.size} selected rows?`)) {
+                    selectedRows.forEach(id => onDeleteRow.mutate(id));
+                    setSelectedRows(new Set());
+                    setShowBulkActions(false);
+                  }
+                }}
+                variant="ghost"
+                size="sm"
+                className="h-6 px-2 text-xs text-red-600 hover:text-red-700 dark:text-red-400"
+              >
+                <Trash className="w-3 h-3 mr-1" />
+                Delete
+              </Button>
+              <Button
+                onClick={() => {
+                  setSelectedRows(new Set());
+                  setShowBulkActions(false);
+                }}
+                variant="ghost"
+                size="sm"
+                className="h-6 px-2 text-xs"
+              >
+                <X className="w-3 h-3" />
+              </Button>
+            </div>
+          )}
+          
+          {/* Keyboard Shortcuts Hint (Edit Mode Only) */}
+          {editMode && selectedRows.size === 0 && (
+            <div className="text-[10px] text-muted-foreground italic">
+              💡 Tip: Ctrl+A to select all, ESC to clear
+            </div>
+          )}
           
           {/* Right Side: Customize and Other Buttons */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 ml-auto">
+            {/* Export to CSV Button */}
+            <Button
+              onClick={exportToCSV}
+              variant="outline"
+              size="sm"
+              className="w-8 h-8 p-0 pagination-button rounded-md"
+              data-testid="button-export-csv"
+              title={selectedRows.size > 0 ? `Export ${selectedRows.size} selected rows to CSV` : "Export all rows to CSV"}
+            >
+              <FileText className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+            </Button>
             <Button
               onClick={onShowCustomization}
               variant="outline"
@@ -1187,13 +1310,34 @@ export function DataTable({
       >
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="w-full" style={{tableLayout: "auto", width: "100%"}}>
-            <TableHeader>
-              <TableRow>
+            <TableHeader className="sticky top-0 z-10">
+              <TableRow className="border-b-2 border-blue-200 dark:border-blue-800">
+                {editMode && (
+                  <TableHead
+                    className="px-2 py-3 text-center font-medium bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-950 border-r border-blue-100 dark:border-gray-800 w-10 h-12 shadow-sm"
+                    style={{ textAlign: "center" }}
+                  >
+                    <Checkbox
+                      checked={selectedRows.size === paginatedRows.length && paginatedRows.length > 0}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedRows(new Set(paginatedRows.map(row => row.id)));
+                          setShowBulkActions(true);
+                        } else {
+                          setSelectedRows(new Set());
+                          setShowBulkActions(false);
+                        }
+                      }}
+                      aria-label="Select all rows"
+                      className="border-2 border-blue-400 dark:border-blue-500"
+                    />
+                  </TableHead>
+                )}
                 {visibleColumns.map((column, index) => (
                   <TableHead
                     key={column.id}
-                    className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
-                    style={{ textAlign: "center", fontSize: "9px" }}
+                    className="px-3 sm:px-4 py-3 text-center font-semibold bg-gradient-to-b from-blue-50 via-indigo-50/50 to-white dark:from-gray-900 dark:via-indigo-950/30 dark:to-gray-950 border-r border-blue-100 dark:border-gray-800 whitespace-nowrap h-12 shadow-sm hover:from-blue-100 hover:to-blue-50 dark:hover:from-gray-800 dark:hover:to-gray-900 transition-colors"
+                    style={{ textAlign: "center" }}
                     colSpan={column.dataKey === "location" ? 3 : 1}
                   >
                     <ColumnHeader
@@ -1205,8 +1349,8 @@ export function DataTable({
                     />
                   </TableHead>
                 ))}
-                <TableHead className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
-                  <span className="text-red-800 dark:text-red-500 text-xs sm:text-sm font-bold">
+                <TableHead className="px-3 sm:px-4 py-3 text-center font-bold bg-gradient-to-b from-red-50 via-orange-50/50 to-white dark:from-red-950/50 dark:via-orange-950/30 dark:to-gray-950 border-l-2 border-red-200 dark:border-red-800 whitespace-nowrap h-12 shadow-sm">
+                  <span className="bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent font-bold uppercase tracking-wide" style={{fontSize: '10px'}}>
                     Action
                   </span>
                 </TableHead>
@@ -1302,6 +1446,30 @@ export function DataTable({
                               }`}
                               data-testid={`table-row-${row.id}`}
                             >
+                              {editMode && (
+                                <TableCell
+                                  className="py-2 px-2 align-middle text-center w-10 bg-transparent"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <Checkbox
+                                    checked={selectedRows.has(row.id)}
+                                    onCheckedChange={(checked) => {
+                                      const newSelected = new Set(selectedRows);
+                                      if (checked) {
+                                        newSelected.add(row.id);
+                                        setShowBulkActions(true);
+                                      } else {
+                                        newSelected.delete(row.id);
+                                        if (newSelected.size === 0) {
+                                          setShowBulkActions(false);
+                                        }
+                                      }
+                                      setSelectedRows(newSelected);
+                                    }}
+                                    aria-label={`Select row ${row.code || row.location}`}
+                                  />
+                                </TableCell>
+                              )}
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
@@ -1311,6 +1479,7 @@ export function DataTable({
                                     minWidth: "80px",
                                     height: "36px",
                                     maxHeight: "44px",
+                                    fontSize: "9px",
                                     ...(column.dataKey === "location" && {
                                       minWidth: `${140 + 20}px`,
                                       fontSize: "9px",
@@ -1731,11 +1900,11 @@ export function DataTable({
                   <TableCell
                     key={column.id}
                     className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
-                    style={{ textAlign: "center", fontSize: "9px" }}
+                    style={{ textAlign: "center", fontSize: "10px" }}
                     colSpan={column.dataKey === "location" ? 3 : 1}
                   >
                     {index === 0 ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '11px'}}>Totals</span>
+                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '10px'}}>Totals</span>
                     ) : column.dataKey === "no" ? (
                       <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
                     ) : column.dataKey === "kilometer" ? (
@@ -1764,7 +1933,7 @@ export function DataTable({
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-red-700 dark:text-red-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
+                <TableCell className="px-3 sm:px-4 py-2 sm:py-3 text-center font-semibold text-red-700 dark:text-red-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12" style={{fontSize: '10px'}}>
                   <span className="font-semibold bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent">—</span>
                 </TableCell>
               </TableRow>

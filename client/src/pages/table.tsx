@@ -109,15 +109,20 @@ export default function TablePage() {
   useEffect(() => {
     const createInitialPage = async () => {
       if (!pagesLoading && pages.length === 0) {
-        await createPageMutation.mutateAsync({
-          title: pageTitle,
-          description: pageDescription,
-          sortOrder: 0,
-        });
+        try {
+          await createPageMutation.mutateAsync({
+            title: pageTitle,
+            description: pageDescription,
+            sortOrder: 0,
+          });
+        } catch (error) {
+          console.error("Failed to create initial page:", error);
+        }
       }
     };
 
     createInitialPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pages.length, pagesLoading]);
 
   // Create page mutation
