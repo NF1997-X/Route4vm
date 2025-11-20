@@ -1813,9 +1813,9 @@ export function DataTable({
           </div>
 
           {/* Bottom row: Pagination controls */}
-          <div className="flex items-center gap-1.5">
-            {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
-            {currentPage > 3 && (
+          <div className="flex items-center gap-1">
+            {/* Always show First page button */}
+            {totalPages > 1 && currentPage !== 1 && (
               <Button
                 variant="outline"
                 size="xs"
@@ -1823,48 +1823,29 @@ export function DataTable({
                 className="pagination-button"
                 data-testid="button-first-page"
               >
-                <ChevronsLeft className="h-3 w-3" />
+                <span className="text-xs font-semibold">1</span>
               </Button>
             )}
 
             <div className="flex items-center gap-1">
               {(() => {
-                // Calculate sliding window of max 6 pages
-                const maxButtons = 6;
+                // Calculate sliding window of max 3 pages
+                const maxButtons = 3;
+                let startPage, endPage;
                 
-                // If total pages <= maxButtons, show all pages
-                if (totalPages <= maxButtons) {
-                  const pages = [];
-                  for (let i = 1; i <= totalPages; i++) {
-                    pages.push(i);
-                  }
+                // If total pages <= 5, show all pages
+                if (totalPages <= 5) {
+                  startPage = 1;
+                  endPage = totalPages;
+                } else {
+                  // Calculate window centered on current page if possible
+                  startPage = Math.max(2, Math.min(currentPage - 1, totalPages - maxButtons));
+                  endPage = Math.min(totalPages - 1, startPage + maxButtons - 1);
                   
-                  return pages.map((pageNum) => {
-                    const isCurrentPage = pageNum === currentPage;
-                    return (
-                      <Button
-                        key={pageNum}
-                        variant="outline"
-                        size="xs"
-                        onClick={() => goToPage(pageNum)}
-                        className={`pagination-button page-number ${
-                          isCurrentPage ? "active" : ""
-                        }`}
-                        data-testid={`button-page-${pageNum}`}
-                      >
-                        {pageNum}
-                      </Button>
-                    );
-                  });
-                }
-                
-                // For more than maxButtons pages, calculate sliding window
-                let startPage = Math.max(1, currentPage - 3);
-                let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-
-                // Adjust if we're near the end to always show maxButtons
-                if (endPage - startPage < maxButtons - 1) {
-                  startPage = Math.max(1, endPage - maxButtons + 1);
+                  // Adjust if we don't have enough pages
+                  if (endPage - startPage < maxButtons - 1) {
+                    startPage = Math.max(2, endPage - maxButtons + 1);
+                  }
                 }
 
                 const pages = [];
@@ -1874,7 +1855,6 @@ export function DataTable({
 
                 return pages.map((pageNum) => {
                   const isCurrentPage = pageNum === currentPage;
-
                   return (
                     <Button
                       key={pageNum}
@@ -1893,8 +1873,8 @@ export function DataTable({
               })()}
             </div>
 
-            {/* Show Last button only when (totalPages - currentPage) >= 3 (has 3+ pages after) */}
-            {(totalPages - currentPage) >= 3 && (
+            {/* Always show Last page button */}
+            {totalPages > 1 && currentPage !== totalPages && (
               <Button
                 variant="outline"
                 size="xs"
@@ -1902,7 +1882,7 @@ export function DataTable({
                 className="pagination-button"
                 data-testid="button-last-page"
               >
-                <ChevronsRight className="h-3 w-3" />
+                <span className="text-xs font-semibold">{totalPages}</span>
               </Button>
             )}
           </div>
