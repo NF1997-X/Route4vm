@@ -25,7 +25,7 @@ export default function HelpPage() {
     <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Fixed Header with Gradient Background */}
       <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
-        <div className="container mx-auto px-4">
+        <div className="w-full px-4">
           <div className="flex h-14 items-center justify-between text-[12px]">
             {/* Logo/Brand */}
             <div className="flex items-center space-x-2">
@@ -60,7 +60,7 @@ export default function HelpPage() {
       </nav>
 
       {/* Content with padding for fixed header */}
-      <div className="pt-16 pb-0 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="pt-16 pb-0 w-full px-4 sm:px-6 lg:px-8">
         <Card className="bg-white/70 dark:bg-slate-900/50 border-slate-300 dark:border-slate-800 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-slate-800 dark:text-slate-100 flex items-center gap-2">

@@ -1157,8 +1157,8 @@ export default function TablePage() {
           isAuthenticated={true}
         />
       </div>
-      <main className="pt-[72px]">
-        <div className="container mx-auto px-4 py-8" data-testid="table-page">
+      <main className="pt-[72px] w-full">
+        <div className="w-full px-4 py-8" data-testid="table-page">
           
           {/* Main Table - Moved to Top */}
           <div ref={tableRef} className="mb-6">

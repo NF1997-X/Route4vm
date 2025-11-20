@@ -316,7 +316,7 @@ export default function CustomTableView() {
     <>
       {/* Header */}
       <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
-        <div className="container mx-auto px-4">
+        <div className="w-full px-4">
           <div className="flex h-14 items-center justify-between text-[12px]">
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -339,8 +339,8 @@ export default function CustomTableView() {
         </div>
       </nav>
 
-      <main className="pt-[56px]">
-        <div className="container mx-auto px-4 py-8">
+      <main className="pt-[56px] w-full">
+        <div className="w-full px-4 py-8">
           {/* Data Table with all interactive features enabled */}
           <div className="mb-6">
             <DataTable

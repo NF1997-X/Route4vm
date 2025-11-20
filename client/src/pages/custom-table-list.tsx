@@ -285,7 +285,7 @@ export default function CustomTableList() {
     <div className="animate-in fade-in duration-300">
       {/* Simple Header with Home Button */}
       <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
-        <div className="container mx-auto px-4">
+        <div className="w-full px-4">
           <div className="flex h-14 items-center justify-between text-[12px]">
             {/* Logo/Brand */}
             <div className="flex items-center space-x-2">
@@ -318,8 +318,8 @@ export default function CustomTableList() {
           </div>
         </div>
       </nav>
-      <main className="min-h-screen bg-gray-50 dark:bg-black pt-[72px] pb-20">
-        <div className="max-w-7xl mx-auto px-6">
+      <main className="min-h-screen bg-gray-50 dark:bg-black pt-[72px] pb-20 w-full">
+        <div className="w-full px-6">
         {/* Action Bar */}
         <div className="flex justify-between items-center mb-6">
           <div className={`text-sm ${isEditDialogOpen ? "text-green-600 dark:text-green-400 font-semibold" : "text-gray-600 dark:text-gray-400"}`}>

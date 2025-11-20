@@ -42,7 +42,7 @@ table thead th {
 /* Center table content */
 table {
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
 }
 
 table td,
@@ -448,6 +448,7 @@ textarea {
     background-color: transparent;
     overflow-x: hidden;
     margin: 0;
+    padding: 0;
     height: 100vh;
     width: 100vw;
   }
@@ -458,15 +459,31 @@ textarea {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     justify-content: flex-start;
   }
 
-  /* Content wrapper with margin */
-  #root > div:nth-child(2) > div {
-    width: 100%;
+  /* Content wrapper - full width centered */
+  #root > div:nth-child(2) {
+    width: 100vw;
+    height: 100vh;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  #root > div:nth-child(2) > div {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   /* Smooth transitions for interactive elements (opt-in) */
