@@ -39,6 +39,17 @@ table thead th {
   border-spacing: 0;
 }
 
+/* Center table content */
+table {
+  margin: 0 auto;
+  width: 100%;
+}
+
+table td,
+table th {
+  text-align: center;
+}
+
 /* Responsive Table Cells on Mobile */
 @media (max-width: 768px) {
   /* Better mobile table spacing */
@@ -361,6 +372,8 @@ textarea {
 
   html {
     @apply h-full text-sm;
+    background-color: hsl(var(--background));
+    color-scheme: light dark;
   }
 
   body {
@@ -370,6 +383,7 @@ textarea {
     overflow-x: hidden;
     margin: 0;
     height: 100vh;
+    width: 100vw;
   }
 
   #root {
@@ -378,6 +392,8 @@ textarea {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   /* Smooth transitions for interactive elements (opt-in) */
