@@ -272,22 +272,22 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
         </Button>
       </DialogTrigger>
       <DialogContent 
-        className="max-w-lg overflow-hidden flex flex-col dark:bg-gray-950/40 dark:backdrop-blur-3xl dark:border dark:border-gray-700/50 rounded-2xl transition-smooth data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-90 data-[state=open]:zoom-in-95 duration-300 ease-out"
+        className="max-w-lg overflow-hidden flex flex-col bg-white/85 dark:bg-gray-950/80 dark:backdrop-blur-xl dark:border dark:border-gray-700/40 rounded-2xl transition-smooth data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-90 data-[state=open]:zoom-in-95 duration-300 ease-out"
         style={{
           maxHeight: 'min(90vh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px))',
           touchAction: 'pan-y',
         }}
       >
-        {/* iOS Traditional Glass Layer - Dark Mode */}
+        {/* Glass Layer matching main table design */}
         <div 
-          className="absolute inset-0 -z-10 rounded-2xl dark:bg-gradient-to-br dark:from-gray-800/20 dark:via-gray-900/40 dark:to-black/20 border-0" 
+          className="absolute inset-0 -z-10 rounded-2xl dark:bg-gradient-to-br dark:from-gray-900/30 dark:via-gray-950/50 dark:to-gray-950/40 border-0" 
           style={{
             backdropFilter: 'blur(60px)',
             WebkitBackdropFilter: 'blur(60px)',
           }}
         />
         <DialogHeader 
-          className="pb-4 border-b border-blue-900/20 dark:border-white/10 flex-shrink-0 relative bg-gradient-to-b from-transparent to-transparent dark:from-white/5 dark:to-transparent"
+          className="pb-4 border-b border-blue-200 dark:border-gray-700/50 flex-shrink-0 relative bg-gradient-to-b from-transparent to-transparent dark:from-white/5 dark:to-transparent"
           style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}
         >
           {/* Smart Close Button */}

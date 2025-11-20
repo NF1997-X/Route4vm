@@ -1110,7 +1110,7 @@ export default function TablePage() {
     <>
       {/* Edit Mode Loading Overlay */}
       {editModeLoading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-slate-50/95 to-slate-100/95 dark:from-slate-900/95 dark:to-slate-800/95 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-50/95 via-white/95 to-slate-50/95 dark:from-blue-950/50 dark:via-gray-950/80 dark:to-slate-900/60 backdrop-blur-sm">
           <div className="text-center space-y-4">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent mx-auto"></div>
             <p className="text-sm text-slate-600 dark:text-slate-400">Loading...</p>
