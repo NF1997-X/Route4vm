@@ -110,15 +110,15 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
   };
 
   const renderMainMenu = () => (
-    <div className="p-3 space-y-0.5">
-      {/* Vm Route Menu Item - iOS Sidebar Style */}
+    <div className="p-2 space-y-1">
+      {/* Vm Route Menu Item - iOS Style */}
       <div 
         onClick={() => handleSubmenuOpen('vm-route')}
-        className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
+        className="cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
         data-testid="menu-edit-page"
       >
         <div className="flex items-center w-full px-3 py-2.5">
-          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 mr-3">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 mr-3 shadow-sm">
             <Edit2 className="w-4 h-4 text-white" />
           </div>
           <div className="flex-1 min-w-0">
@@ -128,16 +128,16 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         </div>
       </div>
 
-      {/* Theme Toggle - iOS Sidebar Style */}
+      {/* Theme Toggle - iOS Style */}
       <div 
         onClick={() => handleNavigationClick(toggleTheme)}
-        className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
+        className="cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
         data-testid="menu-toggle-theme"
       >
         <div className="flex items-center w-full px-3 py-2.5">
           {theme === 'dark' ? (
             <>
-              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-yellow-400 to-orange-500 mr-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 mr-3 shadow-sm">
                 <Sun className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -146,7 +146,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </>
           ) : (
             <>
-              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-indigo-600 to-purple-700 mr-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 mr-3 shadow-sm">
                 <Moon className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -157,14 +157,14 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         </div>
       </div>
 
-      {/* Help Guide - iOS Sidebar Style */}
+      {/* Help Guide - iOS Style */}
       <div 
         onClick={() => handleNavigationClick(() => navigate('/help'))}
-        className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
+        className="cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
         data-testid="menu-help-guide"
       >
         <div className="flex items-center w-full px-3 py-2.5">
-          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-green-500 to-emerald-600 mr-3">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 mr-3 shadow-sm">
             <BookOpen className="w-4 h-4 text-white" />
           </div>
           <div className="flex-1 min-w-0">
@@ -173,18 +173,18 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         </div>
       </div>
 
-      <div className="my-2 h-px bg-gray-200 dark:bg-gray-700"></div>
+      <div className="my-1 h-px bg-gray-200 dark:bg-gray-700"></div>
 
-      {/* Edit Mode Options - iOS Sidebar Style */}
+      {/* Edit Mode Options - iOS Style */}
       {editMode ? (
         <>
           <div 
             onClick={() => handleNavigationClick(() => onAddRow && onAddRow())}
-            className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
+            className="cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
             data-testid="menu-add-row"
           >
             <div className="flex items-center w-full px-3 py-2.5">
-              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-blue-600 mr-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 mr-3 shadow-sm">
                 <Rows className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -199,11 +199,11 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 const addColumnButton = document.querySelector('[data-testid="button-add-column"]') as HTMLButtonElement;
                 if (addColumnButton) addColumnButton.click();
               })}
-              className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
+              className="cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
               data-testid="menu-add-column"
             >
               <div className="flex items-center w-full px-3 py-2.5">
-                <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-green-500 to-emerald-600 mr-3">
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 mr-3 shadow-sm">
                   <Plus className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -213,15 +213,15 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </div>
           )}
 
-          <div className="my-2 h-px bg-gray-200 dark:bg-gray-700"></div>
+          <div className="my-1 h-px bg-gray-200 dark:bg-gray-700"></div>
 
           <div 
             onClick={() => handleNavigationClick(() => onEditModeRequest && onEditModeRequest())}
-            className="cursor-pointer group rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 active:bg-red-100 dark:active:bg-red-900/30 transition-all duration-150"
+            className="cursor-pointer rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 active:bg-red-100 dark:active:bg-red-900/30 transition-colors duration-150"
             data-testid="menu-exit-edit"
           >
             <div className="flex items-center w-full px-3 py-2.5">
-              <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-red-500 to-red-600 mr-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-red-600 mr-3 shadow-sm">
                 <DoorOpen className="w-4 h-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -233,11 +233,11 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       ) : (
         <div 
           onClick={() => handleNavigationClick(() => onEditModeRequest && onEditModeRequest())}
-          className="cursor-pointer group rounded-lg hover:bg-gray-100/80 dark:hover:bg-gray-800/60 active:bg-gray-200/80 dark:active:bg-gray-700/60 transition-all duration-150"
+          className="cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
           data-testid="menu-enter-edit"
         >
           <div className="flex items-center w-full px-3 py-2.5">
-            <div className="flex items-center justify-center w-7 h-7 rounded-md bg-gradient-to-br from-orange-500 to-orange-600 mr-3">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600 mr-3 shadow-sm">
               <Edit3 className="w-4 h-4 text-white" />
             </div>
             <div className="flex-1 min-w-0">
@@ -409,13 +409,13 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         />
       )}
 
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
+      <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-blue-200/40 dark:border-white/5 bg-white/60 dark:bg-gray-950/50 backdrop-blur-xl supports-[backdrop-filter]:bg-white/50 dark:supports-[backdrop-filter]:bg-gray-950/60 shadow-sm dark:shadow-black/30">
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between text-[12px]">
-          {/* Logo/Brand */}
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-              <div className="flex h-9 w-9 items-center justify-center rounded-sm overflow-hidden">
+          {/* Logo/Brand - iOS Style */}
+          <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 hover:opacity-85 transition-opacity duration-200">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl overflow-hidden shadow-sm dark:shadow-black/20">
                 <img 
                   src="/assets/Logofm.png" 
                   alt="Logo" 
@@ -423,45 +423,45 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 />
               </div>
               <div className="flex flex-col gap-0 leading-tight">
-                <span className="font-bold text-slate-600 dark:text-slate-300 leading-none" style={{ fontSize: '12px' }}>
-                  {editMode ? "Edit Mode" : "Route Management"}
+                <span className="font-semibold text-gray-900 dark:text-slate-100 leading-none" style={{ fontSize: '12px' }}>
+                  {editMode ? "Edit Mode" : "Route VM"}
                 </span>
-                <span className="text-slate-400 dark:text-slate-500 leading-none my-0.5" style={{ fontSize: '9px' }}>
-                  All in one data informations
+                <span className="text-gray-500 dark:text-slate-400 leading-none my-0.5" style={{ fontSize: '9px' }}>
+                  Data Management
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Navigation - Custom Menu Button */}
+          {/* Navigation - iOS Menu Button */}
           <div className="relative">
             <Button
               variant="outline"
               size="sm"
-              className="btn-glass w-8 h-8 md:w-auto md:h-9 p-0 md:px-3 pagination-button group transition-all duration-300 ease-out hover:shadow-lg hover:shadow-blue-500/20"
+              className="bg-white/80 hover:bg-white dark:bg-gray-900/80 dark:hover:bg-gray-800 border border-gray-200/60 dark:border-white/10 w-8 h-8 md:w-auto md:h-9 p-0 md:px-3 rounded-lg transition-all duration-200 hover:shadow-md dark:hover:shadow-black/40 active:scale-95"
               data-testid="button-main-menu"
               title="Menu"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              <LayoutGrid className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
-              <span className="hidden md:inline ml-2 text-xs transition-all duration-300">Menu</span>
+              <Menu className="w-4 h-4 text-gray-700 dark:text-gray-300 transition-all duration-300" />
+              <span className="hidden md:inline ml-2 text-xs text-gray-700 dark:text-gray-300 font-medium transition-all duration-300">Menu</span>
             </Button>
             
-            {/* Custom Dropdown Content */}
+            {/* iOS-Style Dropdown Menu */}
             {isMenuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-80 max-h-[80vh] bg-white/95 dark:bg-gray-950/95 backdrop-blur-3xl border border-white/30 dark:border-white/10 shadow-2xl shadow-black/20 dark:shadow-black/60 rounded-2xl animate-in fade-in-0 zoom-in-95 duration-400 ease-out overflow-hidden z-50">
-                {/* Glass Background Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-white/20 to-white/10 dark:from-white/5 dark:via-white/3 dark:to-transparent pointer-events-none rounded-2xl"></div>
+              <div className="absolute right-0 top-full mt-3 w-80 max-h-[80vh] bg-white/98 dark:bg-gray-950/95 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 shadow-2xl shadow-black/15 dark:shadow-black/50 rounded-2xl animate-in fade-in-0 zoom-in-95 duration-300 ease-out overflow-hidden z-50">
+                {/* Premium Glass Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-white/30 to-transparent dark:from-white/5 dark:via-transparent dark:to-transparent pointer-events-none rounded-2xl"></div>
                 
-                {/* Content Container */}
-                <div className="relative z-10 overflow-hidden">
+                {/* Content Container with dividers */}
+                <div className="relative z-10 overflow-y-auto scrollbar-hide" style={{ maxHeight: 'calc(80vh - 20px)' }}>
                   {/* Main Menu - Always rendered but conditionally visible */}
-                  <div className={`transition-all duration-500 ease-in-out ${showSubmenu ? 'transform -translate-x-full opacity-0' : 'transform translate-x-0 opacity-100'}`}>
+                  <div className={`transition-all duration-300 ease-in-out ${showSubmenu ? 'transform -translate-x-full opacity-0' : 'transform translate-x-0 opacity-100'}`}>
                     {renderMainMenu()}
                   </div>
 
                   {/* Submenu Overlay - Positioned absolutely */}
-                  <div className={`absolute top-0 left-0 w-full h-full transition-all duration-500 ease-in-out ${showSubmenu ? 'transform translate-x-0 opacity-100 pointer-events-auto' : 'transform translate-x-full opacity-0 pointer-events-none'}`}>
+                  <div className={`absolute top-0 left-0 w-full h-full transition-all duration-300 ease-in-out ${showSubmenu ? 'transform translate-x-0 opacity-100 pointer-events-auto' : 'transform translate-x-full opacity-0 pointer-events-none'}`}>
                     {submenuType === 'vm-route' && renderVmRouteSubmenu()}
                   </div>
                 </div>
