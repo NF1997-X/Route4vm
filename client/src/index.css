@@ -69,7 +69,17 @@ table th {
   }
 }
 
+/* Mobile Phone View - All sizes SM */
 @media (max-width: 640px) {
+  /* Global sizing for mobile phones */
+  * {
+    font-size: 0.875rem !important;
+  }
+
+  html, body {
+    font-size: 0.875rem;
+  }
+
   /* Small phone optimizations */
   table {
     font-size: 11px;
@@ -90,8 +100,13 @@ table th {
   /* Better button sizing on mobile */
   button, [role="button"], .btn {
     padding: 8px 12px !important;
-    font-size: 12px !important;
+    font-size: 0.875rem !important;
     min-height: 44px !important;
+  }
+
+  /* Link sizing */
+  a {
+    font-size: 0.875rem;
   }
   
   /* Better spacing for dialogs on mobile */
@@ -102,7 +117,7 @@ table th {
   
   /* Better input sizing for mobile */
   input, textarea, select {
-    font-size: 16px !important;
+    font-size: 0.875rem !important;
     padding: 10px 12px !important;
     min-height: 44px !important;
   }
@@ -119,11 +134,62 @@ table th {
   /* Navigation improvements */
   nav {
     padding: 8px 12px;
+    font-size: 0.875rem;
+  }
+
+  /* Navigation items sizing */
+  nav a, nav button {
+    font-size: 0.875rem;
   }
   
   /* Card padding on mobile */
   .card {
     padding: 12px;
+    font-size: 0.875rem;
+  }
+
+  /* Heading sizing for mobile */
+  h1 {
+    font-size: 1.25rem !important;
+  }
+
+  h2 {
+    font-size: 1.125rem !important;
+  }
+
+  h3, h4, h5, h6 {
+    font-size: 0.875rem !important;
+  }
+
+  /* Modal and dialog text sizing */
+  .modal-header, .dialog-header {
+    font-size: 1rem !important;
+  }
+
+  .modal-body, .dialog-body {
+    font-size: 0.875rem !important;
+  }
+
+  /* Form labels */
+  label {
+    font-size: 0.875rem;
+  }
+
+  /* Badge sizing */
+  .badge {
+    font-size: 0.75rem !important;
+    padding: 4px 8px !important;
+  }
+
+  /* Small text */
+  small {
+    font-size: 0.75rem;
+  }
+
+  /* Placeholder text */
+  input::placeholder,
+  textarea::placeholder {
+    font-size: 0.875rem;
   }
 }
 
