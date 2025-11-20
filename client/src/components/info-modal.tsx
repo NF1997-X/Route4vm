@@ -272,29 +272,29 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
         </Button>
       </DialogTrigger>
       <DialogContent 
-        className="max-w-lg overflow-hidden flex flex-col glass-lg rounded-xl transition-smooth data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-90 data-[state=open]:zoom-in-95 duration-300 ease-out"
+        className="max-w-lg overflow-hidden flex flex-col dark:bg-gray-950/40 dark:backdrop-blur-3xl dark:border dark:border-gray-700/50 rounded-2xl transition-smooth data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-90 data-[state=open]:zoom-in-95 duration-300 ease-out"
         style={{
           maxHeight: 'min(90vh, calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 40px))',
           touchAction: 'pan-y',
         }}
       >
-        {/* iOS Frosted Glass Layer */}
+        {/* iOS Traditional Glass Layer - Dark Mode */}
         <div 
-          className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-white/10 dark:via-white/5 dark:to-transparent border-0 shadow-inner" 
+          className="absolute inset-0 -z-10 rounded-2xl dark:bg-gradient-to-br dark:from-gray-800/20 dark:via-gray-900/40 dark:to-black/20 border-0" 
           style={{
-            backdropFilter: 'blur(40px)',
-            WebkitBackdropFilter: 'blur(40px)',
+            backdropFilter: 'blur(60px)',
+            WebkitBackdropFilter: 'blur(60px)',
           }}
         />
         <DialogHeader 
-          className="pb-4 border-b border-blue-900 dark:border-cyan-400/50 flex-shrink-0 relative"
+          className="pb-4 border-b border-blue-900/20 dark:border-white/10 flex-shrink-0 relative bg-gradient-to-b from-transparent to-transparent dark:from-white/5 dark:to-transparent"
           style={{ paddingTop: 'max(1rem, env(safe-area-inset-top))' }}
         >
           {/* Smart Close Button */}
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-2 right-2 h-8 w-8 p-0 rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 hover:scale-110 active:scale-95 z-10"
+            className="absolute top-2 right-2 h-8 w-8 p-0 rounded-full hover:bg-red-100/80 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-all duration-200 hover:scale-110 active:scale-95 z-10"
             onClick={() => setOpen(false)}
             data-testid="button-smart-close"
             title="Close"
@@ -302,10 +302,10 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
             <X className="w-4 h-4" />
           </Button>
           
-          <DialogTitle className="font-semibold text-center text-slate-900 dark:text-slate-400 truncate pr-10" style={{fontSize: '10px'}}>
+          <DialogTitle className="font-semibold text-center text-slate-900 dark:text-slate-200 truncate pr-10" style={{fontSize: '10px'}}>
             {location || 'Location'}
           </DialogTitle>
-          <div className="text-center text-muted-foreground pt-1 truncate" style={{fontSize: '10px'}}>
+          <div className="text-center text-muted-foreground dark:text-slate-400 pt-1 truncate" style={{fontSize: '10px'}}>
             {code || ''}
           </div>
         </DialogHeader>

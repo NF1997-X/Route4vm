@@ -1775,7 +1775,7 @@ export function DataTable({
 
       {/* Pagination Controls - Below Footer */}
       {!disablePagination && (
-        <div className="flex flex-col items-center gap-3 px-4 py-4 border-t border-blue-200 dark:border-gray-700 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast rounded-b-xl">
+        <div className="flex flex-col items-center gap-4 px-4 py-4 border-t border-blue-200 dark:border-gray-700 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast rounded-b-xl">
           {/* Top row: Entry count and pagination info */}
           <div className="flex items-center justify-between w-full">
             <div className="text-xs font-medium text-muted-foreground">
