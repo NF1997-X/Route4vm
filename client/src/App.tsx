@@ -14,26 +14,29 @@ import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
-    <div className="min-h-screen pb-16 text-sm bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-black dark:via-gray-900 dark:to-black">
-      <Switch>
-        <Route path="/">
-          {() => <TablePage />}
-        </Route>
-        <Route path="/share/:shareId">
-          {() => <SharedTablePage />}
-        </Route>
-        <Route path="/custom-tables">
-          {() => <CustomTableList />}
-        </Route>
-        <Route path="/custom/:shareId">
-          {() => <CustomTableView />}
-        </Route>
-        <Route path="/help">
-          {() => <HelpPage />}
-        </Route>
-        <Route component={NotFound} />
-      </Switch>
-    </div>
+    <>
+      <div className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-black dark:via-gray-900 dark:to-black -z-10" />
+      <div className="min-h-screen pb-16 text-sm relative z-0">
+        <Switch>
+          <Route path="/">
+            {() => <TablePage />}
+          </Route>
+          <Route path="/share/:shareId">
+            {() => <SharedTablePage />}
+          </Route>
+          <Route path="/custom-tables">
+            {() => <CustomTableList />}
+          </Route>
+          <Route path="/custom/:shareId">
+            {() => <CustomTableView />}
+          </Route>
+          <Route path="/help">
+            {() => <HelpPage />}
+          </Route>
+          <Route component={NotFound} />
+        </Switch>
+      </div>
+    </>
   );
 }
 
