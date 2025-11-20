@@ -1218,8 +1218,8 @@ export default function TablePage() {
                 opts={{ loop: sortedPages.length > 1 }}
                 setApi={setCarouselApi}
               >
-                <div className="overflow-hidden rounded-xl border border-white/30 dark:border-white/10 bg-white/80 dark:bg-gray-950/95 backdrop-blur-2xl shadow-2xl shadow-black/10 dark:shadow-black/40 transition-all duration-500">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-gray-950/60 dark:via-gray-950/40 dark:to-gray-950/20 pointer-events-none rounded-xl"></div>
+                <div className="overflow-hidden rounded-2xl border border-white/30 dark:border-white/10 glass glass-lg shadow-2xl shadow-black/10 dark:shadow-black/40 transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-gray-950/60 dark:via-gray-950/40 dark:to-gray-950/20 pointer-events-none rounded-2xl"></div>
                   <CarouselContent>
                   {sortedPages.map((page, index) => {
                     const isCurrentSlide = index === currentSlideIndex;
@@ -1413,12 +1413,12 @@ export default function TablePage() {
 
           {/* Page Add/Edit Dialog */}
           <Dialog open={showPageDialog} onOpenChange={setShowPageDialog}>
-            <DialogContent data-testid="dialog-page-form">
-              <DialogHeader>
-                <DialogTitle style={{fontSize: '10px'}}>
+            <DialogContent className="glass-lg bg-white/85 dark:bg-gray-950/80 border-blue-200/40 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-2xl animate-in zoom-in-95 duration-200" data-testid="dialog-page-form">
+              <DialogHeader className="border-b border-blue-200/40 dark:border-white/10 pb-4">
+                <DialogTitle className="text-slate-900 dark:text-slate-100" style={{fontSize: '14px'}}>
                   {editingPage ? "Edit Page" : "Add Page"}
                 </DialogTitle>
-                <DialogDescription style={{fontSize: '10px'}}>
+                <DialogDescription className="text-slate-600 dark:text-slate-400" style={{fontSize: '12px'}}>
                   {editingPage ? "Update the page details below." : "Create a new page with a title and description."}
                 </DialogDescription>
               </DialogHeader>
@@ -1524,13 +1524,13 @@ export default function TablePage() {
 
       {/* Delete Page Confirmation Dialog */}
       <Dialog open={showDeletePageConfirmation} onOpenChange={setShowDeletePageConfirmation}>
-        <DialogContent className="sm:max-w-md animate-in zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 duration-300 bg-gradient-to-br from-red-50 to-white dark:from-red-950/40 dark:to-gray-900 border-red-200 dark:border-red-500/30 shadow-2xl">
-          <DialogHeader className="space-y-3">
+        <DialogContent className="glass-lg bg-white/85 dark:bg-gray-950/80 border-blue-200/40 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-2xl animate-in zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 duration-300 sm:max-w-md">
+          <DialogHeader className="space-y-3 border-b border-blue-200/40 dark:border-white/10 pb-4">
             <div className="mx-auto w-12 h-12 bg-red-100 dark:bg-red-900/50 rounded-full flex items-center justify-center animate-in zoom-in-50 duration-500 delay-100">
               <Trash2 className="w-6 h-6 text-red-600 dark:text-red-400" />
             </div>
-            <DialogTitle className="text-center text-red-900 dark:text-red-100" style={{fontSize: '14px'}}>Delete Page</DialogTitle>
-            <DialogDescription className="text-center text-gray-600 dark:text-gray-400" style={{fontSize: '11px'}}>
+            <DialogTitle className="text-center text-slate-900 dark:text-slate-100" style={{fontSize: '14px'}}>Delete Page</DialogTitle>
+            <DialogDescription className="text-center text-slate-600 dark:text-slate-400" style={{fontSize: '12px'}}>
               Are you sure you want to delete the page "{pageToDelete?.title}"? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
@@ -1820,10 +1820,10 @@ export default function TablePage() {
 
       {/* Position Dialog */}
       <Dialog open={showPositionDialog && !exitingEditMode} onOpenChange={setShowPositionDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle style={{fontSize: '12px'}}>Select Row Position</DialogTitle>
-            <DialogDescription style={{fontSize: '10px'}}>
+        <DialogContent className="glass-lg bg-white/85 dark:bg-gray-950/80 border-blue-200/40 dark:border-white/10 backdrop-blur-2xl shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-2xl animate-in zoom-in-95 duration-200 sm:max-w-md">
+          <DialogHeader className="border-b border-blue-200/40 dark:border-white/10 pb-4">
+            <DialogTitle className="text-slate-900 dark:text-slate-100" style={{fontSize: '14px'}}>Select Row Position</DialogTitle>
+            <DialogDescription className="text-slate-600 dark:text-slate-400" style={{fontSize: '12px'}}>
               Choose where to insert the new row in the table.
             </DialogDescription>
           </DialogHeader>
