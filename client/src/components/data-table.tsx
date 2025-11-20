@@ -796,35 +796,9 @@ export function DataTable({
       className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-md table-container my-4 overflow-hidden"
       data-testid="data-table"
     >
-      {/* Top Row: Entries (Left) and Customize Buttons (Right) */}
+      {/* Top Row: Customize Buttons */}
       <div className="px-2 py-1 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5 dark:from-gray-950/80 dark:via-gray-950/70 dark:to-gray-950/80 backdrop-blur-sm text-[7px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
-        <div className="flex flex-row gap-1 items-center justify-between">
-          
-          {/* Left Side: Entries Selector */}
-          {!disablePagination && (
-            <div className="flex items-center gap-1 flex-shrink-0">
-              <span className="text-[7px] text-muted-foreground font-medium">
-                Show
-              </span>
-              <Select
-                value={pageSize.toString()}
-                onValueChange={handlePageSizeChange}
-              >
-                <SelectTrigger className="h-5 px-1.5 pagination-button text-[7px] font-semibold [&>svg]:hidden w-auto min-w-[2rem] rounded-sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded-md">
-                  <SelectItem value="10" className="font-semibold text-[7px]">10</SelectItem>
-                  <SelectItem value="30" className="font-semibold text-[7px]">30</SelectItem>
-                  <SelectItem value="50" className="font-semibold text-[7px]">50</SelectItem>
-                  <SelectItem value="100" className="font-semibold text-[7px]">100</SelectItem>
-                </SelectContent>
-              </Select>
-              <span className="text-[7px] text-muted-foreground font-medium">
-                of {totalRows} entries
-              </span>
-            </div>
-          )}
+        <div className="flex flex-row gap-1 items-center justify-end">
           
           {/* Right Side: Customize and Other Buttons */}
           <div className="flex items-center gap-1">
