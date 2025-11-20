@@ -16,8 +16,8 @@ function Router() {
   return (
     <>
       <div className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-black dark:via-gray-900 dark:to-black -z-10" />
-      <div className="min-h-screen pb-16 text-sm relative z-0 w-full h-screen overflow-x-hidden flex flex-col">
-        <div className="w-full">
+      <div className="min-h-screen pb-16 text-sm relative z-0 w-full h-full overflow-x-hidden flex flex-col">
+        <div className="w-full flex-1">
           <Switch>
             <Route path="/">
               {() => <TablePage />}

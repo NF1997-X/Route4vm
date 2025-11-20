@@ -458,14 +458,14 @@ textarea {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
   }
 
   /* Content wrapper with margin */
   #root > div:nth-child(2) > div {
     width: 100%;
-    margin: 10px;
+    margin: 0;
     padding: 0;
   }
 
