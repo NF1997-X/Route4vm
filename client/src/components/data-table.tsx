@@ -1802,6 +1802,17 @@ export function DataTable({
       {/* Pagination Controls - Below Footer */}
       {!disablePagination && (
         <div className="flex flex-col items-center gap-3 px-4 py-4 border-t border-blue-200 dark:border-gray-700 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast rounded-b-xl">
+          {/* Top row: Entry count and pagination info */}
+          <div className="flex items-center justify-between w-full">
+            <div className="text-xs font-medium text-muted-foreground">
+              Show <span className="font-semibold text-foreground">{Math.min(pageSize, totalRows - startIndex)}</span> of <span className="font-semibold text-foreground">{totalRows}</span> entries
+            </div>
+            <div className="text-xs font-medium text-muted-foreground">
+              Page <span className="font-semibold text-foreground">{currentPage}</span> of <span className="font-semibold text-foreground">{totalPages}</span>
+            </div>
+          </div>
+
+          {/* Bottom row: Pagination controls */}
           <div className="flex items-center gap-1.5">
             {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
             {currentPage > 3 && (
@@ -1894,10 +1905,6 @@ export function DataTable({
                 <ChevronsRight className="h-3 w-3" />
               </Button>
             )}
-          </div>
-
-          <div className="text-xs font-medium text-muted-foreground whitespace-nowrap">
-            {currentPage} of {totalPages}
           </div>
         </div>
       )}
