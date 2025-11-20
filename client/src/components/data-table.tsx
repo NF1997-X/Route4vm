@@ -1205,9 +1205,9 @@ export function DataTable({
                     />
                   </TableHead>
                 ))}
-                <TableHead className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-red-700 dark:text-red-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
-                  <span className="bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent text-xs sm:text-sm font-bold">
-                    Act
+                <TableHead className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12">
+                  <span className="text-red-800 dark:text-red-500 text-xs sm:text-sm font-bold">
+                    Action
                   </span>
                 </TableHead>
               </TableRow>
