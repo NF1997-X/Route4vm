@@ -20,12 +20,12 @@ table thead tr {
 table thead th {
   transform: none !important;
   position: relative !important;
-  background: rgba(255, 255, 255, 0.95) !important;
+  background: rgba(241, 245, 249, 0.98) !important; /* Silver/slate-50 for light mode */
 }
 
 @media (prefers-color-scheme: dark) {
   table thead th {
-    background: rgba(3, 7, 18, 0.95) !important;
+    background: rgba(3, 7, 18, 0.95) !important; /* Unchanged - dark navy for dark mode */
   }
 }
 
