@@ -16,25 +16,27 @@ function Router() {
   return (
     <>
       <div className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-black dark:via-gray-900 dark:to-black -z-10" />
-      <div className="min-h-screen pb-16 text-xs sm:text-sm md:text-sm relative z-0 w-full h-screen overflow-x-hidden flex flex-col items-center justify-start">
-        <Switch>
-          <Route path="/">
-            {() => <TablePage />}
-          </Route>
-          <Route path="/share/:shareId">
-            {() => <SharedTablePage />}
-          </Route>
-          <Route path="/custom-tables">
-            {() => <CustomTableList />}
-          </Route>
-          <Route path="/custom/:shareId">
-            {() => <CustomTableView />}
-          </Route>
-          <Route path="/help">
-            {() => <HelpPage />}
-          </Route>
-          <Route component={NotFound} />
-        </Switch>
+      <div className="min-h-screen pb-16 text-sm relative z-0 w-full h-screen overflow-x-hidden flex flex-col">
+        <div className="w-full">
+          <Switch>
+            <Route path="/">
+              {() => <TablePage />}
+            </Route>
+            <Route path="/share/:shareId">
+              {() => <SharedTablePage />}
+            </Route>
+            <Route path="/custom-tables">
+              {() => <CustomTableList />}
+            </Route>
+            <Route path="/custom/:shareId">
+              {() => <CustomTableView />}
+            </Route>
+            <Route path="/help">
+              {() => <HelpPage />}
+            </Route>
+            <Route component={NotFound} />
+          </Switch>
+        </div>
       </div>
     </>
   );
