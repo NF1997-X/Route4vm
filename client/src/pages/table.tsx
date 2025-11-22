@@ -1162,7 +1162,7 @@ export default function TablePage() {
           isAuthenticated={true}
         />
         
-        <main className="min-h-screen bg-gray-50 dark:bg-black pt-[72px] pb-20">
+        <main className="pt-[72px] pb-20">
         <div className="w-full mx-auto px-4 py-8" data-testid="table-page">
           
           {/* Main Table - Moved to Top */}
@@ -1298,7 +1298,7 @@ export default function TablePage() {
                           isHeaderExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                         }`}
                       >
-                        <div className="px-4 pb-3 border-t border-white/20 dark:border-white/10 pt-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-gray-950/40 dark:via-gray-950/20 dark:to-transparent relative z-10">
+                        <div className="px-4 pb-24 border-t border-white/20 dark:border-white/10 pt-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-gray-950/40 dark:via-gray-950/20 dark:to-transparent relative z-10">
                           {/* Swipe Hints - Animated Arrows in Description */}
                           {sortedPages.length > 1 && showSlideHints && (
                             <div className="flex items-center justify-center gap-4 mb-3 pb-2 border-b border-white/10 dark:border-gray-950/20">
