@@ -280,7 +280,7 @@ export default function CustomTableList() {
   };
 
   return (
-    <div className="animate-in fade-in duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-100 dark:from-gray-950 dark:via-blue-950/20 dark:to-black">
       {/* Simple Header with Home Button */}
       <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
         <div className="w-full px-4">
@@ -316,8 +316,8 @@ export default function CustomTableList() {
           </div>
         </div>
       </nav>
-      <main className="min-h-screen bg-gray-50 dark:bg-black pt-[72px] pb-20">
-        <div className="w-full px-4 py-8">
+      <main className="min-h-screen pt-[72px] pb-20">
+        <div className="w-full mx-auto px-4 py-8">
         {/* Action Bar */}
         <div className="flex justify-between items-center mb-6">
           <div className={`text-sm ${isEditDialogOpen ? "text-green-600 dark:text-green-400 font-semibold" : "text-gray-600 dark:text-gray-400"}`}>
