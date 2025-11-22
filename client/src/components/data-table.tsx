@@ -463,10 +463,11 @@ export function DataTable({
 
   // Calculate pagination
   const totalRows = sortedRows.length;
-  const totalPages = disablePagination ? 1 : Math.ceil(totalRows / pageSize);
-  const startIndex = disablePagination ? 0 : (currentPage - 1) * pageSize;
-  const endIndex = disablePagination ? totalRows : startIndex + pageSize;
-  const paginatedRows = disablePagination ? sortedRows : sortedRows.slice(startIndex, endIndex);
+  const effectiveDisablePagination = disablePagination || isFiltered;
+  const totalPages = effectiveDisablePagination ? 1 : Math.ceil(totalRows / pageSize);
+  const startIndex = effectiveDisablePagination ? 0 : (currentPage - 1) * pageSize;
+  const endIndex = effectiveDisablePagination ? totalRows : startIndex + pageSize;
+  const paginatedRows = effectiveDisablePagination ? sortedRows : sortedRows.slice(startIndex, endIndex);
 
   // Reset to first page when page size changes
   const handlePageSizeChange = (newPageSize: string) => {
@@ -863,7 +864,7 @@ export function DataTable({
 
   return (
     <div
-      className="rounded-2xl border border-border shadow-md overflow-hidden bg-card"
+      className="rounded-2xl border border-border shadow-lg overflow-hidden bg-card transition-all duration-300 hover:shadow-xl"
       data-testid="data-table"
       style={{ 
         background: 'linear-gradient(to bottom, var(--card) 0%, var(--background) 100%)'
@@ -1944,24 +1945,24 @@ export function DataTable({
       </div>
 
       {/* Pagination Controls - Below Footer */}
-      {!disablePagination && (
-        <div className="flex flex-col items-center gap-1.5 px-3 py-1.5 border-t border-border bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast rounded-b-xl">
+      {!disablePagination && !isFiltered && (
+        <div className="flex flex-col items-center gap-2 px-4 py-2.5 border-t border-border bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast rounded-b-xl">
           {/* Top row: Entry count and pagination info */}
           <div className="flex items-center justify-between w-full">
-            <div className="font-medium text-muted-foreground" style={{fontSize: '7px'}}>
+            <div className="font-medium text-muted-foreground" style={{fontSize: '9px'}}>
               {isFiltered ? (
                 <span>Total <span className="font-semibold text-foreground">{totalRows}</span> entries</span>
               ) : (
                 <>Show <span className="font-semibold text-foreground">{Math.min(pageSize, totalRows - startIndex)}</span> of <span className="font-semibold text-foreground">{totalRows}</span> entries</>
               )}
             </div>
-            <div className="font-medium text-muted-foreground" style={{fontSize: '7px'}}>
+            <div className="font-medium text-muted-foreground" style={{fontSize: '9px'}}>
               Page <span className="font-semibold text-foreground">{currentPage}</span> of <span className="font-semibold text-foreground">{totalPages}</span>
             </div>
           </div>
 
           {/* Bottom row: Pagination controls */}
-          <div className="flex items-center gap-0.5">
+          <div className="flex items-center gap-1">
             {/* Always show First page button */}
             {totalPages > 1 && currentPage !== 1 && (
               <Button

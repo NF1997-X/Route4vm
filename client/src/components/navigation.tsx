@@ -378,7 +378,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
         />
       )}
 
-      <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-blue-200/40 dark:border-white/5 bg-white/60 dark:bg-gray-950/50 backdrop-blur-xl supports-[backdrop-filter]:bg-white/50 dark:supports-[backdrop-filter]:bg-gray-950/60 shadow-sm dark:shadow-black/30">
+      <nav className="fixed top-0 left-0 right-0 z-[100] w-full border-b border-blue-200/40 dark:border-white/5 bg-white/70 dark:bg-gray-950/60 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-950/70 shadow-md dark:shadow-black/30">
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between text-[12px]">
           {/* Logo/Brand - iOS Style */}

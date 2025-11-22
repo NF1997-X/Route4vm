@@ -28,6 +28,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // node_modules/depd/index.js
 var require_depd = __commonJS({
@@ -23515,6 +23516,11 @@ var require_express2 = __commonJS({
 });
 
 // server/vercel.ts
+var vercel_exports = {};
+__export(vercel_exports, {
+  default: () => vercel_default
+});
+module.exports = __toCommonJS(vercel_exports);
 var import_express = __toESM(require_express2(), 1);
 
 // server/routes.ts
@@ -30971,7 +30977,7 @@ app.use((err, _req, res, _next) => {
   console.error(`Error ${status}:`, err);
   res.status(status).json({ message });
 });
-module.exports = app;
+var vercel_default = app;
 /*! Bundled license information:
 
 depd/index.js:

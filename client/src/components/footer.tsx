@@ -126,20 +126,19 @@ export function Footer({ editMode = false }: FooterProps) {
   return (
     <>
       <footer 
-        className={`fixed bottom-0 left-0 right-0 z-40 w-full border-t border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20 transition-all duration-500 ease-out ${
+        className={`fixed bottom-0 left-0 right-0 z-[90] w-full border-t border-white/20 dark:border-white/10 bg-white/80 dark:bg-black/40 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-black/50 shadow-lg shadow-black/5 dark:shadow-black/20 transition-all duration-500 ease-out ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
         }`}
       >
         <div className="container mx-auto px-4">
-          <div className={`flex items-center justify-center gap-2 transition-all duration-700 ease-out text-[11px] py-3 ${
+          <div className={`flex items-center justify-center gap-2 transition-all duration-700 ease-out py-3 ${
             isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
           }`}>
-            <div className="text-slate-600 dark:text-slate-400 font-medium">
-              © {currentYear} Route Management System
-            </div>
-            <div className="w-1.5 h-1.5 bg-blue-500/60 dark:bg-blue-400/60 rounded-full"></div>
-            <div className="text-slate-600 dark:text-slate-400 font-medium">
-              Educational Purpose Only
+            {/* Footer Info */}
+            <div className="text-[10px] text-slate-600 dark:text-slate-400 flex items-center gap-2">
+              <span className="font-medium">Built with ❤️ for FamilyMart Operations</span>
+              <div className="w-1.5 h-1.5 bg-blue-500/60 dark:bg-blue-400/60 rounded-full animate-pulse"></div>
+              <span className="font-medium">Powered by React & Vite</span>
             </div>
           </div>
         </div>

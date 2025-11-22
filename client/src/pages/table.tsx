@@ -453,6 +453,13 @@ export default function TablePage() {
     // Get warehouse row (QL Kitchen) 
     const warehouseRow = rows.find(row => row.location === "QL Kitchen");
     
+    // Get current date to determine which delivery alt to show
+    const currentDate = new Date();
+    const dayOfMonth = currentDate.getDate();
+    const dayOfWeek = currentDate.getDay(); // 0=Sunday, 1=Monday, ..., 5=Friday, 6=Saturday
+    const isOddDay = dayOfMonth % 2 === 1; // Odd day = alt1, Even day = alt2
+    const isFridayOrSaturday = dayOfWeek === 5 || dayOfWeek === 6; // Friday or Saturday
+    
     // Apply normal filtering
     const normalFilteredRows = rows.filter((row) => {
       const matchesSearch = searchTerm === "" || 
@@ -468,7 +475,20 @@ export default function TablePage() {
       const matchesDeliveryFilter = deliveryFilterValue.length === 0 || 
         !deliveryFilterValue.includes(row.delivery);
       
-      return matchesSearch && matchesFilter && matchesDeliveryFilter;
+      // Delivery Alt filter based on day
+      // - daily: always show
+      // - alt1: odd days only
+      // - alt2: even days only
+      // - weekend: NOT active on Friday and Saturday (hide on those days)
+      // - normal: always show (backward compatibility)
+      const matchesDeliveryAlt = 
+        row.deliveryAlt === "daily" || 
+        row.deliveryAlt === "normal" ||
+        (row.deliveryAlt === "alt1" && isOddDay) ||
+        (row.deliveryAlt === "alt2" && !isOddDay) ||
+        (row.deliveryAlt === "weekend" && !isFridayOrSaturday);
+      
+      return matchesSearch && matchesFilter && matchesDeliveryFilter && matchesDeliveryAlt;
     });
     
     // If filter is active and warehouse row exists, ensure it's at position 1
@@ -1123,7 +1143,7 @@ export default function TablePage() {
         </div>
       )}
       
-      <div className="w-full">
+      <div className="min-h-screen w-full">
         <Navigation 
           editMode={editMode}
           onEditModeRequest={handleEditModeRequest}
@@ -1163,10 +1183,10 @@ export default function TablePage() {
         />
         
         <main className="pt-[72px] pb-20">
-        <div className="w-full mx-auto px-4 py-8" data-testid="table-page">
+        <div className="max-w-[1600px] w-full mx-auto px-6 py-6" data-testid="table-page">
           
           {/* Main Table - Moved to Top */}
-          <div ref={tableRef} className="mb-6">
+          <div ref={tableRef} className="mb-8">
             <DataTable
             rows={rowsWithDistances}
             columns={displayColumns}
@@ -1211,20 +1231,19 @@ export default function TablePage() {
           </div>
 
           {/* Color Legend Panel - Middle */}
-          <div className="mb-6 flex justify-center">
+          <div className="mb-8 flex justify-center">
             <ColorLegendPanel />
           </div>
 
           {/* Header Section - Carousel with Pages - Moved to Bottom */}
-          <div className="mb-8 relative animate-in fade-in slide-in-from-top-2 duration-600 delay-700">
+          <div className="mb-10 relative animate-in fade-in slide-in-from-top-2 duration-600 delay-700">
             {sortedPages.length > 0 ? (
               <Carousel 
                 className="w-full pb-16" 
                 opts={{ loop: sortedPages.length > 1 }}
                 setApi={setCarouselApi}
               >
-                <div className="overflow-hidden rounded-2xl border border-white/30 dark:border-white/10 glass glass-lg shadow-2xl shadow-black/10 dark:shadow-black/40 transition-all duration-500">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-transparent dark:from-gray-950/60 dark:via-gray-950/40 dark:to-gray-950/20 pointer-events-none rounded-2xl"></div>
+                <div className="overflow-hidden rounded-2xl border border-border shadow-lg bg-card transition-all duration-300 hover:shadow-xl">
                   <CarouselContent>
                   {sortedPages.map((page, index) => {
                     const isCurrentSlide = index === currentSlideIndex;
@@ -1243,12 +1262,12 @@ export default function TablePage() {
                     >
                       {/* Header Bar */}
                       <div 
-                        className="flex items-center justify-between px-6 py-3 cursor-pointer hover:bg-white/30 dark:hover:bg-gray-950/70 transition-colors duration-300 text-sm relative z-10"
+                        className="flex items-center justify-between px-6 py-3 cursor-pointer hover:bg-white/50 dark:hover:bg-gray-950/95 transition-colors duration-300 text-sm bg-white/50 dark:bg-gray-950/95"
                         onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
                       >
                         <div className="flex items-center gap-3 flex-1">
                           
-                          <h1 className="font-bold text-slate-700 dark:text-slate-300 text-center flex-1" style={{fontSize: '10px'}} data-testid={`page-title-${page.id}`}>
+                          <h1 className="font-bold text-slate-700 dark:text-slate-300 text-center flex-1" style={{fontSize: '12px'}} data-testid={`page-title-${page.id}`}>
                             {page.title || "Untitled"}
                           </h1>
                           {editMode && (
@@ -1298,7 +1317,7 @@ export default function TablePage() {
                           isHeaderExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                         }`}
                       >
-                        <div className="px-4 pb-24 border-t border-white/20 dark:border-white/10 pt-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-gray-950/40 dark:via-gray-950/20 dark:to-transparent relative z-10">
+                        <div className="px-4 pb-3 border-t border-border pt-3 bg-white/50 dark:bg-gray-950/95">
                           {/* Swipe Hints - Animated Arrows in Description */}
                           {sortedPages.length > 1 && showSlideHints && (
                             <div className="flex items-center justify-center gap-4 mb-3 pb-2 border-b border-white/10 dark:border-gray-950/20">
@@ -1365,7 +1384,7 @@ export default function TablePage() {
                                 }
                                 // If no colon, display as regular paragraph
                                 return (
-                                  <p key={lineIndex} className="text-slate-600 dark:text-slate-400" style={{margin: '2px 0', lineHeight: '1.4'}}>
+                                  <p key={lineIndex} className="text-slate-600 dark:text-slate-400" style={{margin: '4px 0', lineHeight: '1.5', fontSize: '10px'}}>
                                     {trimmedLine}
                                   </p>
                                 );
@@ -1414,6 +1433,15 @@ export default function TablePage() {
                 <p>No pages available</p>
               </div>
             )}
+            
+            {/* FamilyMart Logo - Outside Carousel */}
+            <div className="flex justify-center mt-8">
+              <img 
+                src="/assets/Logofm.png" 
+                alt="FamilyMart" 
+                className="h-16 w-auto opacity-70 hover:opacity-100 transition-opacity duration-300"
+              />
+            </div>
           </div>
 
           {/* Page Add/Edit Dialog */}

@@ -44,8 +44,13 @@ export function ColumnCustomizationModal({
         ? ['longitude', 'latitude', 'tollPrice']
         : ['longitude', 'latitude', 'info', 'tollPrice'];
       
+      // Deprecated columns to completely exclude from the modal
+      const deprecatedColumns = ['tripTun', 'tripLama', 'trip_tun', 'trip_lama', 'trip', 'Trip'];
+      
       const columnItems: ColumnItem[] = columns
         .filter(column => !columnsToHide.includes(column.dataKey))
+        .filter(column => !deprecatedColumns.includes(column.dataKey))
+        .filter(column => !deprecatedColumns.some(dep => column.name.toLowerCase().includes(dep.toLowerCase())))
         .sort((a, b) => a.sortOrder - b.sortOrder)
         .map(column => ({
           id: column.id,
