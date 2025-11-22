@@ -453,14 +453,7 @@ export default function TablePage() {
     // Get warehouse row (QL Kitchen) 
     const warehouseRow = rows.find(row => row.location === "QL Kitchen");
     
-    // Get current date to determine which delivery alt to show
-    const currentDate = new Date();
-    const dayOfMonth = currentDate.getDate();
-    const dayOfWeek = currentDate.getDay(); // 0=Sunday, 1=Monday, ..., 5=Friday, 6=Saturday
-    const isOddDay = dayOfMonth % 2 === 1; // Odd day = alt1, Even day = alt2
-    const isFridayOrSaturday = dayOfWeek === 5 || dayOfWeek === 6; // Friday or Saturday
-    
-    // Apply normal filtering
+    // Apply normal filtering (no delivery alt filtering - all rows shown)
     const normalFilteredRows = rows.filter((row) => {
       const matchesSearch = searchTerm === "" || 
         Object.values(row).some(value => 
@@ -475,20 +468,7 @@ export default function TablePage() {
       const matchesDeliveryFilter = deliveryFilterValue.length === 0 || 
         !deliveryFilterValue.includes(row.delivery);
       
-      // Delivery Alt filter based on day
-      // - daily: always show
-      // - alt1: odd days only
-      // - alt2: even days only
-      // - weekend: NOT active on Friday and Saturday (hide on those days)
-      // - normal: always show (backward compatibility)
-      const matchesDeliveryAlt = 
-        row.deliveryAlt === "daily" || 
-        row.deliveryAlt === "normal" ||
-        (row.deliveryAlt === "alt1" && isOddDay) ||
-        (row.deliveryAlt === "alt2" && !isOddDay) ||
-        (row.deliveryAlt === "weekend" && !isFridayOrSaturday);
-      
-      return matchesSearch && matchesFilter && matchesDeliveryFilter && matchesDeliveryAlt;
+      return matchesSearch && matchesFilter && matchesDeliveryFilter;
     });
     
     // If filter is active and warehouse row exists, ensure it's at position 1
@@ -1182,10 +1162,10 @@ export default function TablePage() {
           isAuthenticated={true}
         />
         
-        <main className="pt-[72px] pb-20">
-        <div className="max-w-[1600px] w-full mx-auto px-6 py-6" data-testid="table-page">
+      <main className="min-h-screen pt-20 pb-32">
+        <div className="container mx-auto px-4 py-8 max-w-3xl" data-testid="table-page">
           
-          {/* Main Table - Moved to Top */}
+          {/* Main Table */}
           <div ref={tableRef} className="mb-8">
             <DataTable
             rows={rowsWithDistances}
@@ -1227,16 +1207,18 @@ export default function TablePage() {
             onClearAllFilters={clearAllFilters}
             filteredRowsCount={filteredRows.length}
             totalRowsCount={rows.length}
+            currentDayOfMonth={new Date().getDate()}
+            currentDayOfWeek={new Date().getDay()}
           />
           </div>
 
-          {/* Color Legend Panel - Middle */}
+          {/* Color Legend Panel */}
           <div className="mb-8 flex justify-center">
             <ColorLegendPanel />
           </div>
 
-          {/* Header Section - Carousel with Pages - Moved to Bottom */}
-          <div className="mb-10 relative animate-in fade-in slide-in-from-top-2 duration-600 delay-700">
+          {/* Header Section - Carousel with Pages */}
+          <div className="mb-8 relative">
             {sortedPages.length > 0 ? (
               <Carousel 
                 className="w-full pb-16" 
@@ -1313,56 +1295,12 @@ export default function TablePage() {
 
                       {/* Sliding Content */}
                       <div 
-                        className={`overflow-y-auto transition-all duration-500 ease-in-out ${
-                          isHeaderExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                          isHeaderExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
                         }`}
                       >
                         <div className="px-4 pb-3 border-t border-border pt-3 bg-white/50 dark:bg-gray-950/95">
-                          {/* Swipe Hints - Animated Arrows in Description */}
-                          {sortedPages.length > 1 && showSlideHints && (
-                            <div className="flex items-center justify-center gap-4 mb-3 pb-2 border-b border-white/10 dark:border-gray-950/20">
-                              <div className="flex items-center gap-0.5">
-                                <style>{`
-                                  @keyframes slideLeft {
-                                    0%, 100% { opacity: 0.3; transform: translateX(0px); }
-                                    50% { opacity: 1; transform: translateX(-4px); }
-                                  }
-                                  .arrow-left-1 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0s; }
-                                  .arrow-left-2 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0.2s; }
-                                  .arrow-left-3 { animation: slideLeft 1.5s ease-in-out infinite; animation-delay: 0.4s; }
-                                  @keyframes slideRight {
-                                    0%, 100% { opacity: 0.3; transform: translateX(0px); }
-                                    50% { opacity: 1; transform: translateX(4px); }
-                                  }
-                                  .arrow-right-1 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0s; }
-                                  .arrow-right-2 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0.2s; }
-                                  .arrow-right-3 { animation: slideRight 1.5s ease-in-out infinite; animation-delay: 0.4s; }
-                                `}</style>
-                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-1" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-2" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-left-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                                <span className="text-xs text-slate-600 dark:text-slate-400 ml-1">Swipe</span>
-                              </div>
-                              <div className="flex items-center gap-0.5">
-                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-1" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                </svg>
-                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-2" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                </svg>
-                                <svg className="w-4 h-4 text-slate-600 dark:text-slate-400 arrow-right-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                </svg>
-                              </div>
-                            </div>
-                          )}
-                            <dl className="space-y-1" style={{fontSize: '9px', lineHeight: '1.4'}} data-testid={`page-description-${page.id}`}>
+                            <dl className="space-y-1" style={{fontSize: '10px', lineHeight: '1.4'}} data-testid={`page-description-${page.id}`}>
                               {(page.description || "").split('\n').map((line, lineIndex) => {
                                 const trimmedLine = line.trim();
                                 if (!trimmedLine) return null;
@@ -1384,7 +1322,7 @@ export default function TablePage() {
                                 }
                                 // If no colon, display as regular paragraph
                                 return (
-                                  <p key={lineIndex} className="text-slate-600 dark:text-slate-400" style={{margin: '4px 0', lineHeight: '1.5', fontSize: '10px'}}>
+                                  <p key={lineIndex} className="text-slate-600 dark:text-slate-400" style={{margin: '2px 0', lineHeight: '1.4'}}>
                                     {trimmedLine}
                                   </p>
                                 );

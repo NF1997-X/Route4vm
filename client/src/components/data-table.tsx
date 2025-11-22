@@ -169,6 +169,8 @@ interface DataTableProps {
   onClearAllFilters?: () => void;
   filteredRowsCount?: number;
   totalRowsCount?: number;
+  currentDayOfMonth?: number;
+  currentDayOfWeek?: number;
 }
 
 // SlightTable utility class for managing column visibility and horizontal scroll
@@ -249,6 +251,8 @@ export function DataTable({
   onClearAllFilters,
   filteredRowsCount = 0,
   totalRowsCount = 0,
+  currentDayOfMonth = new Date().getDate(),
+  currentDayOfWeek = new Date().getDay(),
 }: DataTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -355,21 +359,21 @@ export function DataTable({
 
   // Helper function to determine schedule status
   const getScheduleStatus = (row: TableRowType) => {
-    const currentDay = new Date().getDay();
-    const alt1Days = [1, 3, 5, 0]; // Mon, Wed, Fri, Sun
-    const alt2Days = [2, 4, 6];    // Tue, Thu, Sat
+    const isOddDay = currentDayOfMonth % 2 === 1;
+    const isFridayOrSaturday = currentDayOfWeek === 5 || currentDayOfWeek === 6;
     
     if (row.active === false || row.deliveryAlt === "inactive") {
       return 'inactive'; // Red
-    } else if (
-      (row.deliveryAlt === "alt1" && !alt1Days.includes(currentDay)) ||
-      (row.deliveryAlt === "alt2" && !alt2Days.includes(currentDay))
-    ) {
-      return 'off-schedule'; // Yellow
+    } else if (row.deliveryAlt === "alt1" && !isOddDay) {
+      return 'off-schedule'; // Yellow - alt1 on even days
+    } else if (row.deliveryAlt === "alt2" && isOddDay) {
+      return 'off-schedule'; // Yellow - alt2 on odd days
+    } else if (row.deliveryAlt === "weekend" && isFridayOrSaturday) {
+      return 'off-schedule'; // Yellow - weekend on Friday/Saturday
     } else if (
       isSharedView && 
       row.delivery === "Weekday" && 
-      (currentDay === 5 || currentDay === 6) // Friday or Saturday
+      isFridayOrSaturday
     ) {
       return 'off-schedule'; // Yellow for weekday delivery on Fri/Sat in shared view
     } else {
@@ -1209,11 +1213,11 @@ export function DataTable({
             onClick={onShowCustomization}
             variant="outline"
             size="sm"
-            className="w-8 h-8 p-0 pagination-button rounded-md border-transparent hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/30"
+            className="w-7 h-7 p-0 pagination-button rounded-md border-transparent hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/30"
             data-testid="button-show"
             title="Customize columns"
           >
-            <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            <Eye className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
           </Button>
           <Button
             onClick={onOptimizeRoute}
