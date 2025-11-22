@@ -1309,6 +1309,8 @@ export function DataTable({
         style={(disablePagination || isFiltered) ? {
           maxHeight: 'calc(100vh - 280px)',
           overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          scrollBehavior: 'smooth',
           willChange: 'transform',
         } : {
           willChange: 'transform',

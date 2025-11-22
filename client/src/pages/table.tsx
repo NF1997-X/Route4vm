@@ -1162,7 +1162,7 @@ export default function TablePage() {
           isAuthenticated={true}
         />
         
-      <main className="min-h-screen h-auto pt-20 pb-32">
+      <main className="min-h-screen h-auto pt-20 pb-32" style={{ WebkitOverflowScrolling: 'touch', scrollBehavior: 'smooth' }}>
         <div className="container mx-auto px-4 py-8 max-w-3xl" data-testid="table-page">
           
           {/* Main Table */}
