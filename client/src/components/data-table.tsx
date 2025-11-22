@@ -1306,7 +1306,7 @@ export function DataTable({
       )}
       <div 
         className="w-full relative contain-layout contain-paint overflow-x-auto"
-        style={disablePagination ? {
+        style={(disablePagination || isFiltered) ? {
           maxHeight: 'calc(100vh - 280px)',
           overflowY: 'auto',
           willChange: 'transform',
