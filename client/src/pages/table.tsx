@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useTableData } from "@/hooks/use-table-data";
 import { DataTable } from "@/components/data-table";
 import { ImageManagerModal } from "@/components/image-manager-modal";
-import { ColumnCustomizationModal } from "@/components/column-customization-modal";
+import { ColumnCustomizationModal } from "@/components/column-customization-modal-new";
 import { PasswordPrompt } from "@/components/password-prompt";
 import { Navigation } from "@/components/navigation";
 import { LoadingOverlay, NavigationSpinner } from "@/components/skeleton-loader";

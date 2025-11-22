@@ -112,7 +112,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
       {/* Vm Route Menu Item - iOS Style */}
       <div 
         onClick={() => handleSubmenuOpen('vm-route')}
-        className="cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
+        className="cursor-pointer rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
         data-testid="menu-edit-page"
       >
         <div className="flex items-center w-full px-3 py-2.5">
@@ -418,7 +418,7 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             
             {/* iOS-Style Dropdown Menu */}
             {isMenuOpen && (
-              <div className="absolute right-0 top-full mt-3 w-80 max-h-[80vh] bg-white/98 dark:bg-gray-950/95 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 shadow-2xl shadow-black/15 dark:shadow-black/50 rounded-2xl animate-in fade-in-0 zoom-in-95 duration-300 ease-out overflow-hidden z-50">
+              <div className="absolute right-0 top-full mt-3 w-80 max-h-[80vh] bg-white/98 dark:bg-gray-950/95 backdrop-blur-2xl border border-gray-200/50 dark:border-white/10 shadow-2xl shadow-black/15 dark:shadow-black/50 rounded-3xl animate-in fade-in-0 zoom-in-95 duration-300 ease-out overflow-hidden z-50">
                 {/* Premium Glass Background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-white/30 to-transparent dark:from-white/5 dark:via-transparent dark:to-transparent pointer-events-none rounded-2xl"></div>
                 

@@ -863,7 +863,7 @@ export function DataTable({
 
   return (
     <div
-      className="rounded-xl border border-border shadow-md overflow-hidden bg-card"
+      className="rounded-2xl border border-border shadow-md overflow-hidden bg-card"
       data-testid="data-table"
       style={{ 
         background: 'linear-gradient(to bottom, var(--card) 0%, var(--background) 100%)'
@@ -949,8 +949,8 @@ export function DataTable({
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-40 p-0 rounded-lg" align="start">
-              <div className="p-1 btn-glass rounded-lg">
+            <PopoverContent className="w-40 p-0 rounded-xl" align="start">
+              <div className="p-1 btn-glass rounded-xl">
                 <h4 className="font-medium text-[9px] mb-1 pb-1 border-b border-border/20 flex items-center gap-1">
                   <ArrowUpDown className="w-3.5 h-3.5 text-primary" />
                   Sort By
@@ -1081,8 +1081,8 @@ export function DataTable({
                   </span>
                 </Button>
               </PopoverTrigger>
-            <PopoverContent className="w-56 p-0 rounded-lg" align="start">
-              <div className="space-y-2 p-2 text-[8px] btn-glass rounded-lg">
+            <PopoverContent className="w-56 p-0 rounded-xl" align="start">
+              <div className="space-y-2 p-2 text-[8px] btn-glass rounded-xl">
                 {/* Routes Section - Hidden in shared view */}
                 {!isSharedView && (
                   <>

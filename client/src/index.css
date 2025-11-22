@@ -1706,7 +1706,7 @@ html.dark tfoot tr th .footer-total-blue {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(249, 250, 251, 0.95);
+  background: transparent;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   display: flex;
@@ -1717,7 +1717,7 @@ html.dark tfoot tr th .footer-total-blue {
 }
 
 .dark .table-loading-overlay {
-  background: rgba(0, 0, 0, 0.95);
+  background: transparent;
 }
 
 .mutation-loading {

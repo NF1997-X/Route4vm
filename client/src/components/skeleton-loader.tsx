@@ -211,7 +211,7 @@ export function InlineLoading({ size = "sm", type = "spinner" }: { size?: "sm" |
 // Simple navigation spinner - iOS style for button back/navigation only
 export function NavigationSpinner() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black">
+    <div className="min-h-screen flex items-center justify-center bg-transparent">
       <div className="text-center space-y-8">
         {/* iOS-style spinner container */}
         <div className="relative inline-block">

@@ -284,19 +284,19 @@ export default function CustomTableView() {
   // Show loading overlay
   if (isLoading || isLoadingTable || isLoadingRows || !minLoadingComplete) {
     return (
-      <div className="min-h-screen relative">
+      <>
         {isIntroLoading ? (
           <LoadingOverlay message="Loading Custom Table..." />
         ) : (
           <NavigationSpinner />
         )}
-      </div>
+      </>
     );
   }
 
   if (error || !customTable) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black">
         <div className="text-center space-y-4">
           <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-lg bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400">
             <Database className="h-8 w-8" />
@@ -316,7 +316,7 @@ export default function CustomTableView() {
     <>
       {/* Header */}
       <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
-        <div className="w-full px-4">
+        <div className="w-full mx-auto px-4">
           <div className="flex h-14 items-center justify-between text-[12px]">
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -339,8 +339,8 @@ export default function CustomTableView() {
         </div>
       </nav>
 
-      <main className="pt-[56px] w-full">
-        <div className="w-full px-4 py-8">
+      <main className="bg-gray-50 dark:bg-black pt-[56px] pb-20 w-full">
+        <div className="w-full mx-auto px-4 py-8">
           {/* Data Table with all interactive features enabled */}
           <div className="mb-6">
             <DataTable

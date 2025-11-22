@@ -281,7 +281,7 @@ export const MiniMap = memo(function MiniMap({
       center={center}
       zoom={zoom}
       style={{ height: isFullscreen ? "100%" : height, width: "100%" }}
-      className="rounded-lg border border-border"
+      className="rounded-2xl border border-border"
       preferCanvas={true}
       zoomControl={isFullscreen}
     >

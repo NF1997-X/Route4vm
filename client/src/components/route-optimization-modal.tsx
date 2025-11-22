@@ -158,7 +158,7 @@ export function RouteOptimizationModal({
         {!optimizationResult ? (
           <div className="space-y-6 mt-4">
             {selectedRowIds && selectedRowIds.length > 0 && selectedRowIds.length < rows.length && (
-              <div className="bg-amber-50/50 dark:bg-amber-950/30 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
+              <div className="bg-amber-50/50 dark:bg-amber-950/30 p-4 rounded-xl border border-amber-200 dark:border-amber-800">
                 <div className="flex items-start gap-3">
                   <Zap className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" />
                   <div>
@@ -173,7 +173,7 @@ export function RouteOptimizationModal({
               </div>
             )}
             
-            <div className="bg-blue-50/50 dark:bg-blue-950/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="bg-blue-50/50 dark:bg-blue-950/30 p-4 rounded-xl border border-blue-200 dark:border-blue-800">
               <div className="flex items-start gap-3">
                 <Zap className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                 <div>
@@ -193,7 +193,7 @@ export function RouteOptimizationModal({
               <div>
                 <Label className="text-base font-semibold mb-3 block">Choose Algorithm</Label>
                 <RadioGroup value={algorithm} onValueChange={(value: any) => setAlgorithm(value)} className="space-y-3">
-                  <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors" data-testid="radio-algorithm-nearest-neighbor">
+                  <div className="flex items-start space-x-3 p-3 rounded-xl border hover:bg-accent transition-colors" data-testid="radio-algorithm-nearest-neighbor">
                     <RadioGroupItem value="nearest_neighbor" id="nearest_neighbor" />
                     <div className="flex-1">
                       <Label htmlFor="nearest_neighbor" className="font-medium cursor-pointer">
