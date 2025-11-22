@@ -1949,7 +1949,11 @@ export function DataTable({
           {/* Top row: Entry count and pagination info */}
           <div className="flex items-center justify-between w-full">
             <div className="font-medium text-muted-foreground" style={{fontSize: '7px'}}>
-              Show <span className="font-semibold text-foreground">{Math.min(pageSize, totalRows - startIndex)}</span> of <span className="font-semibold text-foreground">{totalRows}</span> entries
+              {isFiltered ? (
+                <span>Total <span className="font-semibold text-foreground">{totalRows}</span> entries</span>
+              ) : (
+                <>Show <span className="font-semibold text-foreground">{Math.min(pageSize, totalRows - startIndex)}</span> of <span className="font-semibold text-foreground">{totalRows}</span> entries</>
+              )}
             </div>
             <div className="font-medium text-muted-foreground" style={{fontSize: '7px'}}>
               Page <span className="font-semibold text-foreground">{currentPage}</span> of <span className="font-semibold text-foreground">{totalPages}</span>

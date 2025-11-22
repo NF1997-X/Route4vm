@@ -1162,7 +1162,7 @@ export default function TablePage() {
           isAuthenticated={true}
         />
         
-        <main className="bg-gray-50 dark:bg-black pt-[72px] pb-20">
+        <main className="min-h-screen bg-gray-50 dark:bg-black pt-[72px] pb-20">
         <div className="w-full mx-auto px-4 py-8" data-testid="table-page">
           
           {/* Main Table - Moved to Top */}
