@@ -1123,7 +1123,7 @@ export default function TablePage() {
         </div>
       )}
       
-      <div className="animate-in fade-in duration-500">
+      <div className="w-full">
         <Navigation 
           editMode={editMode}
           onEditModeRequest={handleEditModeRequest}
@@ -1161,9 +1161,9 @@ export default function TablePage() {
           }}
           isAuthenticated={true}
         />
-      </div>
-      <main className="pt-[72px] w-full">
-        <div className="w-full px-4 py-8" data-testid="table-page">
+        
+        <main className="bg-gray-50 dark:bg-black pt-[72px] pb-20">
+        <div className="w-full mx-auto px-4 py-8" data-testid="table-page">
           
           {/* Main Table - Moved to Top */}
           <div ref={tableRef} className="mb-6">
@@ -1294,8 +1294,8 @@ export default function TablePage() {
 
                       {/* Sliding Content */}
                       <div 
-                        className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                          isHeaderExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                        className={`overflow-y-auto transition-all duration-500 ease-in-out ${
+                          isHeaderExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                         }`}
                       >
                         <div className="px-4 pb-3 border-t border-white/20 dark:border-white/10 pt-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-gray-950/40 dark:via-gray-950/20 dark:to-transparent relative z-10">
@@ -1933,14 +1933,7 @@ export default function TablePage() {
 
         </div>
       </main>
-
-      {/* Logo Section */}
-      <div className="flex justify-center items-center py-8 bg-gradient-to-b from-transparent to-gray-50/50 dark:to-gray-900/50">
-        <img 
-          src="/Photoroom_20251112_165002.png" 
-          alt="Company Logo" 
-          className="h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-        />
+      
       </div>
 
       {/* Bulk Color Modal */}

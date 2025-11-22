@@ -863,17 +863,20 @@ export function DataTable({
 
   return (
     <div
-      className="glass-table rounded-xl border border-gray-200/60 dark:border-white/10 shadow-md table-container my-4 overflow-hidden"
+      className="rounded-xl border border-border shadow-md overflow-hidden bg-card"
       data-testid="data-table"
+      style={{ 
+        background: 'linear-gradient(to bottom, var(--card) 0%, var(--background) 100%)'
+      }}
     >
-      {/* Top Row: Customize Buttons */}
-      <div className="px-2 py-1 border-b border-border/20 bg-gradient-to-r from-blue-500/5 via-blue-500/3 to-blue-500/5 dark:bg-gray-950/95 backdrop-blur-sm text-[7px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
+      {/* Top Row: Bulk Actions and Keyboard Shortcuts */}
+      <div className="px-2 py-1 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm text-[7px]" style={{ fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" }}>
         <div className="flex flex-row gap-1 items-center justify-between">
           
           {/* Left Side: Bulk Actions (shown when rows are selected) */}
           {editMode && selectedRows.size > 0 && (
-            <div className="flex items-center gap-1 text-xs bg-blue-100 dark:bg-blue-900/30 px-2 py-1 rounded-md">
-              <span className="font-medium text-blue-700 dark:text-blue-300">
+            <div className="flex items-center gap-1 text-xs bg-primary/10 dark:bg-primary/20 px-2 py-1 rounded-md">
+              <span className="font-medium text-primary">
                 {selectedRows.size} selected
               </span>
               <Button
@@ -911,58 +914,10 @@ export function DataTable({
               💡 Tip: Ctrl+A to select all, ESC to clear
             </div>
           )}
-          
-          {/* Right Side: Customize and Other Buttons */}
-          <div className="flex items-center gap-1 ml-auto">
-            {/* Export to CSV Button */}
-            <Button
-              onClick={exportToCSV}
-              variant="outline"
-              size="sm"
-              className="w-8 h-8 p-0 pagination-button rounded-md"
-              data-testid="button-export-csv"
-              title={selectedRows.size > 0 ? `Export ${selectedRows.size} selected rows to CSV` : "Export all rows to CSV"}
-            >
-              <FileText className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-            </Button>
-            <Button
-              onClick={onShowCustomization}
-              variant="outline"
-              size="sm"
-              className="w-8 h-8 p-0 pagination-button rounded-md"
-              data-testid="button-show"
-              title="Customize columns"
-            >
-              <Eye className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            </Button>
-            <Button
-              onClick={onOptimizeRoute}
-              variant="outline"
-              size="sm"
-              className="w-8 h-8 p-0 pagination-button rounded-md"
-              data-testid="button-optimize-route"
-              title="Optimize delivery route with AI"
-            >
-              <Route className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            </Button>
-            {!hideShareButton && (
-              <Button
-                onClick={onShareTable}
-                variant="outline"
-                size="sm"
-                className="w-8 h-8 p-0 pagination-button rounded-md"
-                data-testid="button-share-table"
-                title="Share current table view"
-              >
-                <Share2 className="w-5 h-5 text-green-500 dark:text-green-400" />
-              </Button>
-            )}
-          </div>
         </div>
-        
       </div>
-      {/* Bottom Row: Sort/Filter/Clear (Left) and Search (Right) */}
-      <div className="flex justify-between items-center px-2 py-1 border-b border-border/20 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm rounded-t-md">
+      {/* Combined Row: Sort/Filter/Clear (Left) and Search + Action Buttons (Right) */}
+      <div className="flex justify-between items-center px-2 pt-0 pb-2 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm rounded-t-md">
         <div className="flex items-center gap-1 flex-shrink-0">
           {/* Sort Popover */}
           <Popover>
@@ -997,100 +952,100 @@ export function DataTable({
             <PopoverContent className="w-40 p-0 rounded-lg" align="start">
               <div className="p-1 btn-glass rounded-lg">
                 <h4 className="font-medium text-[9px] mb-1 pb-1 border-b border-border/20 flex items-center gap-1">
-                  <ArrowUpDown className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
+                  <ArrowUpDown className="w-3.5 h-3.5 text-primary" />
                   Sort By
                 </h4>
-                <div className="space-y-1 text-xs">
+                <div className="space-y-1.5">
                   <Button
                     variant={sortState?.column === 'route' ? 'default' : 'ghost'}
-                    size="sm"
-                    className={`w-full justify-between text-xs ${
-                      sortState?.column === 'route' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                    size="default"
+                    className={`w-full justify-between text-sm ${
+                      sortState?.column === 'route' ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''
                     }`}
                     onClick={() => handleSortToggle('route')}
                     data-testid="button-sort-route"
                   >
                     <span>Route</span>
                     {sortState?.column === 'route' && (
-                      sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                      sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
                     )}
-                    {sortState?.column !== 'route' && <ArrowUpDown className="w-3 h-3 opacity-30" />}
+                    {sortState?.column !== 'route' && <ArrowUpDown className="w-4 h-4 opacity-30" />}
                   </Button>
                   <Button
                     variant={sortState?.column === 'code' ? 'default' : 'ghost'}
-                    size="sm"
-                    className={`w-full justify-between text-xs ${
-                      sortState?.column === 'code' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                    size="default"
+                    className={`w-full justify-between text-sm ${
+                      sortState?.column === 'code' ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''
                     }`}
                     onClick={() => handleSortToggle('code')}
                     data-testid="button-sort-code"
                   >
                     <span>Code</span>
                     {sortState?.column === 'code' && (
-                      sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                      sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
                     )}
-                    {sortState?.column !== 'code' && <ArrowUpDown className="w-3 h-3 opacity-30" />}
+                    {sortState?.column !== 'code' && <ArrowUpDown className="w-4 h-4 opacity-30" />}
                   </Button>
                   <Button
                     variant={sortState?.column === 'location' ? 'default' : 'ghost'}
-                    size="sm"
-                    className={`w-full justify-between text-xs ${
-                      sortState?.column === 'location' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                    size="default"
+                    className={`w-full justify-between text-sm ${
+                      sortState?.column === 'location' ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''
                     }`}
                     onClick={() => handleSortToggle('location')}
                     data-testid="button-sort-location"
                   >
                     <span>Location</span>
                     {sortState?.column === 'location' && (
-                      sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                      sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
                     )}
-                    {sortState?.column !== 'location' && <ArrowUpDown className="w-3 h-3 opacity-30" />}
+                    {sortState?.column !== 'location' && <ArrowUpDown className="w-4 h-4 opacity-30" />}
                   </Button>
                   <Button
                     variant={sortState?.column === 'delivery' ? 'default' : 'ghost'}
-                    size="sm"
-                    className={`w-full justify-between text-xs ${
-                      sortState?.column === 'delivery' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                    size="default"
+                    className={`w-full justify-between text-sm ${
+                      sortState?.column === 'delivery' ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''
                     }`}
                     onClick={() => handleSortToggle('delivery')}
                     data-testid="button-sort-delivery"
                   >
                     <span>Delivery</span>
                     {sortState?.column === 'delivery' && (
-                      sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                      sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
                     )}
-                    {sortState?.column !== 'delivery' && <ArrowUpDown className="w-3 h-3 opacity-30" />}
+                    {sortState?.column !== 'delivery' && <ArrowUpDown className="w-4 h-4 opacity-30" />}
                   </Button>
                   <Button
                     variant={sortState?.column === 'kilometer' ? 'default' : 'ghost'}
-                    size="sm"
-                    className={`w-full justify-between text-xs ${
-                      sortState?.column === 'kilometer' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                    size="default"
+                    className={`w-full justify-between text-sm ${
+                      sortState?.column === 'kilometer' ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''
                     }`}
                     onClick={() => handleSortToggle('kilometer')}
                     data-testid="button-sort-kilometer"
                   >
                     <span>Kilometer</span>
                     {sortState?.column === 'kilometer' && (
-                      sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                      sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
                     )}
-                    {sortState?.column !== 'kilometer' && <ArrowUpDown className="w-3 h-3 opacity-30" />}
+                    {sortState?.column !== 'kilometer' && <ArrowUpDown className="w-4 h-4 opacity-30" />}
                   </Button>
                   {isFiltered && (
                     <Button
                       variant={sortState?.column === 'order' ? 'default' : 'ghost'}
-                      size="sm"
-                      className={`w-full justify-between text-xs ${
-                        sortState?.column === 'order' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
+                      size="default"
+                      className={`w-full justify-between text-sm ${
+                        sortState?.column === 'order' ? 'bg-primary hover:bg-primary/90 text-primary-foreground' : ''
                       }`}
                       onClick={() => handleSortToggle('order')}
                       data-testid="button-sort-order"
                     >
                       <span>No</span>
                       {sortState?.column === 'order' && (
-                        sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
+                        sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
                       )}
-                      {sortState?.column !== 'order' && <ArrowUpDown className="w-3 h-3 opacity-30" />}
+                      {sortState?.column !== 'order' && <ArrowUpDown className="w-4 h-4 opacity-30" />}
                     </Button>
                   )}
                 </div>
@@ -1102,24 +1057,25 @@ export function DataTable({
           <div className="w-auto">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-5 px-1.5 pagination-button text-[7px] justify-start rounded-md" data-testid="combined-filter-trigger">
+                <Button variant="outline" className="h-5 px-1.5 pagination-button text-[7px] justify-start rounded-md gap-1" data-testid="combined-filter-trigger">
+                  <Filter className="w-2.5 h-2.5" />
                   <span className="hidden sm:inline">
                     {isSharedView ? (
                       deliveryFilterValue.length === 0 
-                        ? "🔍 Hide Deliveries" 
+                        ? "Hide Deliveries" 
                         : `🚫 ${deliveryFilterValue.length} hidden`
                     ) : (
                       filterValue.length === 0 && deliveryFilterValue.length === 0 
-                        ? "🔍 Filters" 
+                        ? "Filters" 
                         : `📍 ${filterValue.length} • 🚫 ${deliveryFilterValue.length}`
                     )}
                   </span>
                   <span className="sm:hidden">
                     {isSharedView ? (
-                      deliveryFilterValue.length === 0 ? "🔍" : `🚫${deliveryFilterValue.length}`
+                      deliveryFilterValue.length === 0 ? "" : `🚫${deliveryFilterValue.length}`
                     ) : (
                       filterValue.length === 0 && deliveryFilterValue.length === 0 
-                        ? "🔍" 
+                        ? "" 
                         : `📍${filterValue.length} 🚫${deliveryFilterValue.length}`
                     )}
                   </span>
@@ -1213,28 +1169,73 @@ export function DataTable({
           )}
         </div>
         
-        {/* Right Side: Search Input */}
-        <div className="flex-1 max-w-[30%] lg:max-w-md ml-auto flex items-center gap-2">
-          <div className="relative group flex-1">
-            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2.5 h-3 text-muted-foreground" />
+        {/* Right Side: Search Input and Action Buttons */}
+        <div className="flex items-center gap-1 ml-auto">
+          {/* Search Input */}
+          <div className="relative group w-48">
+            <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-muted-foreground" />
             <Input
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => onSearchTermChange?.(e.target.value)}
-              className="pl-6 pr-6 h-7 bg-white/80 dark:bg-gray-950/95 text-foreground placeholder:text-muted-foreground border-1.5 border-border/40 dark:border-gray-700 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 dark:focus-visible:ring-gray-700 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-xs"
+              className="pl-7 pr-7 h-8 bg-transparent text-foreground placeholder:text-muted-foreground border border-border rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:border-primary transition-all text-xs"
               data-testid="search-input"
             />
             {searchTerm && (
               <button
                 onClick={() => onSearchTermChange?.('')}
-                className="absolute right-0.5 top-1/2 transform -translate-y-1/2 p-0.5 w-4 h-4 rounded-full hover:bg-muted/50 flex items-center justify-center"
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 p-0.5 w-5 h-5 rounded-full hover:bg-muted/80 flex items-center justify-center transition-colors"
                 data-testid="clear-search"
                 aria-label="Clear search"
               >
-                <X className="w-2.5 h-2.5 text-muted-foreground hover:text-foreground" />
+                <X className="w-3 h-3 text-muted-foreground hover:text-foreground" />
               </button>
             )}
           </div>
+          
+          {/* Action Buttons */}
+          <Button
+            onClick={exportToCSV}
+            variant="outline"
+            size="sm"
+            className="w-8 h-8 p-0 pagination-button rounded-md border-transparent hover:border-purple-200 dark:hover:border-purple-800 hover:bg-purple-50 dark:hover:bg-purple-950/30"
+            data-testid="button-export-csv"
+            title={selectedRows.size > 0 ? `Export ${selectedRows.size} selected rows to CSV` : "Export all rows to CSV"}
+          >
+            <FileText className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+          </Button>
+          <Button
+            onClick={onShowCustomization}
+            variant="outline"
+            size="sm"
+            className="w-8 h-8 p-0 pagination-button rounded-md border-transparent hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50 dark:hover:bg-blue-950/30"
+            data-testid="button-show"
+            title="Customize columns"
+          >
+            <Eye className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          </Button>
+          <Button
+            onClick={onOptimizeRoute}
+            variant="outline"
+            size="sm"
+            className="w-8 h-8 p-0 pagination-button rounded-md border-transparent hover:border-cyan-200 dark:hover:border-cyan-800 hover:bg-cyan-50 dark:hover:bg-cyan-950/30"
+            data-testid="button-optimize-route"
+            title="Optimize delivery route with AI"
+          >
+            <Route className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+          </Button>
+          {!hideShareButton && (
+            <Button
+              onClick={onShareTable}
+              variant="outline"
+              size="sm"
+              className="w-8 h-8 p-0 pagination-button rounded-md border-transparent hover:border-green-200 dark:hover:border-green-800 hover:bg-green-50 dark:hover:bg-green-950/30"
+              data-testid="button-share-table"
+              title="Share current table view"
+            >
+              <Share2 className="w-4 h-4 text-green-600 dark:text-green-400" />
+            </Button>
+          )}
         </div>
       </div>
       {/* Active Filters Display */}
@@ -1311,10 +1312,10 @@ export function DataTable({
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="w-full" style={{tableLayout: "auto", width: "100%"}}>
             <TableHeader className="sticky top-0 z-10">
-              <TableRow className="border-b-2 border-blue-200 dark:border-blue-800">
+              <TableRow className="border-t border-border border-b border-border">
                 {editMode && (
                   <TableHead
-                    className="px-2 py-3 text-center font-medium bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-950 border-r border-blue-100 dark:border-gray-800 w-10 h-12 shadow-sm"
+                    className="px-2 py-3 text-center font-medium bg-white/95 dark:bg-gray-950/95 w-10 h-12 shadow-sm"
                     style={{ textAlign: "center" }}
                   >
                     <Checkbox
@@ -1329,14 +1330,14 @@ export function DataTable({
                         }
                       }}
                       aria-label="Select all rows"
-                      className="border-2 border-blue-400 dark:border-blue-500"
+                      className="border-2 border-primary"
                     />
                   </TableHead>
                 )}
                 {visibleColumns.map((column, index) => (
                   <TableHead
                     key={column.id}
-                    className="px-3 sm:px-4 py-3 text-center font-semibold bg-gradient-to-b from-blue-50 via-indigo-50/50 to-white dark:from-gray-900 dark:via-indigo-950/30 dark:to-gray-950 border-r border-blue-100 dark:border-gray-800 whitespace-nowrap h-12 shadow-sm hover:from-blue-100 hover:to-blue-50 dark:hover:from-gray-800 dark:hover:to-gray-900 transition-colors"
+                    className="px-3 sm:px-4 py-3 text-center font-semibold bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-12 shadow-sm hover:bg-muted/50 transition-colors"
                     style={{ textAlign: "center" }}
                     colSpan={column.dataKey === "location" ? 3 : 1}
                   >
@@ -1349,7 +1350,7 @@ export function DataTable({
                     />
                   </TableHead>
                 ))}
-                <TableHead className="px-3 sm:px-4 py-3 text-center font-bold bg-gradient-to-b from-red-50 via-orange-50/50 to-white dark:from-red-950/50 dark:via-orange-950/30 dark:to-gray-950 border-l-2 border-red-200 dark:border-red-800 whitespace-nowrap h-12 shadow-sm">
+                <TableHead className="px-3 sm:px-4 py-3 text-center font-bold bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-12 shadow-sm">
                   <span className="bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent font-bold uppercase tracking-wide" style={{fontSize: '9px'}}>
                     Action
                   </span>
@@ -1899,16 +1900,16 @@ export function DataTable({
                 {visibleColumns.map((column, index) => (
                   <TableCell
                     key={column.id}
-                    className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-blue-700 dark:text-blue-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
+                    className="px-3 sm:px-4 py-2 sm:py-3 text-center table-header-footer-12px font-semibold text-foreground tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12"
                     style={{ textAlign: "center", fontSize: "9px" }}
                     colSpan={column.dataKey === "location" ? 3 : 1}
                   >
                     {index === 0 ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent" style={{fontSize: '9px'}}>Totals</span>
+                      <span className="font-semibold text-foreground" style={{fontSize: '9px'}}>Totals</span>
                     ) : column.dataKey === "no" ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
+                      <span className="font-semibold text-foreground">—</span>
                     ) : column.dataKey === "kilometer" ? (
-                      <span className="font-semibold text-blue-600 dark:text-blue-400">
+                      <span className="font-semibold text-foreground">
                         {(() => {
                           const total = calculateColumnSum("kilometer", column.type);
                           return total > 0 ? `${total.toFixed(2)} km` : "—";
@@ -1916,7 +1917,7 @@ export function DataTable({
                       </span>
                     ) : column.dataKey === "tngRoute" &&
                       column.type === "currency" ? (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                      <span className="font-semibold text-foreground">
                         {formatCurrency(
                           calculateColumnSum("tngRoute", column.type),
                         )}
@@ -1929,12 +1930,12 @@ export function DataTable({
                         )}
                       </span>
                     ) : (
-                      <span className="font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">—</span>
+                      <span className="font-semibold text-foreground">—</span>
                     )}
                   </TableCell>
                 ))}
-                <TableCell className="px-3 sm:px-4 py-2 sm:py-3 text-center font-semibold text-red-700 dark:text-red-300 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12" style={{fontSize: '9px'}}>
-                  <span className="font-semibold bg-gradient-to-r from-red-600 to-orange-600 dark:from-red-400 dark:to-orange-400 bg-clip-text text-transparent">—</span>
+                <TableCell className="px-3 sm:px-4 py-2 sm:py-3 text-center font-semibold text-red-600 dark:text-red-400 tracking-wide bg-white/95 dark:bg-gray-950/95 whitespace-nowrap h-10 sm:h-12" style={{fontSize: '9px'}}>
+                  <span className="font-semibold text-red-600 dark:text-red-400">—</span>
                 </TableCell>
               </TableRow>
             </tfoot>
@@ -1944,33 +1945,33 @@ export function DataTable({
 
       {/* Pagination Controls - Below Footer */}
       {!disablePagination && (
-        <div className="flex flex-col items-center gap-4 px-4 py-4 border-t border-blue-200 dark:border-gray-700 bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast rounded-b-xl">
+        <div className="flex flex-col items-center gap-1.5 px-3 py-1.5 border-t border-border bg-white/50 dark:bg-gray-950/95 backdrop-blur-sm transition-smooth-fast rounded-b-xl">
           {/* Top row: Entry count and pagination info */}
           <div className="flex items-center justify-between w-full">
-            <div className="text-xs font-medium text-muted-foreground">
+            <div className="font-medium text-muted-foreground" style={{fontSize: '7px'}}>
               Show <span className="font-semibold text-foreground">{Math.min(pageSize, totalRows - startIndex)}</span> of <span className="font-semibold text-foreground">{totalRows}</span> entries
             </div>
-            <div className="text-xs font-medium text-muted-foreground">
+            <div className="font-medium text-muted-foreground" style={{fontSize: '7px'}}>
               Page <span className="font-semibold text-foreground">{currentPage}</span> of <span className="font-semibold text-foreground">{totalPages}</span>
             </div>
           </div>
 
           {/* Bottom row: Pagination controls */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5">
             {/* Always show First page button */}
             {totalPages > 1 && currentPage !== 1 && (
               <Button
                 variant="outline"
                 size="xs"
                 onClick={() => goToPage(1)}
-                className="pagination-button"
+                className="pagination-button h-3.5 w-3.5 p-0 text-[8px] rounded-sm"
                 data-testid="button-first-page"
               >
-                <span className="text-xs font-semibold">1</span>
+                <span className="font-semibold">1</span>
               </Button>
             )}
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5">
               {(() => {
                 // Calculate sliding window of max 3 pages
                 const maxButtons = 3;
@@ -2004,7 +2005,7 @@ export function DataTable({
                       variant="outline"
                       size="xs"
                       onClick={() => goToPage(pageNum)}
-                      className={`pagination-button page-number ${
+                      className={`pagination-button page-number h-3.5 w-3.5 p-0 text-[8px] rounded-sm ${
                         isCurrentPage ? "active" : ""
                       }`}
                       data-testid={`button-page-${pageNum}`}
@@ -2022,10 +2023,10 @@ export function DataTable({
                 variant="outline"
                 size="xs"
                 onClick={() => goToPage(totalPages)}
-                className="pagination-button"
+                className="pagination-button h-3.5 w-3.5 p-0 text-[8px] rounded-sm"
                 data-testid="button-last-page"
               >
-                <span className="text-xs font-semibold">{totalPages}</span>
+                <span className="font-semibold">{totalPages}</span>
               </Button>
             )}
           </div>

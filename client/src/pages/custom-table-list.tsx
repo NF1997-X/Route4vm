@@ -17,7 +17,6 @@ import { Plus, Share2, Trash2, Copy, Check, Home, Edit, ArrowLeft, ChevronDown, 
 import type { TableRow, CustomTable } from "@shared/schema";
 import { Footer } from "@/components/footer";
 import { LoadingOverlay } from "@/components/skeleton-loader";
-import { useTheme } from "@/components/theme-provider";
 import { useLocation } from "wouter";
 
 export default function CustomTableList() {
@@ -36,7 +35,6 @@ export default function CustomTableList() {
   const [selectedTable, setSelectedTable] = useState<CustomTable | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { theme, toggleTheme } = useTheme();
   const [, setLocation] = useLocation();
 
   // Fetch all table rows
@@ -319,7 +317,7 @@ export default function CustomTableList() {
         </div>
       </nav>
       <main className="min-h-screen bg-gray-50 dark:bg-black pt-[72px] pb-20 w-full">
-        <div className="w-full px-6">
+        <div className="w-full px-4 py-8">
         {/* Action Bar */}
         <div className="flex justify-between items-center mb-6">
           <div className={`text-sm ${isEditDialogOpen ? "text-green-600 dark:text-green-400 font-semibold" : "text-gray-600 dark:text-gray-400"}`}>

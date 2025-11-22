@@ -19,11 +19,11 @@ export function ColumnHeader({ column, dragHandleProps, onDelete, isAuthenticate
     <div className="flex items-center justify-center w-full mx-auto relative group/header">
       {editMode && (
         <div {...dragHandleProps} className="absolute left-0 opacity-0 group-hover/header:opacity-60 hover:opacity-100 transition-opacity cursor-move">
-          <Grip className="w-3 h-3 text-blue-500 dark:text-blue-400" />
+          <Grip className="w-3 h-3 text-primary" />
         </div>
       )}
       <div className="text-center flex-1">
-        <span className="block bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent font-semibold tracking-wide uppercase" style={{fontSize: '9px', letterSpacing: '0.5px'}}>{column.name}</span>
+        <span className="font-semibold text-foreground tracking-wide uppercase" style={{fontSize: '9px', letterSpacing: '0.5px'}}>{column.name}</span>
       </div>
       {!isCoreColumn && editMode && (
         <div className="absolute right-0 flex items-center gap-1 opacity-0 group-hover/header:opacity-100 transition-opacity">

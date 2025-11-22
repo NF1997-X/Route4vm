@@ -143,11 +143,17 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             value={editValue ?? selectOptions[0]}
             onChange={(e) => setEditValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="h-7 px-2 py-1 text-[10px] text-center bg-white dark:bg-gray-900 border-2 border-blue-500 dark:border-blue-400 rounded-md shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 hover:border-blue-600 focus:scale-105"
+            className="h-8 px-3 py-1.5 text-[10px] text-center bg-white dark:bg-gray-800 border-2 border-blue-500 dark:border-blue-400 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-200 hover:border-blue-600 hover:shadow-xl focus:scale-105 cursor-pointer appearance-none bg-gradient-to-b from-white to-blue-50 dark:from-gray-800 dark:to-gray-900"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%233B82F6' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'right 8px center',
+              paddingRight: '28px'
+            }}
             autoFocus
           >
             {selectOptions.map((option) => (
-              <option key={option} value={option}>
+              <option key={option} value={option} className="py-2 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800">
                 {option}
               </option>
             ))}

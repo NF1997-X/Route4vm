@@ -1,50 +1,49 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-type Theme = 'light' | 'dark';
+type Theme = 'dark';
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  setTheme: (theme: Theme) => void;
+  availableThemes: { value: Theme; label: string; colors: string }[];
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const themes = [
+  { value: 'dark' as Theme, label: 'Dark', colors: 'bg-gray-950 border-gray-800' },
+];
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // Try to get theme from localStorage
-    const savedTheme = localStorage.getItem('theme') as Theme | null;
-    if (savedTheme) {
-      return savedTheme;
-    }
-    
-    // Check system preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    
-    return 'light';
-  });
+  // Always use dark theme
+  const [theme] = useState<Theme>('dark');
 
   useEffect(() => {
     const root = document.documentElement;
     
-    // Apply theme class to html element
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    // Always apply dark class
+    root.classList.add('dark');
     
-    // Save theme preference
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    // Remove any other theme classes
+    root.classList.remove('ocean', 'nature', 'sunset', 'midnight');
+    
+    // Clear CSS variables (not needed for traditional dark theme)
+    root.style.removeProperty('--theme-bg');
+    root.style.removeProperty('--theme-bg-secondary');
+    root.style.removeProperty('--theme-accent');
+    root.style.removeProperty('--theme-text');
+    
+    // Set theme preference in localStorage
+    localStorage.setItem('app-theme', 'dark');
+  }, []);
 
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  // setTheme does nothing - theme is locked to dark
+  const setTheme = () => {
+    // Theme is locked to dark, do nothing
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, availableThemes: themes }}>
       {children}
     </ThemeContext.Provider>
   );

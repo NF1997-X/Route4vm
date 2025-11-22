@@ -323,91 +323,69 @@ textarea {
 /* ============================================
    THEME VARIABLES - FRESH START
    ============================================ */
+/* ============================================
+   LIGHT THEME - Black & White Based
+   ============================================ */
 :root {
-  /* === PRIMARY COLORS === */
-  --primary: #3b82f6;
+  --primary: #000000;
   --primary-foreground: #ffffff;
-  
-  /* === NEUTRAL COLORS === */
   --background: #ffffff;
   --foreground: #000000;
-  --card: #ffffff;
+  --card: #fafafa;
   --card-foreground: #000000;
-  
-  /* === BORDERS & DIVIDERS === */
-  --border: #e5e7eb;
+  --border: #e5e5e5;
   --input: #ffffff;
-  
-  /* === SECONDARY & ACCENT === */
-  --secondary: #6b7280;
+  --secondary: #525252;
   --secondary-foreground: #ffffff;
-  --muted: #f3f4f6;
-  --muted-foreground: #6b7280;
-  --accent: #06b6d4;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #262626;
   --accent-foreground: #ffffff;
-  
-  /* === DESTRUCTIVE & SEMANTIC === */
-  --destructive: #ef4444;
+  --destructive: #dc2626;
   --destructive-foreground: #ffffff;
   --popover: #ffffff;
   --popover-foreground: #000000;
-  --ring: #3b82f6;
-  
-  /* === SIDEBAR === */
+  --ring: #000000;
   --sidebar-background: #ffffff;
   --sidebar-foreground: #000000;
-  --sidebar-primary: #3b82f6;
+  --sidebar-primary: #000000;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #06b6d4;
+  --sidebar-accent: #262626;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #3b82f6;
-  
-  /* === CHART COLORS === */
-  --chart-1: #3b82f6;
-  --chart-2: #10b981;
-  --chart-3: #f59e0b;
-  --chart-4: #ef4444;
-  --chart-5: #06b6d4;
-  
-  /* === SPACING & RADIUS === */
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #000000;
+  --chart-1: #171717;
+  --chart-2: #404040;
+  --chart-3: #525252;
+  --chart-4: #737373;
+  --chart-5: #a3a3a3;
   --radius: 0.5rem;
-  
-  /* === TRANSITIONS === */
   --transition: 200ms ease-in-out;
 }
 
+/* ============================================
+   DARK THEME
+   ============================================ */
 .dark {
-  /* === PRIMARY COLORS === */
   --primary: #60a5fa;
   --primary-foreground: #000000;
-  
-  /* === NEUTRAL COLORS === */
   --background: #0f172a;
   --foreground: #ffffff;
   --card: #1e293b;
   --card-foreground: #ffffff;
-  
-  /* === BORDERS & DIVIDERS === */
   --border: #334155;
   --input: #1e293b;
-  
-  /* === SECONDARY & ACCENT === */
   --secondary: #64748b;
   --secondary-foreground: #ffffff;
   --muted: #334155;
   --muted-foreground: #cbd5e1;
   --accent: #06b6d4;
   --accent-foreground: #000000;
-  
-  /* === DESTRUCTIVE & SEMANTIC === */
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --popover: #1e293b;
   --popover-foreground: #ffffff;
   --ring: #60a5fa;
-  
-  /* === SIDEBAR === */
   --sidebar-background: #1e293b;
   --sidebar-foreground: #ffffff;
   --sidebar-primary: #60a5fa;
@@ -416,19 +394,163 @@ textarea {
   --sidebar-accent-foreground: #000000;
   --sidebar-border: #334155;
   --sidebar-ring: #60a5fa;
-  
-  /* === CHART COLORS === */
   --chart-1: #60a5fa;
   --chart-2: #10b981;
   --chart-3: #f59e0b;
   --chart-4: #ef4444;
   --chart-5: #06b6d4;
-  
-  /* === SPACING & RADIUS === */
-  --radius: 0.5rem;
-  
-  /* === TRANSITIONS === */
-  --transition: 200ms ease-in-out;
+}
+
+/* ============================================
+   OCEAN THEME - Deep Blue Waters
+   ============================================ */
+.ocean {
+  --primary: #0ea5e9;
+  --primary-foreground: #ffffff;
+  --background: #0c4a6e;
+  --foreground: #e0f2fe;
+  --card: #075985;
+  --card-foreground: #e0f2fe;
+  --border: #0284c7;
+  --input: #075985;
+  --secondary: #0369a1;
+  --secondary-foreground: #e0f2fe;
+  --muted: #0284c7;
+  --muted-foreground: #bae6fd;
+  --accent: #06b6d4;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --popover: #075985;
+  --popover-foreground: #e0f2fe;
+  --ring: #0ea5e9;
+  --sidebar-background: #075985;
+  --sidebar-foreground: #e0f2fe;
+  --sidebar-primary: #0ea5e9;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #06b6d4;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #0284c7;
+  --sidebar-ring: #0ea5e9;
+  --chart-1: #0ea5e9;
+  --chart-2: #06b6d4;
+  --chart-3: #0284c7;
+  --chart-4: #0369a1;
+  --chart-5: #bae6fd;
+}
+
+/* ============================================
+   NATURE THEME - Forest Green
+   ============================================ */
+.nature {
+  --primary: #22c55e;
+  --primary-foreground: #ffffff;
+  --background: #14532d;
+  --foreground: #dcfce7;
+  --card: #166534;
+  --card-foreground: #dcfce7;
+  --border: #16a34a;
+  --input: #166534;
+  --secondary: #15803d;
+  --secondary-foreground: #dcfce7;
+  --muted: #16a34a;
+  --muted-foreground: #bbf7d0;
+  --accent: #10b981;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --popover: #166534;
+  --popover-foreground: #dcfce7;
+  --ring: #22c55e;
+  --sidebar-background: #166534;
+  --sidebar-foreground: #dcfce7;
+  --sidebar-primary: #22c55e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #10b981;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #16a34a;
+  --sidebar-ring: #22c55e;
+  --chart-1: #22c55e;
+  --chart-2: #10b981;
+  --chart-3: #16a34a;
+  --chart-4: #15803d;
+  --chart-5: #bbf7d0;
+}
+
+/* ============================================
+   SUNSET THEME - Warm Orange & Red
+   ============================================ */
+.sunset {
+  --primary: #f97316;
+  --primary-foreground: #ffffff;
+  --background: #7c2d12;
+  --foreground: #fed7aa;
+  --card: #9a3412;
+  --card-foreground: #fed7aa;
+  --border: #ea580c;
+  --input: #9a3412;
+  --secondary: #c2410c;
+  --secondary-foreground: #fed7aa;
+  --muted: #ea580c;
+  --muted-foreground: #fecaca;
+  --accent: #fb923c;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --popover: #9a3412;
+  --popover-foreground: #fed7aa;
+  --ring: #f97316;
+  --sidebar-background: #9a3412;
+  --sidebar-foreground: #fed7aa;
+  --sidebar-primary: #f97316;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #fb923c;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #ea580c;
+  --sidebar-ring: #f97316;
+  --chart-1: #f97316;
+  --chart-2: #fb923c;
+  --chart-3: #ea580c;
+  --chart-4: #c2410c;
+  --chart-5: #fecaca;
+}
+
+/* ============================================
+   MIDNIGHT THEME - Purple & Indigo Night
+   ============================================ */
+.midnight {
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --background: #1e1b4b;
+  --foreground: #e9d5ff;
+  --card: #312e81;
+  --card-foreground: #e9d5ff;
+  --border: #6d28d9;
+  --input: #312e81;
+  --secondary: #4c1d95;
+  --secondary-foreground: #e9d5ff;
+  --muted: #6d28d9;
+  --muted-foreground: #ddd6fe;
+  --accent: #a78bfa;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --popover: #312e81;
+  --popover-foreground: #e9d5ff;
+  --ring: #8b5cf6;
+  --sidebar-background: #312e81;
+  --sidebar-foreground: #e9d5ff;
+  --sidebar-primary: #8b5cf6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #a78bfa;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #6d28d9;
+  --sidebar-ring: #8b5cf6;
+  --chart-1: #8b5cf6;
+  --chart-2: #a78bfa;
+  --chart-3: #6d28d9;
+  --chart-4: #4c1d95;
+  --chart-5: #ddd6fe;
 }
 
 @layer base {
@@ -443,9 +565,10 @@ textarea {
   }
 
   body {
-    @apply font-sans antialiased text-foreground h-full w-full;
+    @apply font-sans antialiased h-full w-full;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color: transparent;
+    background-color: var(--background);
+    color: var(--foreground);
     overflow-x: hidden;
     margin: 0;
     padding: 0;
@@ -1352,41 +1475,43 @@ html.dark tfoot tr th .footer-total-blue {
 }
 
 .pagination-button.active {
-  /* Subtle background for active button */
-  background: rgba(59, 130, 246, 0.1);
+  /* Transparent background with blinking electric silver border */
+  background: transparent;
   color: rgb(37, 99, 235);
   font-weight: 600;
-  border-color: transparent;
-  /* Slow blinking glow animation */
-  animation: pagination-glow-blink 2s ease-in-out infinite;
+  /* Slow blinking electric silver border animation */
+  animation: pagination-silver-blink 2s ease-in-out infinite;
 }
 
 .dark .pagination-button.active {
-  /* Subtle background for active button in dark mode */
-  background: rgba(59, 130, 246, 0.15);
+  /* Transparent background with blinking electric silver border in dark mode */
+  background: transparent;
   color: rgb(147, 197, 253);
-  border-color: transparent;
-  /* Slow blinking glow animation */
-  animation: pagination-glow-blink-dark 2s ease-in-out infinite;
+  /* Slow blinking electric silver border animation */
+  animation: pagination-silver-blink-dark 2s ease-in-out infinite;
 }
 
-/* Slow blinking glow animation for light mode */
-@keyframes pagination-glow-blink {
+/* Slow blinking electric silver border animation for light mode */
+@keyframes pagination-silver-blink {
   0%, 100% {
+    border-color: transparent;
     box-shadow: none;
   }
   50% {
-    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+    border-color: #c0c0c0;
+    box-shadow: 0 0 8px rgba(192, 192, 192, 0.5);
   }
 }
 
-/* Slow blinking glow animation for dark mode */
-@keyframes pagination-glow-blink-dark {
+/* Slow blinking electric silver border animation for dark mode */
+@keyframes pagination-silver-blink-dark {
   0%, 100% {
+    border-color: transparent;
     box-shadow: none;
   }
   50% {
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    border-color: #d0d0d0;
+    box-shadow: 0 0 10px rgba(208, 208, 208, 0.6);
   }
 }
 

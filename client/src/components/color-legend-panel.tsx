@@ -107,7 +107,7 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-gray-200 dark:border-gray-700 hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors">
+            <tr className="border-b border-transparent hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors">
               <td className="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">Stock In</td>
               <td className="py-3 px-4 text-center">
                 <div 
@@ -119,7 +119,7 @@ export function ColorLegendPanel({ className = "" }: ColorLegendPanelProps) {
                 {colorNames[stockInColors[today as keyof typeof stockInColors] as keyof typeof colorNames]}
               </td>
             </tr>
-            <tr className="border-b border-gray-200 dark:border-gray-700 hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors">
+            <tr className="border-b border-transparent hover:bg-blue-50/30 dark:hover:bg-blue-950/20 transition-colors">
               <td className="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">Move Front</td>
               <td className="py-3 px-4 text-center">
                 <div 

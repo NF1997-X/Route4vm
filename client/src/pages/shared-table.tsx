@@ -10,14 +10,12 @@ import { Footer } from "@/components/footer";
 import { RouteOptimizationModal } from "@/components/route-optimization-modal";
 import { PasswordPrompt } from "@/components/password-prompt";
 import { Database } from "lucide-react";
-import { useTheme } from "@/components/theme-provider";
 import { calculateDistance } from "@/utils/distance";
 import type { SharedTableState, TableColumn, TableRow } from "@shared/schema";
 
 export default function SharedTablePage() {
   const [, params] = useRoute("/share/:shareId");
   const shareId = params?.shareId;
-  const { theme, toggleTheme } = useTheme();
 
   const { 
     rows, 

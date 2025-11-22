@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Edit2, Edit3, Table2, Link2, Sparkles, ArrowLeft, ChevronLeft, Palette } from "lucide-react";
 import { useLocation } from "wouter";
-import { useTheme } from "./theme-provider";
 import { AddColumnModal } from "./add-column-modal";
 
 interface NavigationProps {
@@ -26,7 +25,6 @@ interface NavigationProps {
 export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, onBulkColorModal, onClearAllData, isAuthenticated }: NavigationProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [, navigate] = useLocation();
-  const { theme, toggleTheme } = useTheme();
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [submenuType, setSubmenuType] = useState<'vm-route' | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -125,35 +123,6 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Vm Route</span>
           </div>
           <ChevronDown className="w-4 h-4 text-gray-400 dark:text-gray-500 ml-2 flex-shrink-0 -rotate-90" />
-        </div>
-      </div>
-
-      {/* Theme Toggle - iOS Style */}
-      <div 
-        onClick={() => handleNavigationClick(toggleTheme)}
-        className="cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 transition-colors duration-150"
-        data-testid="menu-toggle-theme"
-      >
-        <div className="flex items-center w-full px-3 py-2.5">
-          {theme === 'dark' ? (
-            <>
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-orange-500 mr-3 shadow-sm">
-                <Sun className="w-4 h-4 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Light Mode</span>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-700 mr-3 shadow-sm">
-                <Moon className="w-4 h-4 text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <span className="text-[13px] font-medium text-gray-900 dark:text-white leading-tight">Dark Mode</span>
-              </div>
-            </>
-          )}
         </div>
       </div>
 
@@ -454,14 +423,14 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-white/30 to-transparent dark:from-white/5 dark:via-transparent dark:to-transparent pointer-events-none rounded-2xl"></div>
                 
                 {/* Content Container with dividers */}
-                <div className="relative z-10 overflow-y-auto scrollbar-hide" style={{ maxHeight: 'calc(80vh - 20px)' }}>
-                  {/* Main Menu - Always rendered but conditionally visible */}
-                  <div className={`transition-all duration-300 ease-in-out ${showSubmenu ? 'transform -translate-x-full opacity-0' : 'transform translate-x-0 opacity-100'}`}>
+                <div className="relative z-10 overflow-hidden" style={{ maxHeight: 'calc(80vh - 20px)' }}>
+                  {/* Main Menu - Always visible, no transform */}
+                  <div className={`transition-opacity duration-300 ease-in-out overflow-y-auto scrollbar-hide ${showSubmenu ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} style={{ maxHeight: 'calc(80vh - 20px)' }}>
                     {renderMainMenu()}
                   </div>
 
-                  {/* Submenu Overlay - Positioned absolutely */}
-                  <div className={`absolute top-0 left-0 w-full h-full transition-all duration-300 ease-in-out ${showSubmenu ? 'transform translate-x-0 opacity-100 pointer-events-auto' : 'transform translate-x-full opacity-0 pointer-events-none'}`}>
+                  {/* Submenu Overlay - Slides from right to left */}
+                  <div className={`absolute top-0 left-0 w-full h-full bg-white/98 dark:bg-gray-950/95 transition-all duration-300 ease-in-out overflow-y-auto scrollbar-hide ${showSubmenu ? 'transform translate-x-0 opacity-100 pointer-events-auto' : 'transform translate-x-full opacity-0 pointer-events-none'}`}>
                     {submenuType === 'vm-route' && renderVmRouteSubmenu()}
                   </div>
                 </div>
