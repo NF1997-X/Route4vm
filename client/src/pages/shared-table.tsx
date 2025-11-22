@@ -344,7 +344,7 @@ export default function SharedTablePage() {
     return (
       <div className="min-h-screen relative">
         {isIntroLoading ? (
-          <LoadingOverlay message="Loading shared table..." type="wave" />
+          <LoadingOverlay message="Loading shared table..." />
         ) : (
           <NavigationSpinner />
         )}

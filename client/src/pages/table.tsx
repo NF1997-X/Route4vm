@@ -1103,7 +1103,7 @@ export default function TablePage() {
     return (
       <div className="min-h-screen relative">
         {isIntroLoading ? (
-          <LoadingOverlay message="Loading table data..." type="wave" />
+          <LoadingOverlay message="Loading table data..." />
         ) : (
           <NavigationSpinner />
         )}

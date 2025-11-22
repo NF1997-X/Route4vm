@@ -286,7 +286,7 @@ export default function CustomTableView() {
     return (
       <div className="min-h-screen relative">
         {isIntroLoading ? (
-          <LoadingOverlay message="Loading Custom Table..." type="ripple" />
+          <LoadingOverlay message="Loading Custom Table..." />
         ) : (
           <NavigationSpinner />
         )}

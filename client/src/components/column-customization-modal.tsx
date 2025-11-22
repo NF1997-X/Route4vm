@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { GripVertical, RotateCcw, X, CheckCheck, Columns3 } from "lucide-react";
 import { TableColumn } from "@shared/schema";
@@ -170,31 +169,54 @@ export function ColumnCustomizationModal({
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
-                          className={`flex items-center justify-between p-3 rounded border bg-muted/30 hover:bg-muted/50 transition-colors ${
-                            snapshot.isDragging ? 'shadow-lg border-blue-500 dark:border-blue-400' : 'border-border'
-                          } ${!column.visible ? 'opacity-60' : ''}`}
+                          className={`flex items-center justify-between p-3 rounded-2xl border transition-all duration-200 ${
+                            snapshot.isDragging ? 'shadow-lg border-blue-500 dark:border-blue-400 bg-white dark:bg-gray-900' : 'border-transparent'
+                          } ${column.visible ? 'bg-white/80 dark:bg-gray-900/60' : 'bg-gray-100/50 dark:bg-gray-950/30 opacity-60'}`}
                         >
                           <div className="flex items-center gap-3">
                             <div
                               {...provided.dragHandleProps}
-                              className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground"
+                              className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                             >
                               <GripVertical className="w-4 h-4" />
                             </div>
                             <Label
                               htmlFor={`column-${column.id}`}
-                              className="text-sm font-medium cursor-pointer"
+                              className={`text-sm font-medium cursor-pointer transition-colors ${
+                                column.visible ? 'text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-500'
+                              }`}
                             >
                               {column.name}
                             </Label>
                           </div>
-                          <Switch
-                            id={`column-${column.id}`}
-                            checked={column.visible}
-                            onCheckedChange={() => handleToggleVisibility(column.id)}
+                          
+                          {/* iOS Toggle Switch - Liquid Glass Style */}
+                          <button
+                            type="button"
+                            role="switch"
+                            aria-checked={column.visible}
+                            onClick={() => handleToggleVisibility(column.id)}
                             disabled={column.isCore && column.visible && visibleCount <= 1}
+                            className={`relative inline-flex h-[31px] w-[51px] flex-shrink-0 items-center rounded-full transition-all duration-300 ease-out focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden ${
+                              column.visible 
+                                ? 'bg-gradient-to-b from-[#34C759] to-[#30B350] shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_1px_2px_rgba(0,0,0,0.25)]' 
+                                : 'bg-gradient-to-b from-[#E9E9EA] to-[#D1D1D6] dark:from-[#48484A] dark:to-[#3A3A3C] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_1px_2px_rgba(0,0,0,0.25)]'
+                            }`}
                             data-testid={`switch-column-${column.dataKey}`}
-                          />
+                          >
+                            {/* Glass shine overlay */}
+                            <span className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent rounded-full pointer-events-none" />
+                            
+                            {/* Toggle knob */}
+                            <span
+                              className={`relative inline-block h-[27px] w-[27px] transform rounded-full bg-white shadow-[0_3px_8px_rgba(0,0,0,0.15),0_3px_1px_rgba(0,0,0,0.06),0_0_0_0.5px_rgba(0,0,0,0.04)] transition-all duration-300 ease-out ${
+                                column.visible ? 'translate-x-[22px]' : 'translate-x-[2px]'
+                              }`}
+                            >
+                              {/* Knob inner shadow for depth */}
+                              <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white to-gray-50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]" />
+                            </span>
+                          </button>
                         </div>
                       )}
                     </Draggable>

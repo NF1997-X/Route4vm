@@ -69,7 +69,7 @@ export function SkeletonLoader({ rows = 5, columns = 7, className = "" }: Skelet
   );
 }
 
-export function LoadingOverlay({ message = "Loading...", type = "pulse" }: { message?: string; type?: "spinner" | "morphing" | "pulse" | "orbit" | "wave" | "ripple" }) {
+export function LoadingOverlay({ message = "Loading..." }: { message?: string }) {
   const [currentTip, setCurrentTip] = useState(0);
   const [progress, setProgress] = useState(0);
   const [loadingStatus, setLoadingStatus] = useState("Initializing");
@@ -128,72 +128,59 @@ export function LoadingOverlay({ message = "Loading...", type = "pulse" }: { mes
     };
   }, []);
 
-  const getLoader = () => {
-    switch (type) {
-      case "morphing":
-        return <div className="loading-morphing" />;
-      case "pulse":
-        return <div className="loading-pulse-glow" />;
-      case "orbit":
-        return <div className="loading-orbit" />;
-      case "wave":
-        return (
-          <div className="loading-wave">
-            <div className="wave-dot" />
-            <div className="wave-dot" />
-            <div className="wave-dot" />
-            <div className="wave-dot" />
-            <div className="wave-dot" />
-          </div>
-        );
-      case "ripple":
-        return <div className="loading-ripple" />;
-      case "spinner":
-      default:
-        return <div className="loading-spinner-lg" />;
-    }
-  };
-
   return (
     <div className="table-loading-overlay" data-testid="loading-overlay">
       <div className="flex flex-col items-center gap-8 zoom-in">
-        {/* App Logo/Icon with enhanced animations */}
+        {/* iOS-style Spinner with Logo */}
         <div className="relative">
-          {/* Main logo container with FamilyMart logo - transparent background */}
-          <div className="w-24 h-24 flex items-center justify-center">
+          {/* Main logo container with FamilyMart logo */}
+          <div className="w-28 h-28 flex items-center justify-center relative">
             <img 
               src="/assets/FamilyMart.png" 
               alt="FamilyMart Logo" 
-              className="w-20 h-20 object-contain animate-pulse"
-              style={{ animationDuration: '2s' }}
+              className="w-24 h-24 object-contain relative z-10"
             />
+            {/* Subtle background glow */}
+            <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '2s' }}></div>
           </div>
           
-          {/* Outer rotating ring */}
-          <div className="absolute inset-0 -m-2 rounded-3xl border-4 border-blue-400/20 animate-spin" style={{ animationDuration: '3s' }}></div>
+          {/* iOS-style primary spinner ring */}
+          <div className="absolute inset-0 rounded-full border-[4px] border-transparent border-t-blue-500 border-r-blue-400/70 border-b-blue-300/40 animate-spin" 
+               style={{ animationDuration: '0.8s', animationTimingFunction: 'cubic-bezier(0.4, 0, 0.6, 1)' }}>
+          </div>
           
-          {/* Pulsing outer glow */}
-          <div className="absolute inset-0 -m-4 rounded-3xl bg-blue-500/10 animate-ping" style={{ animationDuration: '2s' }}></div>
+          {/* Secondary ring for depth */}
+          <div className="absolute inset-0 -m-2 rounded-full border-[3px] border-transparent border-t-blue-400/50 border-r-blue-300/30 animate-spin" 
+               style={{ animationDuration: '1.2s', animationTimingFunction: 'cubic-bezier(0.4, 0, 0.6, 1)' }}>
+          </div>
+          
+          {/* Outer pulsing glow ring */}
+          <div className="absolute inset-0 -m-4 rounded-full border-[2px] border-blue-500/20 animate-ping" 
+               style={{ animationDuration: '2s' }}>
+          </div>
         </div>
         
-        {/* Tips only - no message, no loader animation */}
+        {/* Tips with smooth transition */}
         <div className="text-center">
-          <div className="text-sm text-blue-200/90 font-medium transition-all duration-300">
+          <div className="text-sm text-blue-200/90 font-medium transition-all duration-500 ease-in-out">
             {tips[currentTip]}
           </div>
         </div>
         
-        {/* Animated progress bar */}
+        {/* iOS-style Animated progress bar */}
         <div className="w-72 space-y-2">
-          <div className="h-1.5 bg-white/10 rounded-full overflow-hidden relative">
+          <div className="h-1.5 bg-white/10 rounded-full overflow-hidden relative backdrop-blur-sm">
             <div 
-              className="h-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full shadow-lg shadow-blue-500/50 transition-all duration-100 ease-linear"
+              className="h-full bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full shadow-lg shadow-blue-500/50 transition-all duration-100 ease-linear relative overflow-hidden"
               style={{ width: `${progress}%` }}
-            ></div>
+            >
+              {/* Moving shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+            </div>
           </div>
-          <div className="flex justify-between text-xs text-blue-200/70">
+          <div className="flex justify-between text-xs text-blue-200/70 font-medium">
             <span>{loadingStatus}</span>
-            <span className="font-mono font-bold">{progress}%</span>
+            <span className="font-mono font-bold tabular-nums">{progress}%</span>
           </div>
         </div>
       </div>
@@ -221,30 +208,51 @@ export function InlineLoading({ size = "sm", type = "spinner" }: { size?: "sm" |
   );
 }
 
-// Simple navigation spinner - for button back/navigation only
+// Simple navigation spinner - iOS style for button back/navigation only
 export function NavigationSpinner() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <div className="text-center space-y-6">
-        {/* Centered logo with glow */}
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black">
+      <div className="text-center space-y-8">
+        {/* iOS-style spinner container */}
         <div className="relative inline-block">
-          <div className="w-20 h-20 flex items-center justify-center">
+          {/* Main logo with subtle pulse */}
+          <div className="relative w-24 h-24 flex items-center justify-center">
             <img 
               src="/assets/FamilyMart.png" 
               alt="FamilyMart Logo" 
-              className="w-16 h-16 object-contain animate-pulse"
-              style={{ animationDuration: '1.5s' }}
+              className="w-20 h-20 object-contain"
             />
+            {/* Subtle background glow */}
+            <div className="absolute inset-0 bg-blue-500/5 rounded-full blur-xl animate-pulse" style={{ animationDuration: '2s' }}></div>
           </div>
-          {/* Rotating ring */}
-          <div className="absolute inset-0 -m-1 rounded-2xl border-3 border-blue-400/30 animate-spin" style={{ animationDuration: '2s' }}></div>
+          
+          {/* iOS-style rotating ring - single clean ring */}
+          <div className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-blue-500 border-r-blue-400/60 border-b-blue-300/30 animate-spin" 
+               style={{ animationDuration: '0.8s', animationTimingFunction: 'cubic-bezier(0.4, 0, 0.6, 1)' }}>
+          </div>
+          
+          {/* Second ring for depth - slower */}
+          <div className="absolute inset-0 -m-1 rounded-full border-[2px] border-transparent border-t-blue-400/40 border-r-blue-300/20 animate-spin" 
+               style={{ animationDuration: '1.2s', animationTimingFunction: 'cubic-bezier(0.4, 0, 0.6, 1)' }}>
+          </div>
         </div>
         
-        {/* Simple dots */}
-        <div className="flex gap-2 justify-center">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+        {/* iOS-style loading dots - clean and minimal */}
+        <div className="flex gap-2 justify-center items-center h-3">
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce shadow-lg shadow-blue-500/50" 
+               style={{ animationDelay: '0ms', animationDuration: '0.6s' }}>
+          </div>
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce shadow-lg shadow-blue-500/50" 
+               style={{ animationDelay: '150ms', animationDuration: '0.6s' }}>
+          </div>
+          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce shadow-lg shadow-blue-500/50" 
+               style={{ animationDelay: '300ms', animationDuration: '0.6s' }}>
+          </div>
+        </div>
+        
+        {/* Optional loading text - iOS style */}
+        <div className="text-sm text-gray-600 dark:text-gray-400 font-medium animate-pulse" style={{ animationDuration: '2s' }}>
+          Loading...
         </div>
       </div>
     </div>

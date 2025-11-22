@@ -22,7 +22,7 @@ import { Footer } from "@/components/footer";
 
 export default function HelpPage() {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className="min-h-screen w-full bg-gray-50 dark:bg-black">
       {/* Fixed Header with Gradient Background */}
       <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-white/20 dark:border-white/10 bg-white/70 dark:bg-black/30 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40 shadow-lg shadow-black/5 dark:shadow-black/20">
         <div className="w-full px-4">

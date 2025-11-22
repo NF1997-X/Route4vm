@@ -316,8 +316,8 @@ export default function CustomTableList() {
           </div>
         </div>
       </nav>
-      <main className="min-h-screen bg-gray-50 dark:bg-black pt-[72px] pb-20 w-full">
-        <div className="w-full px-4 py-8">
+      <main className="bg-gray-50 dark:bg-black pt-[72px] pb-20 w-full">
+        <div className="w-full mx-auto px-4 py-8">
         {/* Action Bar */}
         <div className="flex justify-between items-center mb-6">
           <div className={`text-sm ${isEditDialogOpen ? "text-green-600 dark:text-green-400 font-semibold" : "text-gray-600 dark:text-gray-400"}`}>
